@@ -41,7 +41,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="bg-tertiary-200">
-        <UITypography className="text-center">© 2023 Boardso.com</UITypography>
+        <UITypography className="text-center">Copyright © 2023 Boardso.com</UITypography>
       </div>
     </footer>
   );

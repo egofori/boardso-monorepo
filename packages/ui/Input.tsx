@@ -1,27 +1,42 @@
 "use client";
 
+import React from "react";
 import { Input, type InputProps } from "@material-tailwind/react"
 import { twMerge } from "tailwind-merge"
 
-interface Props extends InputProps {
-    ref?: React.Ref<HTMLInputElement>
-}
-
-function UIInput({ className, labelProps, containerProps, ...rest }: Props) {
+const UIInput = React.forwardRef<HTMLInputElement, InputProps>(({ size, className, label, labelProps, containerProps, color, ...rest }, ref) => {
   return (
-    <Input
-      className={twMerge("!border-t-blue-gray-200 !border-2 !ring-transparent focus:!border-teal-300 bg-white rounded-xl", className)}
-      labelProps={{
-        ...labelProps,
-        className: twMerge("before:content-none after:content-none", labelProps?.className)
-      }}
-      containerProps={{
-        ...containerProps,
-        className: twMerge("h-12", containerProps?.className),
-      }}
-      {...rest}
-    />
+    <>
+    {
+      label ?
+      <Input
+        label={label}
+        className={twMerge("bg-white", className)}
+        labelProps={labelProps}
+        containerProps={containerProps}
+        color={color || "teal"}
+        size={size || "lg"}
+        {...rest}
+        ref={ref}
+      /> :
+      <Input
+        label={label}
+        className={twMerge(`bg-white focus:!border-t-${color || "teal"}-500`, className)}
+        labelProps={{
+          ...labelProps,
+          className: twMerge("before:content-none after:content-none", labelProps?.className)
+        }}
+        containerProps={containerProps}
+        color={color || "teal"}
+        size={size || "lg"}
+        {...rest}
+        ref={ref}
+      />
+    }
+    </>
   )
-}
+})
+
+UIInput.displayName = "UIInput"
 
 export { UIInput };

@@ -21,9 +21,9 @@ export default function Header() {
           <CountryDropdown />
         </div>
         <div className="flex gap-2 text-tertiary-800 hover:[&>a]:text-teal-400">
-          <Link href="#" className="">Log in</Link>
+          <Link href="/login" className="">Log in</Link>
           <UITypography as="span">/</UITypography>
-          <Link href="#">Sign up</Link>
+          <Link href="/signup">Sign up</Link>
         </div>
       </div>
     </Navbar>
