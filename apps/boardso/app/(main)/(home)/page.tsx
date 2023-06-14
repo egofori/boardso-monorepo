@@ -1,12 +1,12 @@
 "use client"
 
 import { UIButton, UITypography } from "ui";
-import SearchInput from "../components/SearchInput";
+import SearchInput from "../../components/SearchInput";
 import { BiPlus } from "react-icons/bi"
 import MoreLoader from "@/components/MoreLoader";
 import PlaceCard from "@/components/PlaceCard";
 
-export default function page() {
+export default function Page() {
   // const billboards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => ({
   //   id: value,
   //   images: ["/assets/images/erik-mclean-wj_Tjw7oV-g-unsplash.jpg"],
