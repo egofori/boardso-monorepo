@@ -23,7 +23,8 @@
     "paths": {
       "@/components/*": ["./app/components/*"],
       "@/services/*": ["./services/*"],
-      "@/lottie_files/*": ["./lottie_files/*"]
+      "@/lottie_files/*": ["./lottie_files/*"],
+      "@/*": ["./app/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
