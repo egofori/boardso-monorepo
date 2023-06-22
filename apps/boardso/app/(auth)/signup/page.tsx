@@ -20,7 +20,7 @@ export default function Page() {
   return (
     <main className="relative flex flex-col justify-between">
       <UICard className="w-[410px] p-10 m-auto rounded-2xl">
-        <UITypography variant="h4" className="text-tertiary-800 text-center mb-3">New Account</UITypography>
+        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">New Account</UITypography>
         <UIForm form={form} className="flex flex-col gap-6">
           <div>
             <UIInput label="First name" type="text" {...form.register("first-name")} error={hasError(form, "first-name")} />
@@ -38,7 +38,7 @@ export default function Page() {
             <UIInput label="Password" type="password" {...form.register("password")} error={hasError(form, "password")} />
             <UIFieldError name="password" />
           </div>
-          <UIButton type="submit" themeColor="primary" >SIGN UP</UIButton>
+          <UIButton type="submit" >SIGN UP</UIButton>
         </UIForm>
         <UIDivider className="my-3">or</UIDivider>
         <div className="flex gap-2 mb-3">

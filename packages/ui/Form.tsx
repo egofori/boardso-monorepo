@@ -9,6 +9,7 @@ import {
   SubmitHandler,
   useFormContext,
 } from "react-hook-form";
+import { twMerge } from "tailwind-merge";
 import { ZodSchema, TypeOf } from "zod";
 import { UITypography } from "./Typography";
 
@@ -29,9 +30,10 @@ const useZodForm = <T extends ZodSchema<any>>({
 
 interface FieldErrorProps {
   name?: string;
+  className?: string
 }
 
-function UIFieldError({ name }: FieldErrorProps) {
+function UIFieldError({ name, className }: FieldErrorProps) {
   const {
     formState: { errors },
   } = useFormContext();
@@ -43,7 +45,7 @@ function UIFieldError({ name }: FieldErrorProps) {
   if (!error) return null;
 
   return (
-    <UITypography className="text-xs text-red-500 font-medium">{error.message?.toString()}</UITypography>
+    <UITypography className={twMerge("text-xs text-red-500 font-medium", className)}>{error.message?.toString()}</UITypography>
   );
 }
 

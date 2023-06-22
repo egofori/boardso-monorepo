@@ -15,10 +15,11 @@ export default function Page() {
 		schema: signUpSchema,
     mode: "all"
 	});
+
   return (
     <main className="relative flex flex-col justify-between">
       <UICard className="w-[410px] p-10 m-auto rounded-2xl">
-        <UITypography variant="h4" className="text-tertiary-800 text-center mb-3">Log In</UITypography>
+        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">Log In</UITypography>
         <UIForm form={form} className="flex flex-col gap-6">
           <div>
             <UIInput label="Email" type="email" {...form.register("email")} error={hasError(form, "email")} />
@@ -27,9 +28,9 @@ export default function Page() {
           <div>
             <UIInput label="Password" type="password" {...form.register("password")} error={hasError(form, "password")} />
             <UIFieldError name="password" />
-            <Link href="/forgot-password" className="text-right text-sm link float-right mt-2 font-light">Forgot password?</Link>
+            <Link href="/forgot-password" className="text-right text-sm link mt-2 font-light">Forgot password?</Link>
           </div>
-          <UIButton type="submit" themeColor="primary" >LOG IN</UIButton>
+          <UIButton type="submit">LOG IN</UIButton>
         </UIForm>
         <UIDivider className="my-3">or</UIDivider>
         <div className="flex gap-2 mb-3">
