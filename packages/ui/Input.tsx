@@ -1,42 +1,69 @@
 "use client";
 
 import React from "react";
-import { Input, type InputProps } from "@material-tailwind/react"
+import { Input, type InputProps, ThemeProvider, type InputStylesType } from "@material-tailwind/react"
 import { twMerge } from "tailwind-merge"
+import { cva, type VariantProps } from "class-variance-authority";
 
-const UIInput = React.forwardRef<HTMLInputElement, InputProps>(({ size, className, label, labelProps, containerProps, color, ...rest }, ref) => {
-  return (
-    <>
-    {
-      label ?
-      <Input
-        label={label}
-        className={twMerge("bg-white", className)}
-        labelProps={labelProps}
-        containerProps={containerProps}
-        color={color || "teal"}
-        size={size || "lg"}
-        {...rest}
-        ref={ref}
-      /> :
-      <Input
-        label={label}
-        className={twMerge(`bg-white focus:!border-t-${color || "teal"}-500`, className)}
-        labelProps={{
+const inputVariants = cva(
+  "!border-t-blue-gray-200",
+  {
+    variants: {
+      color: {
+        teal: "focus:!border-t-teal-500"
+      },
+      error: {
+        true: "!border-t-red-500 focus:!border-t-red-500",
+        false: ""
+      }
+    },
+    defaultVariants: {
+      color: "teal",
+      error: false
+    },
+  }
+)
+
+interface Props extends Omit<InputProps, "color" | "error">, VariantProps<typeof inputVariants> {}
+
+const UIInput = React.forwardRef<HTMLInputElement, Props>(({ size, className, label, labelProps, color, error, ...rest }, ref) => {
+  const theme: { input: InputStylesType} = {
+    input: {
+      defaultProps: {
+        color: color || "teal",
+        size: "lg",
+        labelProps: {
           ...labelProps,
           className: twMerge("before:content-none after:content-none", labelProps?.className)
-        }}
-        containerProps={containerProps}
-        color={color || "teal"}
-        size={size || "lg"}
+        }
+      },
+      styles: {
+        base: {
+          container: {
+            minWidth: "min-w-[1rem]",
+          }
+        }
+      }
+    }
+  }
+
+  return (
+    <ThemeProvider value={theme}>
+      <Input
+        error={Boolean(error)}
+        label={label}
+        size={size}
+        className={twMerge(
+          inputVariants({ color, error }),
+          className
+        )}
         {...rest}
         ref={ref}
       />
-    }
-    </>
+    </ThemeProvider>
   )
 })
 
 UIInput.displayName = "UIInput"
 
-export { UIInput };
+export { UIInput, type Props };
