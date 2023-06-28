@@ -26,7 +26,7 @@ function UIDropdownButton({
     <UIMenu open={openMenu} handler={setOpenMenu}>
       <UIMenuHandler>
         <UIButton
-          className={twMerge("flex gap-1 py-1 px-2 items-center active:brightness-95", className)}
+          className={twMerge("flex gap-1 items-center active:brightness-95", className)}
           color="white"
           {...rest}
           ripple={false}

@@ -2,6 +2,5 @@
     "semi": false,
 	"tabWidth": 2,
 	"trailingComma": "es5",
-	"parser": "typescript",
-	"bracketSameLine": true
+	"parser": "typescript"
 }
