@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge"
 
 const UIIconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(({ className, children, ...rest }, ref) => {
   return (
-    <IconButton className={twMerge("shadow-none hover:shadow-none", className)} {...rest} ref={ref}>{children}</IconButton>
+    <IconButton className={twMerge("shadow-none hover:shadow-none", className)} ripple={false} {...rest} ref={ref}>{children}</IconButton>
   )
 })
 
