@@ -1,22 +1,26 @@
-"use client";
+"use client"
 
-import { twMerge } from "tailwind-merge";
-import { UICard, UITypography } from "ui";
+import { twMerge } from "tailwind-merge"
+import { UICard, UITypography } from "ui"
+import { useRouter } from "next/navigation"
 
 type Props = {
-  className?: string;
+  className?: string
   data: {
-    image?: string;
-    location?: string;
-  };
-};
+    image?: string
+    location?: string
+  }
+}
 
 export default function PlaceCard({ className, data }: Props) {
+  const router = useRouter()
+
   return (
     <UICard
+      onClick={(e) => router.push("/billboards")}
       shadow={false}
       className={twMerge(
-        "relative w-[calc((100%/2)-16px)] md:w-[calc((700px/3)-16px-16px)] lg:w-[calc((950px/4)-16px-16px)] xl:w-[calc((1000px/4)-16px-16px)] 2xl:w-[calc((1300px/4)-16px-16px)] h-[calc((100vw/2)-16px-16px)] md:h-[calc((700px/3)-16px-16px)] lg:h-[calc((950px/4)-16px-16px)] xl:h-[calc((1000px/4)-16px-16px)] 2xl:h-[calc((1300px/4)-16px-16px)] m-2 overflow-hidden flex flex-col gap-1 justify-center items-center bg-cover bg-center",
+        "cursor-pointer relative w-[calc((100%/2)-16px)] md:w-[calc((700px/3)-16px-16px)] lg:w-[calc((950px/4)-16px-16px)] xl:w-[calc((1000px/4)-16px-16px)] 2xl:w-[calc((1300px/4)-16px-16px)] h-[calc((100vw/2)-16px-16px)] md:h-[calc((700px/3)-16px-16px)] lg:h-[calc((950px/4)-16px-16px)] xl:h-[calc((1000px/4)-16px-16px)] 2xl:h-[calc((1300px/4)-16px-16px)] m-2 overflow-hidden flex flex-col gap-1 justify-center items-center bg-cover bg-center",
         className
       )}
       style={{ backgroundImage: `url('${data.image}')` }}
@@ -32,5 +36,5 @@ export default function PlaceCard({ className, data }: Props) {
         {data.location?.split(",")[1]}
       </UITypography>
     </UICard>
-  );
+  )
 }

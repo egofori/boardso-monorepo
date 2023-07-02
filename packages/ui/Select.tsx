@@ -12,7 +12,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { twMerge } from "tailwind-merge";
 
 const selectVariants = cva(
-  "border border-blue-gray-200 focus:border-2 !transition-none",
+  "border border-gray-200 focus:border-2 !transition-none",
   {
     variants: {
       color: {

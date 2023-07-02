@@ -4,7 +4,7 @@ import { useState } from "react"
 import { UIButton } from "./Button"
 import { UIMenu, UIMenuHandler } from "./Menu"
 import { BsCaretDownFill } from "react-icons/bs"
-import { type ButtonProps } from "@material-tailwind/react";
+import { type ButtonProps } from "@material-tailwind/react"
 import { twMerge } from "tailwind-merge"
 
 interface DropdownButtonProps {
@@ -13,28 +13,40 @@ interface DropdownButtonProps {
   arrow?: boolean
 }
 
-function UIDropdownButton({
-  children,
-  menu,
-  arrow=true,
-  className,
-  ...rest
-}: DropdownButtonProps & ButtonProps, ref: any) {
+function UIDropdownButton(
+  {
+    children,
+    menu,
+    arrow = true,
+    className,
+    color,
+    ...rest
+  }: DropdownButtonProps & ButtonProps,
+  ref: any
+) {
   const [openMenu, setOpenMenu] = useState(false)
 
   return (
     <UIMenu open={openMenu} handler={setOpenMenu}>
       <UIMenuHandler>
         <UIButton
-          className={twMerge("flex gap-1 items-center active:brightness-95", className)}
-          color="white"
-          {...rest}
+          className={twMerge(
+            "flex gap-1 items-center active:brightness-95",
+            className
+          )}
+          color={color || "white"}
           ripple={false}
+          {...rest}
           ref={ref}
         >
           {children}
           {arrow && (
-            <BsCaretDownFill className={twMerge(openMenu ? "rotate-180" : "rotate-0", "flex-shrink-0 text-xs")} />
+            <BsCaretDownFill
+              className={twMerge(
+                openMenu ? "rotate-180" : "rotate-0",
+                "flex-shrink-0 text-xs"
+              )}
+            />
           )}
         </UIButton>
       </UIMenuHandler>

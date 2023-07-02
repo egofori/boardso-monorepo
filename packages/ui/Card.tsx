@@ -14,7 +14,7 @@ import { twMerge } from "tailwind-merge"
 const UICard = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, children, ...rest }, ref) => {
     return (
-      <Card className={twMerge("shadow-none border border-slate-200", className)} {...rest} ref={ref}>
+      <Card className={twMerge("shadow-none border border-gray-200", className)} {...rest} ref={ref}>
         {children}
       </Card>
     )
