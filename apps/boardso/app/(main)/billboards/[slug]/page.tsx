@@ -22,47 +22,47 @@ import {
 import { useState } from "react"
 import Link from "next/link"
 
+export const billboard = {
+  images: [1, 1],
+  title: "Large static billboard for sale at Fanmilk",
+  type: "Static billboard",
+  dimension: {
+    height: 100,
+    width: 200,
+    unit: { name: "feet", abbrev: "ft" },
+  },
+  description: "We make sure you are satisfied with our service. We make sure you are satisfied with our service. We make sure you are satisfied with our service.",
+  location: "Ablekuma, Accra",
+  price: { value: 10000.0, currency: "GHS", rate: "/month" },
+  status: "Availbale",
+  owner: {
+    uid: "abrewa_nana",
+    profile_image:
+      "https://images.unsplash.com/photo-1541951991883-a34a3024c94a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+    full_name: "Abrewa Nana",
+    contacts: [
+      {
+        name: "Website",
+        value: ["www.myweb.com"],
+      },
+      {
+        name: "Phone",
+        value: ["+233546040677"],
+      },
+      {
+        name: "Email",
+        value: ["evans@koo.com"],
+      },
+      {
+        name: "WhatsApp",
+        value: ["https://chat.whatsapp.com/+233546040677"],
+      },
+    ],
+  },
+}
+
 export default function Page() {
   const [selectedContact, setSelectedContact] = useState<number | null>(null)
-
-  const billboard = {
-    images: [1, 1],
-    title: "Large static billboard for sale at Fanmilk",
-    type: "Static billboard",
-    dimension: {
-      height: 100,
-      width: 200,
-      unit: { name: "feet", abbrev: "ft" },
-    },
-    description: "We make sure you are satisfied with our service. We make sure you are satisfied with our service. We make sure you are satisfied with our service.",
-    location: "Ablekuma, Accra",
-    price: { value: 10000.0, currency: "GHS", rate: "/month" },
-    status: "Availbale",
-    owner: {
-      uid: "abrewa_nana",
-      profile_image:
-        "https://images.unsplash.com/photo-1541951991883-a34a3024c94a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
-      full_name: "Abrewa Nana",
-      contacts: [
-        {
-          name: "Website",
-          value: ["www.myweb.com"],
-        },
-        {
-          name: "Phone",
-          value: ["+233546040677"],
-        },
-        {
-          name: "Email",
-          value: ["evans@koo.com"],
-        },
-        {
-          name: "WhatsApp",
-          value: ["https://chat.whatsapp.com/+233546040677"],
-        },
-      ],
-    },
-  }
 
   return (
     <main className="layout-wrapper flex lg:flex-row flex-col items-start justify-center gap-4 py-5">

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "class-variance-authority": "^0.6.0",
+    "rc-slider": "^10.2.1",
     "react-icons": "^4.9.0",
     "tailwind-merge": "^1.13.1"
   }

@@ -11,7 +11,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { twMerge } from "tailwind-merge";
 
 const textareaVariants = cva(
-  "!border-t-blue-gray-200",
+  "!border-gray-200",
   {
     variants: {
       color: {

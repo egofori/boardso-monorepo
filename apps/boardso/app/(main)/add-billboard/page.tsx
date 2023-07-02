@@ -40,9 +40,10 @@ export default function Page() {
   ]
 
   const periods = [
-    { label: "/month", value: "PER_MONTH" },
-    { label: "/year", value: "PER_YEAR" },
+    { label: "per month", value: "PER_MONTH" },
+    { label: "per year", value: "PER_YEAR" },
   ]
+
   const [selectedCurrency, setSelectedCurrency] = useState(currencies[0])
 
   const [selectedPeriod, setSelectedPeriod] = useState(periods[0])
@@ -145,7 +146,7 @@ export default function Page() {
                 <div className="flex">
                   <UIDropdownButton
                     menu={menu(currencies, setSelectedCurrency)}
-                    className="border border-r-0 border-blue-gray-200 rounded-r-none bg-slate-100 py-1 px-2"
+                    className="border border-r-0 border-gray-200 rounded-r-none bg-slate-100 py-1 px-2"
                   >
                     <UITypography className="font-normal normal-case">
                       {selectedCurrency.label}
@@ -160,9 +161,9 @@ export default function Page() {
                   />
                   <UIDropdownButton
                     menu={menu(periods, setSelectedPeriod)}
-                    className="border border-l-0 border-blue-gray-200 rounded-l-none bg-slate-100 py-1 px-2"
+                    className="border border-l-0 border-gray-200 rounded-l-none bg-slate-100 py-1 px-2"
                   >
-                    <UITypography className="font-normal normal-case">
+                    <UITypography className="font-normal normal-case whitespace-nowrap">
                       {selectedPeriod.label}
                     </UITypography>
                   </UIDropdownButton>
@@ -177,7 +178,7 @@ export default function Page() {
             <label>Type</label>
             <UISelect
               placeholder="Select billboard type"
-              value={selectedBillboardType.value}
+              value={selectedBillboardType.label}
             >
               {billboardTypes.map((data) => (
                 <UIOption
@@ -207,7 +208,7 @@ export default function Page() {
                       unitsOfMeasurement,
                       setSelectedUnitOfMeasurement
                     )}
-                    className="border border-l-0 border-blue-gray-200 rounded-l-none bg-slate-100 py-1 px-2"
+                    className="border border-l-0 border-gray-200 rounded-l-none bg-slate-100 py-1 px-2"
                   >
                     <UITypography className="font-normal normal-case">
                       {selectedUnitOfMeasurement.label}
@@ -235,7 +236,7 @@ export default function Page() {
                       unitsOfMeasurement,
                       setSelectedUnitOfMeasurement
                     )}
-                    className="border border-l-0 border-blue-gray-200 rounded-l-none bg-slate-100 py-1 px-2"
+                    className="border border-l-0 border-gray-200 rounded-l-none bg-slate-100 py-1 px-2"
                   >
                     <UITypography className="font-normal normal-case">
                       {selectedUnitOfMeasurement.label}
