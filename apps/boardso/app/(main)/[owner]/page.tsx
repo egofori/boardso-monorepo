@@ -18,12 +18,16 @@ import {
   UIDivider,
   UIMenu,
   UIMenuHandler,
+  UICard,
+  UIAvatar,
+  UIRating,
 } from "ui"
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6"
 import { BsCaretDownFill } from "react-icons/bs"
 import { twMerge } from "tailwind-merge"
 import { object, number, string } from "zod"
 import { IoCloseSharp } from "react-icons/io5"
+import { owner } from "../profile/page"
 
 export default function Page() {
   const searchSchema = object({
@@ -93,11 +97,54 @@ export default function Page() {
       </div>
     </div>
   )
-
   return (
-    <main>
-      <div className="w-full py-10 bg-white">
-        <div className="layout-wrapper">
+    <main className="layout-wrapper flex 2xl:flex-row flex-col items-start justify-center gap-6 py-5">
+      <div className="shrink-0 2xl:w-96 w-full flex flex-col gap-6">
+        <UICard className="flex flex-col justify-center items-center gap-1 p-4">
+          <UIAvatar src={owner.profile_image} alt="avatar" size="xl" />
+          <div className="flex flex-row gap-1 items-center">
+            <UIRating value={4} ratedColor="amber" readonly />
+            <UITypography className="font-medium">
+              {owner.rating} Rated
+            </UITypography>
+          </div>
+          <UITypography variant="h4">
+            {owner.first_name} {owner.last_name}
+          </UITypography>
+          <UITypography>{owner.email}</UITypography>
+          <UITypography>
+            {owner.phone_number.zip_code} {owner.phone_number.number}
+          </UITypography>
+        </UICard>
+        <UICard className="flex flex-col justify-center items-center gap-1 p-4">
+          <UITypography variant="h5">Contacts</UITypography>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-min gap-2">
+              <tbody>
+                {owner.contacts.map((contact) => (
+                  <tr key={contact.name}>
+                    <td className="pr-2">
+                      <UITypography className="font-bold">{contact.name}</UITypography>
+                    </td>
+                    <td>
+                      {contact.value.map((value) => (
+                        <UITypography key={value} className="break-all">{value}</UITypography>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </UICard>
+        <UICard className="flex flex-col justify-center items-center gap-1 p-4">
+          <UITypography variant="h5">About</UITypography>
+          <UITypography>{owner.about}</UITypography>
+        </UICard>
+      </div>
+      <div className="w-full">
+        <UITypography variant="h4" className="mb-4">List of billboards</UITypography>
+        <div className="w-full p-10 bg-white">
           <UIForm form={form} className="flex flex-col justify-between gap-6">
             <div className="flex flex-col justify-between items-center gap-3 md:flex-row">
               <div className="relative w-full md:w-[calc(100%-500px)]">
@@ -218,44 +265,44 @@ export default function Page() {
             )}
           </UIForm>
         </div>
-      </div>
-      <div className="layout-wrapper flex flex-col gap-7 py-7">
-        <div className="flex flex-row items-center justify-between">
-          <UITypography className="text-slate-800 text-lg">
-            Showing <b>1 - 10</b> of <b>53</b> billboards
-          </UITypography>
-          <UIDropdownButton
-            color="amber"
-            variant="text"
-            size="sm"
-            onClick={(e) => setMoreOpen(!moreOpen)}
-          >
-            <UITypography className="normal-case">Sort</UITypography>
-          </UIDropdownButton>
-        </div>
-        <div className="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((billboard, i) => (
-            <BillboardCard key={i} />
-          ))}
-        </div>
-        <div className="flex flex-row gap-3 justify-end">
-          <UIButton
-            size="md"
-            variant="outlined"
-            color="blue-gray"
-            className="flex flex-row items-center gap-1"
-          >
-            <FaAngleLeft />
-            Previous
-          </UIButton>
-          <UIButton
-            variant="outlined"
-            color="blue-gray"
-            className="flex flex-row items-center gap-1"
-          >
-            Next
-            <FaAngleRight />
-          </UIButton>
+        <div className="flex flex-col gap-7 py-7">
+          <div className="flex flex-row items-center justify-between">
+            <UITypography className="text-slate-800 text-lg">
+              Showing <b>1 - 10</b> of <b>53</b> billboards
+            </UITypography>
+            <UIDropdownButton
+              color="amber"
+              variant="text"
+              size="sm"
+              onClick={(e) => setMoreOpen(!moreOpen)}
+            >
+              <UITypography className="normal-case">Sort</UITypography>
+            </UIDropdownButton>
+          </div>
+          <div className="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((billboard, i) => (
+              <BillboardCard key={i} />
+            ))}
+          </div>
+          <div className="flex flex-row gap-3 justify-end">
+            <UIButton
+              size="md"
+              variant="outlined"
+              color="blue-gray"
+              className="flex flex-row items-center gap-1"
+            >
+              <FaAngleLeft />
+              Previous
+            </UIButton>
+            <UIButton
+              variant="outlined"
+              color="blue-gray"
+              className="flex flex-row items-center gap-1"
+            >
+              Next
+              <FaAngleRight />
+            </UIButton>
+          </div>
         </div>
       </div>
     </main>
