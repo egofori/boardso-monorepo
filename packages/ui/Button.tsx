@@ -11,7 +11,7 @@ const UIButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, 
       defaultProps: {
         color: "teal",
         className: twMerge("shadow-none hover:shadow-none", className),
-        size: "lg"
+        size: "md"
       },
       styles: {
         variants: {

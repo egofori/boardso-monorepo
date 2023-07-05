@@ -10,24 +10,21 @@ import {
 import { twMerge } from "tailwind-merge"
 import { cva, type VariantProps } from "class-variance-authority"
 
-const inputVariants = cva(
-  "!border-gray-200 !border-t-gray-200",
-  {
-    variants: {
-      color: {
-        teal: "focus:!border-teal-500",
-      },
-      error: {
-        true: "!border-red-500 focus:!border-red-500",
-        false: "",
-      },
+const inputVariants = cva("!border-gray-200 !border-t-gray-200", {
+  variants: {
+    color: {
+      teal: "focus:!border-teal-500",
     },
-    defaultVariants: {
-      color: "teal",
-      error: false,
+    error: {
+      true: "!border-red-500 focus:!border-red-500",
+      false: "",
     },
-  }
-)
+  },
+  defaultVariants: {
+    color: "teal",
+    error: false,
+  },
+})
 
 interface Props
   extends Omit<InputProps, "color" | "error">,
@@ -58,13 +55,27 @@ const UIInput = React.forwardRef<HTMLInputElement, Props>(
       },
     }
 
+    const themeAlt: { input: InputStylesType } = {
+      input: {
+        ...theme.input,
+        defaultProps: {
+          ...theme.input.defaultProps,
+          labelProps,
+        },
+      },
+    }
+
     return (
-      <ThemeProvider value={theme}>
+      <ThemeProvider value={Boolean(label) ? themeAlt : theme}>
         <Input
-          error={Boolean(error)}
           label={label}
+          error={Boolean(error)}
           size={size}
-          className={twMerge(inputVariants({ color, error }), className)}
+          className={
+            Boolean(label)
+              ? className
+              : twMerge(inputVariants({ color, error }), className)
+          }
           {...rest}
           ref={ref}
         />

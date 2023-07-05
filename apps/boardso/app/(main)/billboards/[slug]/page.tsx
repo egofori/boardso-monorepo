@@ -80,27 +80,6 @@ export default function Page() {
               {billboard.price.rate}
             </UITypography>
           </div>
-          {/* <Link
-            href={billboard.owner.uid}
-            className="flex flex-row items-center gap-3"
-          >
-            <UIAvatar
-              src={billboard.owner.profile_image}
-              alt="avatar"
-              size="sm"
-            />
-            <UITypography className="text-lg font-bold normal-case text-slate-600">
-              {billboard.owner.full_name}
-            </UITypography>
-          </Link> */}
-          {/* <UIIconButton
-            color="teal"
-            variant="text"
-            className="rounded-full p-6"
-          >
-            <BsBookmarkDashFill color="#2dd4bf" className="text-3xl" />
-            <BsBookmarkHeart color="#2dd4bf" className="text-3xl" />
-          </UIIconButton> */}
         </div>
         <UICarousel
           className="rounded-lg h-[400px]"
@@ -139,48 +118,11 @@ export default function Page() {
                 backgroundPosition: "center center",
               }}
             >
-              {/* <Image
-                src="https://images.unsplash.com/photo-1541951991883-a34a3024c94a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
-                alt={image.toString()}
-                // className="object-contain"
-                height={400}
-                width={768}
-              /> */}
             </div>
           ))}
         </UICarousel>
         <div className="flex flex-col gap-3">
           <div className="flex flex-row justify-end items-start">
-            {/* <div className="flex flex-row items-baseline gap-1">
-              <UITypography variant="h3" className="text-teal-500">
-                {`${billboard.price.currency} ${billboard.price.value}`}
-              </UITypography>
-              <UITypography
-                variant="small"
-                className="font-medium text-slate-800"
-              >
-                {billboard.price.rate}
-              </UITypography>
-            </div> */}
-            {/* <UIIconButton color="white" className="rounded-full p-6">
-              <BsBookmarkDashFill color="#2dd4bf" className="text-3xl" />
-            </UIIconButton> */}
-            {/* <UITypography>{billboard.description}</UITypography> */}
-            {/* <div className="flex flex-row justify-between items-center">
-              <UITypography variant="h4">{billboard.title}</UITypography>
-              <div className="flex flex-row items-baseline gap-1">
-                <UITypography variant="h3" color="" className="text-teal-500">
-                  {`${billboard.price.currency} ${billboard.price.value}`}
-                </UITypography>
-                <UITypography variant="small" className="font-medium text-slate-800">
-                  {billboard.price.rate}
-                </UITypography>
-              </div>
-              <UIIconButton color="white" className="rounded-full p-6">
-                <BsBookmarkDashFill color="#2dd4bf" className="text-3xl" />
-                <BsBookmarkHeart color="#2dd4bf" className="text-3xl" />
-              </UIIconButton>
-            </div> */}
           </div>
           <UITypography>{billboard.description}</UITypography>
           <table className="w-full min-w-max table-auto text-center border border-slate-200 [&>thead>tr>th]:bg-transparent [&>thead>tr>th]:p-0 [&>thead>tr>th]:border [&>thead>tr>th]:border-slate-200 [&>thead>tr>th]:border-b-0">
@@ -221,45 +163,7 @@ export default function Page() {
               </tr>
             </tbody>
           </table>
-          {/* <ul className="flex flex-row justify-around mgap-2 p-2 bg-teal-50 rounded-md w-full ">
-            <li>
-              <UITypography className="text-xs font-medium text-slate-400">
-                TYPE
-              </UITypography>
-              <UITypography className="text-sm font-medium text-slate-800">
-                {billboard.type}
-              </UITypography>
-            </li>
-            <UIDivider type="vertical" />
-            <li>
-              <UITypography className="text-xs font-medium text-slate-400">
-                DIMENSION
-              </UITypography>
-              <UITypography className="text-sm font-medium text-slate-800">{`${billboard.dimension.width} ${billboard.dimension.unit.abbrev} x ${billboard.dimension.height} ${billboard.dimension.unit.abbrev}`}</UITypography>
-            </li>
-            <UIDivider type="vertical" />
-            <li>
-              <UITypography className="text-xs font-medium text-slate-400">
-                LOCATION
-              </UITypography>
-              <UITypography className="text-sm font-medium text-slate-800">
-                {billboard.location}
-              </UITypography>
-            </li>
-          </ul> */}
         </div>
-        {/* <div className="flex flex-row justify-between gap-4 w-full"> */}
-        {/* <div className="w-[400px]"> */}
-        {/* <UITypography className="text-sm font-bold">Status:</UITypography>
-            <div className="bg-slate-50 p-3 rounded-lg">
-              <div className="flex flex-row justify-center items-center gap-1">
-                <BsCircleFill className="text-sm text-teal-500" />
-                <UITypography className="font-medium text-base text-slate-800">
-                  {billboard.status}
-                </UITypography>
-              </div>
-            </div> */}
-        {/* </div> */}
         <div className="w-full">
           <div className="overflow-hidden flex flex-col items-center justify-center gap-3 w-full h-64 rounded-lg cursor-pointer bg-secondary-100 hover:brightness-[0.98] active:brightness-90">
             <div className="bg-secondary-200 rounded-full p-3">
@@ -270,14 +174,6 @@ export default function Page() {
         {/* </div> */}
       </UICard>
       <div className="shrink-0 lg:w-96 w-full flex flex-col gap-6">
-        {/* <UICard className="w-full p-8 flex flex-row items-baseline justify-center gap-1">
-          <UITypography variant="h2" className="text-teal-500">
-            {`${billboard.price.currency} ${billboard.price.value}`}
-          </UITypography>
-          <UITypography variant="small" className="font-medium text-slate-800">
-            {billboard.price.rate}
-          </UITypography>
-        </UICard> */}
         <UIButton color="amber" variant="text" className="flex flex-row justify-center items-center gap-1 bg-amber-500/10 hover:bg-amber-600/10">
           <BsBookmarkDashFill className="text-xl" />
           {/* <BsBookmarkHeart color="#2dd4bf" className="text-3xl" /> */}
