@@ -19,41 +19,42 @@ import {
 import { object, string } from "zod"
 import { AiFillEdit } from "react-icons/ai"
 
-export default function Page() {
-  const owner = {
-    first_name: "Evans Gyan",
-    last_name: "Ofori",
-    email: "evansgyan@gmail.com",
-    phone_number: {
-      zip_code: "+233",
-      number: "54879839393",
+export const owner = {
+  first_name: "Evans Gyan",
+  last_name: "Ofori",
+  email: "evansgyan@gmail.com",
+  phone_number: {
+    zip_code: "+233",
+    number: "54879839393",
+  },
+  uid: "abrewa_nana",
+  password: "passwword",
+  profile_image:
+    "https://images.unsplash.com/photo-1541951991883-a34a3024c94a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+  full_name: "Abrewa Nana",
+  contacts: [
+    {
+      name: "Website",
+      value: ["www.myweb.com"],
     },
-    uid: "abrewa_nana",
-    password: "passwword",
-    profile_image:
-      "https://images.unsplash.com/photo-1541951991883-a34a3024c94a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
-    full_name: "Abrewa Nana",
-    contacts: [
-      {
-        name: "Website",
-        value: ["www.myweb.com"],
-      },
-      {
-        name: "Phone",
-        value: ["+233546040677"],
-      },
-      {
-        name: "Email",
-        value: ["evans@koo.com"],
-      },
-      {
-        name: "WhatsApp",
-        value: ["https://chat.whatsapp.com/+233546040677"],
-      },
-    ],
-    rating: "4.5"
-  }
+    {
+      name: "Phone",
+      value: ["+233546040677"],
+    },
+    {
+      name: "Email",
+      value: ["evans@koo.com"],
+    },
+    {
+      name: "WhatsApp",
+      value: ["https://chat.whatsapp.com/+233546040677"],
+    },
+  ],
+  rating: "4.5",
+  about: "I am who I am. You can't define me. I have already defined myself. Whether you like it or not I am who I am."
+}
 
+export default function Page() {
   const profileSchema = object({
     "first-name": string().min(1, { message: "Invalid first name" }),
     "last-name": string().min(1, { message: "Invalid last name" }),
