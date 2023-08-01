@@ -4,6 +4,8 @@ import "ui/styles/globals.css";
 import AuthHeader from "@/components/Header/AuthHeader";
 import AuthFooter from "@/components/Footer/AuthFooter";
 import { twMerge } from "tailwind-merge";
+import "react-toastify/dist/ReactToastify.css"
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <AuthHeader />
         {children}
         <AuthFooter />
+        <ToastContainer hideProgressBar={true} autoClose={2000} />
       </body>
     </html>
   );

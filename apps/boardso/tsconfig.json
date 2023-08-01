@@ -21,6 +21,7 @@
       }
     ],
     "paths": {
+      "@/lib/*": ["./lib/*"],
       "@/components/*": ["./app/components/*"],
       "@/services/*": ["./services/*"],
       "@/lottie_files/*": ["./lottie_files/*"],
