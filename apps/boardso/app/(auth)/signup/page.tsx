@@ -16,7 +16,7 @@ import {
 import { FcGoogle } from "react-icons/fc"
 import { IoPhonePortrait } from "react-icons/io5"
 import { object, string } from "zod"
-import { useRegister } from "@/services/hooks/auth"
+import { useRegister } from "@/services/hooks"
 import { useRouter } from "next/navigation"
 
 export default function Page() {

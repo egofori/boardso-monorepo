@@ -3,7 +3,7 @@
 import { UITypography, UIMenuItem, UIMenuList, UIDropdownButton } from "ui"
 import Image from "next/image"
 import { useCallback, useState } from "react"
-import { useGetCountries } from "@/services/hooks/auth"
+import { useGetCountries } from "@/services/hooks"
 import { useMemo } from "react"
 
 export default function CountryDropdown() {

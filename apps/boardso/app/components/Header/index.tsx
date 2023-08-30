@@ -2,7 +2,7 @@
 
 import { Navbar } from "@material-tailwind/react"
 import Link from "next/link"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import {
   UIButton,
   UIDivider,
@@ -20,14 +20,13 @@ import { usePathname, useRouter } from "next/navigation"
 import { MdAccountCircle } from "react-icons/md"
 import { RiSettings4Line } from "react-icons/ri"
 import { stringToObject } from "../../../utils"
-import { useValue } from "@/lib/hooks/useValue"
-import { useLogOut } from "@/services/hooks/auth"
+import { useLogOut } from "@/services/hooks"
 
 function ProfileMenu() {
   const [open, setOpen] = useState(false)
   const router = useRouter()
   const { trigger } = useLogOut()
-  const user = useValue(stringToObject(localStorage.getItem("userInfo")))
+  const user = stringToObject(localStorage.getItem("userInfo"))
 
   const logOut = () => trigger(() => {
       setOpen(false)
@@ -92,7 +91,7 @@ function ProfileMenu() {
 export default function Header() {
   const pathname = usePathname()
 
-  const isLoggedIn = useValue(stringToObject(localStorage.getItem("isLoggedIn")))
+  const isLoggedIn = stringToObject(localStorage.getItem("isLoggedIn"))
 
   return (
     <Navbar className="sticky inset-0 z-10 h-max rounded-none max-w-full px-0">

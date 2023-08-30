@@ -7,7 +7,7 @@ const useAPIPost = (url: string) => {
   const [error, setError] = useState<any>(null)
 
   const trigger = (
-    options?: { data?: object; config?: object },
+    options?: { data?: any; config?: any },
     onSuccess?: Function,
     onFailure?: Function
   ) => {

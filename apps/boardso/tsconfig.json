@@ -21,6 +21,7 @@
       }
     ],
     "paths": {
+      "@/types/*": ["./types/*"],
       "@/lib/*": ["./lib/*"],
       "@/components/*": ["./app/components/*"],
       "@/services/*": ["./services/*"],

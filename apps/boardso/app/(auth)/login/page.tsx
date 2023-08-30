@@ -5,7 +5,7 @@ import { UIButton, UICard, UIDivider, UIForm, UIInput, UITypography, useZodForm,
 import { FcGoogle } from "react-icons/fc"
 import { IoPhonePortrait } from "react-icons/io5"
 import { object, string } from "zod";
-import { useSignIn } from "@/services/hooks/auth";
+import { useSignIn } from "@/services/hooks";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
@@ -34,7 +34,6 @@ export default function Page() {
         router.push("/")
       },
       (error: any) => {
-        console.log("error", error)
         notification("error", error.response?.data?.message|| "Error occurred during sign in")
       }
     )

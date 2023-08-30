@@ -228,7 +228,7 @@ export default function Page() {
             color="amber"
             variant="text"
             size="sm"
-            onClick={(e) => setMoreOpen(!moreOpen)}
+            onClick={() => setMoreOpen(!moreOpen)}
           >
             <UITypography className="normal-case">Sort</UITypography>
           </UIDropdownButton>

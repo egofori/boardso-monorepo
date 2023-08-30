@@ -1,12 +1,6 @@
-import useAPIGet from "@/lib/hooks/useAPIGet"
 import useAPIPost from "@/lib/hooks/useAPIPost"
 import { useState } from "react"
 import uniqueString from "unique-string"
-
-export const useGetCountries = () => {
-  const value = useAPIGet("https://restcountries.com/v3.1/all?fields=name,cca2,flags")
-  return value
-}
 
 export const useRegister = () => {
   const { trigger: registerTrigger, ...rest } = useAPIPost("/auth/local/sign-up")
@@ -22,7 +16,7 @@ export const useRegister = () => {
         },
       },
       (response: any) => {
-        localStorage.setItem("accessToken", JSON.stringify(response.data.token))
+        localStorage.setItem("accessToken", response.data.token)
         localStorage.setItem("userInfo", JSON.stringify(response.data.user))
         localStorage.setItem("isLoggedIn", "true")
         onSuccess && onSuccess(response)
@@ -48,7 +42,7 @@ export const useSignIn = () => {
         },
       },
       (response: any) => {
-        localStorage.setItem("accessToken", JSON.stringify(response.data.token))
+        localStorage.setItem("accessToken", response.data.token)
         localStorage.setItem("userInfo", JSON.stringify(response.data.user))
         localStorage.setItem("isLoggedIn", "true")
         onSuccess && onSuccess(response)
