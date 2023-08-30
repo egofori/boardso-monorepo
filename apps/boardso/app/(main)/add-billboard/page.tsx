@@ -1,10 +1,13 @@
 "use client"
 
+import { useAddBillboard } from "@/services/hooks"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { BiPlus } from "react-icons/bi"
 import { IoCloseSharp, IoLocationSharp } from "react-icons/io5"
 import {
   hasError,
+  notification,
   UIButton,
   UICard,
   UIDropdownButton,
@@ -22,8 +25,23 @@ import {
   useZodForm,
 } from "ui"
 import { object, number, string } from "zod"
+import AddLocationModal from "./AddLocationModal"
+import { ModalHandler } from "@/types/Modal"
+import { MarkerF } from "@react-google-maps/api"
+import GoogleMapWrapper from "../../components/GoogleMapWrapper"
+import { stringToObject } from "../../../utils"
 
 export default function Page() {
+  const user = stringToObject(localStorage.getItem("userInfo"))
+
+  const { trigger, isLoading } = useAddBillboard()
+  const [selectedImages, setSelectedImages] = useState<File[]>([])
+  const [imagePreviews, setImagePreviews] = useState<string[]>([])
+
+  const [openLocationModal, setOpenLocationModal] = useState(false)
+
+  const handleOpen: ModalHandler = () => setOpenLocationModal((cur) => !cur)
+
   const billboardTypes = [
     { label: "Static billboard", value: "STATIC" },
     { label: "Digital billboard", value: "DIGITAL" },
@@ -35,26 +53,25 @@ export default function Page() {
   ]
 
   const currencies = [
-    { label: "GHS", value: "GHS" },
+    { label: "GHS", value: "GHANA_CEDIS" },
     { label: "$", value: "DOLLARS" },
   ]
 
   const periods = [
     { label: "per month", value: "PER_MONTH" },
     { label: "per year", value: "PER_YEAR" },
+    { label: "for sale", value: "PER_SALE" },
   ]
 
   const [selectedCurrency, setSelectedCurrency] = useState(currencies[0])
 
   const [selectedPeriod, setSelectedPeriod] = useState(periods[0])
 
-  const [selectedUnitOfMeasurement, setSelectedUnitOfMeasurement] = useState(
-    unitsOfMeasurement[0]
-  )
+  const [selectedUnitOfMeasurement, setSelectedUnitOfMeasurement] = useState(unitsOfMeasurement[0])
 
-  const [selectedBillboardType, setSelectedBillboardType] = useState(
-    billboardTypes[0]
-  )
+  const [selectedBillboardType, setSelectedBillboardType] = useState(billboardTypes[0])
+
+  const [locationDetails, setLocationDetails] = useState<any>(null)
 
   const signUpSchema = object({
     title: string().min(1, { message: "Title must not be empty" }),
@@ -88,55 +105,125 @@ export default function Page() {
     </UIMenuList>
   )
 
+  const onSelectImages = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let files = event.target.files
+
+    if (files) {
+      if (files.length + selectedImages.length > 5) {
+        notification("error", "Users can upload up to 5 images", { autoClose: 4000 })
+        return
+      }
+      let filesArray = Array.from(files)
+      let images = filesArray.map((file) => URL.createObjectURL(file))
+
+      setSelectedImages([...selectedImages, ...filesArray])
+      setImagePreviews([...imagePreviews, ...images])
+    }
+  }
+
+  const router = useRouter()
+
+  const onSubmit = (data: any) => {
+    if (!locationDetails) {
+      notification("error", "Add location")
+      return
+    }
+    const formData = new FormData()
+    selectedImages.map((image) => formData.append("images", image))
+    formData.append("title", data.title)
+    formData.append("description", data.description)
+    formData.append("width", data.width)
+    formData.append("height", data.height)
+    formData.append("price", data.amount)
+    formData.append("rate", selectedPeriod.value)
+    formData.append("currency", selectedCurrency.value)
+    formData.append("type", selectedBillboardType.value)
+    formData.append("location", JSON.stringify(locationDetails))
+    formData.append("dimensionUnit", selectedUnitOfMeasurement.value)
+
+    trigger(
+      {
+        data: formData,
+        config: {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      },
+      () => {
+        form.reset()
+        setLocationDetails(null)
+        router.push(`/${user?.username}`)
+        notification("success", "Billboard added successfully")
+      },
+      (error: any) => {
+        notification(
+          "error",
+          error.response?.data?.message || "Error occurred while adding billboard"
+        )
+      }
+    )
+  }
+
+  // remove an image from image list
+  const removeImage = (i: number) => {
+    setImagePreviews((images: any[]) => images.filter((x, j) => j !== i))
+    setSelectedImages((images: any[]) => images.filter((x, j) => j !== i))
+  }
+
   return (
     <main className="layout-wrapper">
       <UICard className="mx-auto my-5 max-w-3xl p-10 bg-white">
-        <UITypography
-          variant="h3"
-          className="text-tertiary-800 text-center mb-3"
-        >
+        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
           Add Billboard
         </UITypography>
-        <UIForm form={form} className="flex flex-col gap-6 mt-8">
+        <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6 mt-8">
           <div>
-            <label>Add images</label>
+            <label>Add images ({selectedImages.length}/5)</label>
             <div className="pb-4 h-[262px] w-full flex flex-row gap-6 overflow-x-auto">
-              {[].map((image, i) => (
+              {imagePreviews.map((image, i) => (
                 <div
                   key={i}
                   className="relative rounded-lg h-full w-full min-w-[256px] bg-cover overflow-hidden group"
                   style={{
-                    backgroundImage: `url('${"https://images.unsplash.com/photo-1541951991883-a34a3024c94a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"}')`,
+                    backgroundImage: `url('${image}')`,
                   }}
                 >
-                  <UIIconButton className="!absolute rounded-full bg-slate-800/80 right-1 top-1 peer z-[1] hidden group-hover:block active:block">
-                    <IoCloseSharp className="text-slate-100 text-lg" />
+                  <UIIconButton
+                    className="text-xl !absolute rounded-full bg-slate-800/70 hover:bg-slate-800/90 right-1 top-1 peer z-[1] hidden group-hover:block active:block"
+                    onClick={() => removeImage(i)}
+                  >
+                    <IoCloseSharp className="text-slate-100" />
                   </UIIconButton>
                   <div className="absolute w-full h-full hover:bg-slate-800/10 peer-hover:bg-slate-800/10" />
                 </div>
               ))}
-              <UITooltip content="Click to add images">
-                <label
-                  htmlFor="dropzone-file"
-                  className="overflow-hidden flex flex-col items-center justify-center gap-3 w-full h-full min-w-[256px] rounded-lg cursor-pointer bg-primary-100 hover:brightness-[0.98] active:brightness-90"
-                >
-                  <div className="bg-primary-200 rounded-full p-1">
-                    <BiPlus className="text-primary-400 text-7xl" />
-                  </div>
-                  <input
-                    id="dropzone-file"
-                    type="file"
-                    className="hidden"
-                    multiple
-                    accept="image/*"
-                  />
-                </label>
-              </UITooltip>
+              {/* Owners can upload up to 5 images */}
+              {selectedImages.length! < 5 && (
+                <UITooltip content="Click to add images">
+                  <label
+                    htmlFor="dropzone-file"
+                    className="overflow-hidden flex flex-col items-center justify-center gap-3 w-full h-full min-w-[256px] rounded-lg cursor-pointer bg-primary-100 hover:brightness-[0.98] active:brightness-90"
+                  >
+                    <div className="bg-primary-200 rounded-full p-1">
+                      <BiPlus className="text-primary-400 text-7xl" />
+                    </div>
+                    <input
+                      id="dropzone-file"
+                      type="file"
+                      className="hidden"
+                      multiple
+                      accept="image/*"
+                      onChange={onSelectImages}
+                    />
+                  </label>
+                </UITooltip>
+              )}
             </div>
           </div>
           <div>
             <label>Title</label>
-            <UIInput error={hasError(form, "title")} />
+            <UIInput {...form.register("title")} error={hasError(form, "title")} />
             <UIFieldError name="title" />
           </div>
           <div>
@@ -169,17 +256,14 @@ export default function Page() {
                   </UIDropdownButton>
                 </div>
                 <div className="h-4">
-                  <UIFieldError name="width" />
+                  <UIFieldError name="amount" />
                 </div>
               </div>
             </div>
           </div>
           <div>
             <label>Type</label>
-            <UISelect
-              placeholder="Select billboard type"
-              value={selectedBillboardType.label}
-            >
+            <UISelect placeholder="Select billboard type" value={selectedBillboardType.label}>
               {billboardTypes.map((data) => (
                 <UIOption
                   key={data.value}
@@ -204,10 +288,7 @@ export default function Page() {
                     className="rounded-r-none"
                   />
                   <UIDropdownButton
-                    menu={menu(
-                      unitsOfMeasurement,
-                      setSelectedUnitOfMeasurement
-                    )}
+                    menu={menu(unitsOfMeasurement, setSelectedUnitOfMeasurement)}
                     className="border border-l-0 border-gray-200 rounded-l-none bg-slate-100 py-1 px-2"
                   >
                     <UITypography className="font-normal normal-case">
@@ -232,10 +313,7 @@ export default function Page() {
                     className="rounded-r-none"
                   />
                   <UIDropdownButton
-                    menu={menu(
-                      unitsOfMeasurement,
-                      setSelectedUnitOfMeasurement
-                    )}
+                    menu={menu(unitsOfMeasurement, setSelectedUnitOfMeasurement)}
                     className="border border-l-0 border-gray-200 rounded-l-none bg-slate-100 py-1 px-2"
                   >
                     <UITypography className="font-normal normal-case">
@@ -251,32 +329,57 @@ export default function Page() {
           </div>
           <div>
             <label>Description</label>
-            <UITextarea error={hasError(form, "description")} />
+            <UITextarea {...form.register("description")} error={hasError(form, "description")} />
             <UIFieldError name="description" />
           </div>
-          <UITooltip
-            content="Click to add location"
-            dismiss={{ enabled: true }}
+          <div
+            onMouseDown={(event: React.MouseEvent<HTMLDivElement>) => {
+              event.stopPropagation()
+              setOpenLocationModal(true)
+            }}
           >
-            <div>
-              <label>Choose location</label>
-              <div className="overflow-hidden flex flex-col items-center justify-center gap-3 w-full h-64 rounded-lg cursor-pointer bg-secondary-100 hover:brightness-[0.98] active:brightness-90">
-                <div className="bg-secondary-200 rounded-full p-3">
-                  <IoLocationSharp className="text-secondary-400 text-6xl" />
-                </div>
+            <label>Choose location</label>
+            <UITooltip content="Click to add location" dismiss={{ enabled: true }}>
+              <div>
+                {locationDetails ? (
+                  <GoogleMapWrapper
+                    center={locationDetails.coordinates}
+                    zoom={16}
+                    mapContainerClassName="w-full h-64 rounded-lg"
+                    options={{
+                      fullscreenControl: false,
+                      streetViewControl: false,
+                      zoomControl: false,
+                      mapTypeControl: false,
+                    }}
+                  >
+                    <MarkerF position={locationDetails.coordinates} draggable={false} />
+                  </GoogleMapWrapper>
+                ) : (
+                  <div className="cursor-pointer overflow-hidden flex flex-col items-center justify-center gap-3 w-full h-64 rounded-lg bg-secondary-100 hover:brightness-[0.98] active:brightness-90">
+                    <div className="bg-secondary-200 rounded-full p-3">
+                      <IoLocationSharp className="text-secondary-400 text-6xl" />
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          </UITooltip>
+            </UITooltip>
+          </div>
           <div className="flex gap-8">
             <UIButton variant="outlined" className="w-full">
               CANCEL
             </UIButton>
-            <UIButton type="submit" className="w-full">
+            <UIButton type="submit" className="w-full" loading={isLoading}>
               SUBMIT
             </UIButton>
           </div>
         </UIForm>
       </UICard>
+      <AddLocationModal
+        open={openLocationModal}
+        handleOpen={handleOpen}
+        setLocationDetails={setLocationDetails}
+      />
     </main>
   )
 }

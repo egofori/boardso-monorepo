@@ -15,10 +15,10 @@ const textareaVariants = cva(
   {
     variants: {
       color: {
-        teal: "focus:!border-t-teal-500"
+        teal: "focus:!border-teal-500"
       },
       error: {
-        true: "!border-t-red-500 focus:!border-t-red-500",
+        true: "!border-red-500 focus:!border-red-500",
         false: ""
       }
     },
