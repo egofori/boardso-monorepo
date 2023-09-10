@@ -1,9 +1,9 @@
 import useAPIGet from "@/lib/hooks/useAPIGet"
 
 export const useGetCountries = () => {
-  const value = useAPIGet("https://restcountries.com/v3.1/all?fields=name,cca2,flags")
+  const value = useAPIGet("https://restcountries.com/v3.1/all?fields=name,cca2,flags,currencies")
   return value
 }
 
 export * from "./auth"
-export * from "./billboard"
+export * from "./billboards"

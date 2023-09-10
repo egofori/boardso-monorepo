@@ -23,6 +23,7 @@
     "paths": {
       "@/types/*": ["./types/*"],
       "@/lib/*": ["./lib/*"],
+      "@/utils/*": ["./utils/*"],
       "@/components/*": ["./app/components/*"],
       "@/services/*": ["./services/*"],
       "@/lottie_files/*": ["./lottie_files/*"],
