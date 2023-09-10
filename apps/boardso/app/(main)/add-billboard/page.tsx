@@ -1,7 +1,7 @@
 "use client"
 
 import { useAddBillboard } from "@/services/hooks"
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { BiPlus } from "react-icons/bi"
 import { IoCloseSharp, IoLocationSharp } from "react-icons/io5"
@@ -29,10 +29,16 @@ import AddLocationModal from "./AddLocationModal"
 import { ModalHandler } from "@/types/Modal"
 import { MarkerF } from "@react-google-maps/api"
 import GoogleMapWrapper from "../../components/GoogleMapWrapper"
-import { stringToObject } from "../../../utils"
+import {
+  billboardTypes,
+  currencies,
+  periods,
+  // stringToObject,
+  unitsOfMeasurement,
+} from "../../../utils"
 
 export default function Page() {
-  const user = stringToObject(localStorage.getItem("userInfo"))
+  // const user = stringToObject(localStorage.getItem("userInfo"))
 
   const { trigger, isLoading } = useAddBillboard()
   const [selectedImages, setSelectedImages] = useState<File[]>([])
@@ -41,27 +47,6 @@ export default function Page() {
   const [openLocationModal, setOpenLocationModal] = useState(false)
 
   const handleOpen: ModalHandler = () => setOpenLocationModal((cur) => !cur)
-
-  const billboardTypes = [
-    { label: "Static billboard", value: "STATIC" },
-    { label: "Digital billboard", value: "DIGITAL" },
-  ]
-
-  const unitsOfMeasurement = [
-    { label: "feet", value: "FEET" },
-    { label: "meters", value: "METERS" },
-  ]
-
-  const currencies = [
-    { label: "GHS", value: "GHANA_CEDIS" },
-    { label: "$", value: "DOLLARS" },
-  ]
-
-  const periods = [
-    { label: "per month", value: "PER_MONTH" },
-    { label: "per year", value: "PER_YEAR" },
-    { label: "for sale", value: "PER_SALE" },
-  ]
 
   const [selectedCurrency, setSelectedCurrency] = useState(currencies[0])
 
@@ -121,7 +106,7 @@ export default function Page() {
     }
   }
 
-  const router = useRouter()
+  // const router = useRouter()
 
   const onSubmit = (data: any) => {
     if (!locationDetails) {
@@ -151,9 +136,14 @@ export default function Page() {
         },
       },
       () => {
+        // reset form
         form.reset()
+        // clear location data
         setLocationDetails(null)
-        router.push(`/${user?.username}`)
+        // clear images
+        setSelectedImages([])
+        setImagePreviews([])
+        // router.push(`/${user?.username}`)
         notification("success", "Billboard added successfully")
       },
       (error: any) => {

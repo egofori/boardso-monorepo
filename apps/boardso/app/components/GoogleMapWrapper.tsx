@@ -1,5 +1,7 @@
 import { GoogleMap, GoogleMapProps, useJsApiLoader } from "@react-google-maps/api"
 import { FunctionComponent, useEffect } from "react"
+import Loader from "./Loader"
+import { twMerge } from "tailwind-merge"
 
 interface Props extends GoogleMapProps {
   setIsLoaded?: Function
@@ -31,7 +33,12 @@ const GoogleMapWrapper: FunctionComponent<Props> = ({
       {children}
     </GoogleMap>
   ) : (
-    <div className={mapContainerClassName} style={mapContainerStyle} />
+    <div
+      className={twMerge(mapContainerClassName, "flex flex-row justify-center items-center")}
+      style={mapContainerStyle}
+    >
+      <Loader size="40px" />
+    </div>
   )
 }
 

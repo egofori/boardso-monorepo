@@ -3,10 +3,9 @@
 import { ModalHandler } from "@/types/Modal"
 import {
   UIButton,
+  UIConnectInput,
   UIDropdown,
   UIForm,
-  UIIconButton,
-  UIInput,
   UIList,
   UIListItem,
   UIModal,
@@ -21,7 +20,6 @@ import {
 import { MarkerF } from "@react-google-maps/api"
 import { useEffect, useState } from "react"
 import { object, string } from "zod"
-import { useFormContext } from "react-hook-form"
 import { BiSearch } from "react-icons/bi"
 import GoogleMapWrapper from "../../components/GoogleMapWrapper"
 
@@ -29,20 +27,6 @@ type Props = {
   open: boolean
   handleOpen: ModalHandler
   setLocationDetails: Function
-}
-
-function ConnectInput({ form }: { form: any }) {
-  const methods = useFormContext()
-
-  return (
-    <UIInput
-      type="text"
-      placeholder="Search places"
-      className="bg-white !w-[250px] rounded-r-none"
-      {...methods?.register("place")}
-      error={hasError(form, "place")}
-    />
-  )
 }
 
 export default function AddLocationModal({ open, handleOpen, setLocationDetails }: Props) {
@@ -229,7 +213,13 @@ export default function AddLocationModal({ open, handleOpen, setLocationDetails 
                     </UIList>
                   }
                 >
-                  <ConnectInput form={form} />
+                  <UIConnectInput
+                    type="text"
+                    placeholder="Search places"
+                    className="bg-white !w-[250px] rounded-r-none"
+                    name="place"
+                    error={hasError(form, "place")}
+                  />
                 </UIDropdown>
               </div>
               <UIButton
@@ -238,7 +228,6 @@ export default function AddLocationModal({ open, handleOpen, setLocationDetails 
                 loading={autocompleteLoading}
                 icon={<BiSearch />}
               >
-                {/* <BiSearch /> */}
               </UIButton>
             </div>
           </UIForm>
@@ -262,7 +251,6 @@ export default function AddLocationModal({ open, handleOpen, setLocationDetails 
           }}
         >
           <MarkerF
-            // icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
             position={markerCoordinates}
             draggable
             onDragEnd={(e: google.maps.MapMouseEvent) => {
