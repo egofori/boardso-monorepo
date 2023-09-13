@@ -33,7 +33,7 @@ import Loader from "@/components/Loader"
 
 export default function Page() {
   const offset = 0
-  const limit = 2
+  const limit = 10
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const router = useRouter()
@@ -447,8 +447,8 @@ export default function Page() {
           </div>
         ) : (
           <div className="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-            {billboards.map((billboard, i) => (
-              <BillboardCard key={i} data={billboard} />
+            {billboards.map((billboard) => (
+              <BillboardCard key={billboard.slug} data={billboard} />
             ))}
           </div>
         )}

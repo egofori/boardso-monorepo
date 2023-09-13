@@ -18,3 +18,5 @@ export const useSearchLocations = (search: string | null) =>
       params: { search },
     },
   })
+
+export const useGetBillboard = (slug: string) => useAPIGet({ url: `/billboards/${slug}` })

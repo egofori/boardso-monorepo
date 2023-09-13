@@ -29,7 +29,7 @@ function ProfileMenu() {
   const [open, setOpen] = useState(false)
   const router = useRouter()
   const { trigger } = useLogOut()
-  const user = stringToObject(localStorage.getItem("userInfo"))
+  const user = stringToObject(localStorage?.getItem("userInfo"))
 
   const logOut = () =>
     trigger(() => {
