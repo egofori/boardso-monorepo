@@ -1,6 +1,7 @@
-body {
+body, html {
   color: #0f172a;
   background-color: #f8fafc;
+  height: 100%;
 }
 
 /* :root {
