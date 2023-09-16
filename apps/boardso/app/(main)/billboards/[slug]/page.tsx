@@ -18,12 +18,13 @@ import { useState } from "react"
 import Link from "next/link"
 import { useGetBillboard } from "@/services/hooks"
 import { useParams } from "next/navigation"
-import { Billboard } from "@/types/Billboard"
+import { Billboard, UserContact } from "@/types/Billboard"
 import { RiAccountCircleFill } from "react-icons/ri"
 import GoogleMapWrapper from "@/components/GoogleMapWrapper"
 import { MarkerF } from "@react-google-maps/api"
 import { periods } from "@/utils/constants"
 import { PageStatus } from "@/components/PageStatus"
+import { stringToHref } from "@/utils/index"
 
 export default function Page() {
   const params = useParams()
@@ -33,7 +34,7 @@ export default function Page() {
     error,
   }: { data: Billboard | null; [x: string]: any } = useGetBillboard(params["slug"])
 
-  const [selectedContact, setSelectedContact] = useState<number | null>(null)
+  const [selectedContact, setSelectedContact] = useState<UserContact | null>(null)
 
   return (
     <PageStatus isLoading={isLoading} data={billboard} error={error && "Billboard does not exist"}>
@@ -93,10 +94,12 @@ export default function Page() {
             })}
           </UICarousel>
           <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-1">
-              <UITypography className="text-md font-bold">Description</UITypography>
-              <UITypography>{billboard?.description}</UITypography>
-            </div>
+            {billboard?.description && (
+              <div className="flex flex-col gap-1">
+                <UITypography className="text-md font-bold">Description</UITypography>
+                <UITypography>{billboard?.description}</UITypography>
+              </div>
+            )}
             <div>
               <table className="w-full min-w-max table-auto text-center border border-slate-200 [&>thead>tr>th]:bg-transparent [&>thead>tr>th]:p-0 [&>thead>tr>th]:pt-1 [&>thead>tr>th]:border [&>thead>tr>th]:border-slate-200 [&>thead>tr>th]:border-b-0">
                 <thead>
@@ -200,10 +203,7 @@ export default function Page() {
                     menu={
                       <UIMenuList>
                         {billboard?.owner?.userProfile?.contacts?.map((contact) => (
-                          <UIMenuItem
-                            key={contact.id}
-                            onClick={() => setSelectedContact(contact.id)}
-                          >
+                          <UIMenuItem key={contact.id} onClick={() => setSelectedContact(contact)}>
                             {contact.title}
                           </UIMenuItem>
                         ))}
@@ -216,19 +216,17 @@ export default function Page() {
               </div>
               {selectedContact !== null && (
                 <div className="flex flex-col gap-4">
-                  {billboard?.owner?.userProfile?.contacts
-                    ?.filter((contact) => contact.id === selectedContact)[0]
-                    ?.contact?.map((contact) => (
-                      <Link key={contact} href={contact}>
-                        <UIButton
-                          variant="text"
-                          color="blue-gray"
-                          className="normal-case underline w-full text-lg font-normal text-ellipsis"
-                        >
-                          {contact}
-                        </UIButton>
-                      </Link>
-                    ))}
+                  {selectedContact.contact.map((contact) => (
+                    <Link href={stringToHref(selectedContact.type, contact)} key={contact}>
+                      <UIButton
+                        variant="text"
+                        color="blue-gray"
+                        className="normal-case underline w-full text-lg font-normal text-ellipsis"
+                      >
+                        {contact}
+                      </UIButton>
+                    </Link>
+                  ))}
                 </div>
               )}
             </UICard>
