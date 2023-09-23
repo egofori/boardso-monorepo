@@ -194,7 +194,7 @@ export default function Page() {
                     </UITypography>
                   </div>
                 </Link>
-                {(billboard?.owner?.userProfile?.contacts?.length || 0) > 0 && (
+                {(billboard?.owner?.userProfile?.userContacts?.length || 0) > 0 && (
                   <UIDropdownButton
                     color="teal"
                     size="lg"
@@ -202,9 +202,9 @@ export default function Page() {
                     arrow={false}
                     menu={
                       <UIMenuList>
-                        {billboard?.owner?.userProfile?.contacts?.map((contact) => (
-                          <UIMenuItem key={contact.id} onClick={() => setSelectedContact(contact)}>
-                            {contact.title}
+                        {billboard?.owner?.userProfile?.userContacts?.map((userContact) => (
+                          <UIMenuItem key={userContact.id} onClick={() => setSelectedContact(userContact)}>
+                            {userContact.title}
                           </UIMenuItem>
                         ))}
                       </UIMenuList>
@@ -216,7 +216,7 @@ export default function Page() {
               </div>
               {selectedContact !== null && (
                 <div className="flex flex-col gap-4">
-                  {selectedContact.contact.map((contact) => (
+                  {selectedContact.contacts.map((contact) => (
                     <Link href={stringToHref(selectedContact.type, contact)} key={contact}>
                       <UIButton
                         variant="text"

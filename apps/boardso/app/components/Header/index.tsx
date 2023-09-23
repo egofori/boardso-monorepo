@@ -20,16 +20,17 @@ import CountryDropdown from "@/components/CountryDropdown"
 import { BiBookmarks, BiLogOut, BiPlus, BiSearch } from "react-icons/bi"
 import { usePathname, useRouter } from "next/navigation"
 import { MdAccountCircle } from "react-icons/md"
-import { RiSettings4Line } from "react-icons/ri"
-import { stringToObject } from "../../../utils"
+import { RiDashboardLine } from "react-icons/ri"
 import { useLogOut } from "@/services/hooks"
 import { object, string } from "zod"
+import { getStorageItem } from "@/lib/storage"
+import { useValue } from "@/lib/hooks/useValue"
 
 function ProfileMenu() {
   const [open, setOpen] = useState(false)
   const router = useRouter()
   const { trigger } = useLogOut()
-  const user = stringToObject(localStorage?.getItem("userInfo"))
+  const user = getStorageItem("userInfo")
 
   const logOut = () =>
     trigger(() => {
@@ -39,9 +40,6 @@ function ProfileMenu() {
 
   return (
     <UIMenu
-      dismiss={{
-        itemPress: false,
-      }}
       open={open}
       handler={setOpen}
       allowHover
@@ -56,20 +54,23 @@ function ProfileMenu() {
           <UITypography className="font-medium text-ellipsis">
             {user?.firstName} {user?.lastName}
           </UITypography>
-          <UIButton
-            variant="text"
-            size="sm"
-            className="normal-case font-normal"
-            onClick={() => router.push(`/${user?.username}`)}
-          >
-            View profile
-          </UIButton>
+          <Link href="/profile">
+            <UIButton
+              variant="text"
+              size="sm"
+              className="normal-case font-normal"
+            >
+              View profile
+            </UIButton>
+          </Link>
         </div>
         <UIDivider type="horizontal" className="my-1" />
-        <UIMenuItem className="flex flex-row gap-1">
-          <RiSettings4Line />
-          Settings
-        </UIMenuItem>
+        <Link href={`/${user?.username}`}>
+          <UIMenuItem className="flex flex-row gap-1">
+            <RiDashboardLine />
+            Dashboard
+          </UIMenuItem>
+        </Link>
         <UIMenuItem className="flex flex-row gap-1">
           <BiBookmarks />
           Saved billboards
@@ -91,7 +92,7 @@ function ProfileMenu() {
 export default function Header() {
   const pathname = usePathname()
 
-  const isLoggedIn = stringToObject(localStorage.getItem("isLoggedIn"))
+  const isLoggedIn = useValue(getStorageItem("isLoggedIn"))
 
   const router = useRouter()
 

@@ -12,6 +12,7 @@ import {
   UIFieldError,
   hasError,
   notification,
+  UIPasswordInput,
 } from "ui"
 import { FcGoogle } from "react-icons/fc"
 import { IoPhonePortrait } from "react-icons/io5"
@@ -64,7 +65,7 @@ export default function Page() {
         <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
           <div>
             <UIInput
-              label="First name"
+              placeholder="First name"
               type="text"
               {...form.register("firstName")}
               error={hasError(form, "firstName")}
@@ -73,7 +74,7 @@ export default function Page() {
           </div>
           <div>
             <UIInput
-              label="Last name"
+              placeholder="Last name"
               type="text"
               {...form.register("lastName")}
               error={hasError(form, "lastName")}
@@ -82,7 +83,7 @@ export default function Page() {
           </div>
           <div>
             <UIInput
-              label="Email"
+              placeholder="Email"
               type="email"
               {...form.register("email")}
               error={hasError(form, "email")}
@@ -90,10 +91,9 @@ export default function Page() {
             <UIFieldError name="email" />
           </div>
           <div>
-            <UIInput
-              label="Password"
-              type="password"
-              {...form.register("password")}
+            <UIPasswordInput
+              placeholder="Password"
+              name="password"
               error={hasError(form, "password")}
             />
             <UIFieldError name="password" />
