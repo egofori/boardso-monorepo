@@ -1,7 +1,7 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import { UITypography, UICard, UIAvatar } from "ui"
+import { useCallback, useMemo, useState } from "react"
+import { UITypography, UICard, UIAvatar, UIIconButton } from "ui"
 import { BillboardsSearch } from "@/components/BillboardsSearch"
 import { useParams, useSearchParams } from "next/navigation"
 import { BillboardsList } from "@/components/BillboardsList"
@@ -11,6 +11,7 @@ import { PageStatus } from "@/components/PageStatus"
 import { RiAccountCircleFill } from "react-icons/ri"
 import Link from "next/link"
 import { stringToHref } from "@/utils/index"
+import { AiFillEdit } from "react-icons/ai"
 
 export default function Page() {
   const { owner: username } = useParams()
@@ -37,6 +38,40 @@ export default function Page() {
     error,
   }: { data: User | null; [x: string]: any } = useGetUser(username)
 
+  const renderContacts = useCallback(() => {
+    if (owner?.userProfile?.userContacts?.length === 0) {
+      return <UITypography className="text-center">No contacts available</UITypography>
+    }
+
+    return (
+      <table className="w-full min-w-min gap-2">
+        <tbody>
+          {owner?.userProfile?.userContacts.map(
+            (userContact) =>
+              userContact.contacts.length !== 0 && (
+                <tr key={userContact.id}>
+                  <td className="pr-2">
+                    <UITypography className="font-bold">{userContact.title}</UITypography>
+                  </td>
+                  <td>
+                    {userContact.contacts.map((value) => (
+                      <Link
+                        href={stringToHref(userContact.type, value)}
+                        key={value}
+                        className="text-teal-500 underline"
+                      >
+                        <UITypography className="break-all">{value}</UITypography>
+                      </Link>
+                    ))}
+                  </td>
+                </tr>
+              )
+          )}
+        </tbody>
+      </table>
+    )
+  }, [owner?.userProfile?.userContacts])
+
   return (
     <PageStatus data={owner} isLoading={isLoading} error={error && "User does not exist!"}>
       <main className="layout-wrapper flex 2xl:flex-row flex-col items-start justify-center gap-6 py-5">
@@ -58,33 +93,15 @@ export default function Page() {
             <UITypography>
               {owner?.zipCode} {owner?.phone}
             </UITypography>
+            <Link href="/profile">
+              <UIIconButton color="white" className="absolute right-[5px] top-[5px] rounded">
+                <AiFillEdit className="text-[20px]" />
+              </UIIconButton>
+            </Link>
           </UICard>
           <UICard className="flex flex-col justify-center items-center gap-1 p-4">
             <UITypography variant="h5">Contacts</UITypography>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-min gap-2">
-                <tbody>
-                  {owner?.userProfile?.contacts.map((contact) => (
-                    <tr key={contact.title}>
-                      <td className="pr-2">
-                        <UITypography className="font-bold">{contact.title}</UITypography>
-                      </td>
-                      <td>
-                        {contact.contact.map((value) => (
-                          <Link
-                            href={stringToHref(contact.type, value)}
-                            key={value}
-                            className="text-teal-500 underline"
-                          >
-                            <UITypography className="break-all">{value}</UITypography>
-                          </Link>
-                        ))}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <div className="overflow-x-auto">{renderContacts()}</div>
           </UICard>
           <UICard className="flex flex-col justify-center items-center gap-1 p-4">
             <UITypography variant="h5">About</UITypography>

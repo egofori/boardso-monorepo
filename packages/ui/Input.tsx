@@ -26,9 +26,7 @@ const inputVariants = cva("!border-gray-200 !border-t-gray-200", {
   },
 })
 
-interface Props
-  extends Omit<InputProps, "color" | "error">,
-    VariantProps<typeof inputVariants> {}
+interface Props extends Omit<InputProps, "color" | "error">, VariantProps<typeof inputVariants> {}
 
 const UIInput = React.forwardRef<HTMLInputElement, Props>(
   ({ size, className, label, labelProps, color, error, ...rest }, ref) => {
@@ -39,10 +37,7 @@ const UIInput = React.forwardRef<HTMLInputElement, Props>(
           size: "lg",
           labelProps: {
             ...labelProps,
-            className: twMerge(
-              "before:content-none after:content-none",
-              labelProps?.className
-            ),
+            className: twMerge("before:content-none after:content-none", labelProps?.className),
           },
         },
         styles: {
@@ -72,9 +67,7 @@ const UIInput = React.forwardRef<HTMLInputElement, Props>(
           error={Boolean(error)}
           size={size}
           className={
-            Boolean(label)
-              ? className
-              : twMerge(inputVariants({ color, error }), className)
+            Boolean(label) ? className : twMerge(inputVariants({ color, error }), className)
           }
           {...rest}
           ref={ref}

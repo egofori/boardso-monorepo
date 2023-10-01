@@ -16,13 +16,13 @@ export function PageStatus({ isLoading, data, error, children, className }: Prop
     else if (error) return <UITypography className="text-slate-800 text-2xl">{error}</UITypography>
   }
   return (
-    <main
+    <div
       className={twMerge(
         "w-full h-[calc(100%-83px)] flex flex-row justify-center items-center",
         className
       )}
     >
       {renderContent()}
-    </main>
+    </div>
   )
 }

@@ -53,12 +53,12 @@ export interface Owner {
 
 export interface UserProfile {
   profileImage: null
-  contacts: UserContact[]
+  userContacts: UserContact[]
 }
 
 export interface UserContact {
   id: number
   title: string
-  contact: string[]
+  contacts: string[]
   type: string
 }

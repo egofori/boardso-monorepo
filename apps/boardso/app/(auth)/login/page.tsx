@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import { UIButton, UICard, UIDivider, UIForm, UIInput, UITypography, useZodForm, UIFieldError, hasError, notification } from "ui";
+import { UIButton, UICard, UIDivider, UIForm, UIInput, UITypography, useZodForm, UIFieldError, hasError, notification, UIPasswordInput } from "ui";
 import { FcGoogle } from "react-icons/fc"
 import { IoPhonePortrait } from "react-icons/io5"
 import { object, string } from "zod";
@@ -45,11 +45,11 @@ export default function Page() {
         <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">Log In</UITypography>
         <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
           <div>
-            <UIInput label="Email" type="email" {...form.register("email")} error={hasError(form, "email")} />
+            <UIInput placeholder="Email" type="email" {...form.register("email")} error={hasError(form, "email")} />
             <UIFieldError name="email" />
           </div>
           <div>
-            <UIInput label="Password" type="password" {...form.register("password")} error={hasError(form, "password")} />
+            <UIPasswordInput placeholder="Password" name="password" error={hasError(form, "password")} />
             <UIFieldError name="password" />
             <Link href="/forgot-password" className="text-right text-sm link mt-2 font-light">Forgot password?</Link>
           </div>

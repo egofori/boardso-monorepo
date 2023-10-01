@@ -1,4 +1,5 @@
 import useAPIPost from "@/lib/hooks/useAPIPost"
+import { removeStorageItem, setStorageItem } from "@/lib/storage"
 import { useState } from "react"
 import uniqueString from "unique-string"
 
@@ -16,9 +17,9 @@ export const useRegister = () => {
         },
       },
       (response: any) => {
-        localStorage.setItem("accessToken", response.data.token)
-        localStorage.setItem("userInfo", JSON.stringify(response.data.user))
-        localStorage.setItem("isLoggedIn", "true")
+        setStorageItem("accessToken", response.data.token)
+        setStorageItem("userInfo", response.data.user)
+        setStorageItem("isLoggedIn", true)
         onSuccess && onSuccess(response)
       },
       onFailure
@@ -42,9 +43,9 @@ export const useSignIn = () => {
         },
       },
       (response: any) => {
-        localStorage.setItem("accessToken", response.data.token)
-        localStorage.setItem("userInfo", JSON.stringify(response.data.user))
-        localStorage.setItem("isLoggedIn", "true")
+        setStorageItem("accessToken", response.data.token)
+        setStorageItem("userInfo", response.data.user)
+        setStorageItem("isLoggedIn", true)
         onSuccess && onSuccess(response)
       },
       onFailure
@@ -60,9 +61,9 @@ export const useLogOut = () => {
   const trigger = (onSuccess?: Function) => {
     setIsLoading(true)
     // reset local storage
-    localStorage.removeItem("accessToken")
-    localStorage.removeItem("userInfo")
-    localStorage.setItem("isLoggedIn", "false")
+    removeStorageItem("accessToken")
+    removeStorageItem("userInfo")
+    removeStorageItem("isLoggedIn")
     setIsLoading(false)
 
     if(onSuccess) onSuccess()
@@ -70,3 +71,5 @@ export const useLogOut = () => {
 
   return { isLoading, trigger }
 }
+
+export const useChangePassword = () => useAPIPost("auth/change-password")

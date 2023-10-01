@@ -13,9 +13,9 @@ apiClient.interceptors.request.use(
     const accessToken = localStorage.getItem("accessToken")
 
     if (accessToken && !(apiClient.defaults.headers.common.Authorization === "")) {
-      apiClient.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+      config.headers.Authorization = `Bearer ${accessToken}`
     } else {
-      apiClient.defaults.headers.common.Authorization = null
+      config.headers.Authorization = null
     }
 
     return config

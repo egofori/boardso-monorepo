@@ -1,0 +1,280 @@
+"use client"
+
+import React, { useCallback, useEffect, useState } from "react"
+import {
+  hasError,
+  notification,
+  UIAvatar,
+  UIButton,
+  UICard,
+  UICardBody,
+  UICardHeader,
+  UIFieldError,
+  UIForm,
+  UIIconButton,
+  UIInput,
+  UITextarea,
+  // UIRating,
+  UITypography,
+  useZodForm,
+} from "ui"
+import { object, string } from "zod"
+import { AiFillEdit } from "react-icons/ai"
+import { useGetUserProfile, useUpdateProfilePicture, useUpdateUser } from "@/services/hooks/users"
+import { User } from "@/types/User"
+import { PageStatus } from "@/components/PageStatus"
+import { RiAccountCircleFill } from "react-icons/ri"
+import ChangePasswordModal from "./ChangePasswordModal"
+import { ModalHandler } from "@/types/Modal"
+import Loader from "@/components/Loader"
+
+export default function Profile() {
+  const [changePasswordModalOpen, setChangePasswordModalOpen] = useState<boolean>(false)
+
+  const {
+    data: owner,
+    isLoading,
+    error,
+    mutate
+  }: { data: User | null; [x: string]: any } = useGetUserProfile()
+
+  const { trigger, isLoading: updateUserLoading } = useUpdateUser()
+
+  const { trigger: updateProfilePictureTrigger, isLoading: updateProfilePictureLoading } =
+    useUpdateProfilePicture()
+
+  const profileSchema = object({
+    firstName: string().min(1, { message: "Invalid first name" }).trim(),
+    lastName: string().min(1, { message: "Invalid last name" }).trim(),
+    username: string()
+      .regex(/^\w+$/g, "Invalid username")
+      .min(1, { message: "Invalid username" })
+      .trim(),
+    about: string().trim().optional(),
+    email: string(),
+    password: string().optional(),
+    phone: string(),
+  })
+
+  const form = useZodForm({
+    schema: profileSchema,
+    mode: "all",
+  })
+
+  const resetForm = useCallback(() => {
+    if (owner) {
+      form.setValue("username", owner.username)
+      form.setValue("firstName", owner.firstName)
+      form.setValue("lastName", owner.lastName)
+      form.setValue("email", owner.email)
+      form.setValue("about", owner.userProfile?.about || "")
+      form.setValue("phone", `${owner.zipCode || ""}${owner.phone || ""}`)
+    }
+  }, [form, owner])
+
+  useEffect(() => {
+    resetForm()
+  }, [resetForm])
+
+  const onSubmit = (data: any) => {
+    trigger(
+      {
+        data: {
+          username: data.username,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          about: data.about,
+        },
+      },
+      () => notification("success", "Profile updated successfully"),
+      () => notification("error", "An error occurred while updating profile")
+    )
+  }
+
+  const handleOpen: ModalHandler = () => setChangePasswordModalOpen((cur) => !cur)
+
+  const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let files = event.target.files
+
+    if (files) {
+      const formData = new FormData()
+      formData.append("image", files[0])
+
+      updateProfilePictureTrigger(
+        {
+          data: formData,
+          config: {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          },
+        },
+        () => {
+          notification("success", "Profile picture uploaded successfully")
+          mutate()
+        },
+        (error: any) => {
+          notification(
+            "error",
+            error.response?.data?.message || "Error occurred while updating profile picture"
+          )
+        }
+      )
+    }
+  }
+
+  return (
+    <PageStatus data={owner} isLoading={isLoading} error={error && "Something went wrong"}>
+      <UICard className="w-full p-2 pt-6 bg-white">
+        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
+          My Profile
+        </UITypography>
+        <UICardHeader className="m-0 shadow-none flex flex-col gap-3 justify-center items-center ">
+          <label
+            htmlFor="dropzone-file"
+            className="w-[120px] h-[120px] relative cursor-pointer overflow-hidden rounded-full"
+          >
+            {owner?.userProfile?.profileImage ? (
+              <UIAvatar
+                src={owner?.userProfile?.profileImage}
+                alt="avatar"
+                className="w-[120px] h-[120px]"
+              />
+            ) : (
+              <RiAccountCircleFill className="text-slate-800" size="120px" />
+            )}
+            {updateProfilePictureLoading ? (
+              <div className="absolute top-0 w-full h-full bg-slate-800/70 flex flex-col justify-center items-center group">
+                <Loader size="40px" />
+              </div>
+            ) : (
+              <div className="absolute top-0 w-full h-full hover:bg-slate-800/70 flex flex-col justify-center items-center group">
+                <UITypography className="text-sm text-center text-white hidden group-hover:block">
+                  Upload a new profile picture
+                </UITypography>
+              </div>
+            )}
+
+            <input
+              id="dropzone-file"
+              type="file"
+              className="hidden"
+              multiple
+              accept="image/*"
+              onChange={onSelectImage}
+            />
+          </label>
+          {/* <div className="flex flex-row gap-1 items-center">
+              <UIRating value={4} ratedColor="amber" readonly />
+              <UITypography className="font-bold">{owner?.userProfile?.rating} Rated</UITypography>
+            </div> */}
+        </UICardHeader>
+        <UICardBody>
+          <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
+            <div>
+              <UIInput
+                label="Username"
+                type="text"
+                {...form.register("username")}
+                error={hasError(form, "username")}
+              />
+              <UIFieldError name="username" />
+            </div>
+            <div>
+              <UIInput
+                label="First name"
+                type="text"
+                {...form.register("firstName")}
+                error={hasError(form, "firstName")}
+              />
+              <UIFieldError name="firstName" />
+            </div>
+            <div>
+              <UIInput
+                label="Last name"
+                type="text"
+                {...form.register("lastName")}
+                error={hasError(form, "lastName")}
+              />
+              <UIFieldError name="lastName" />
+            </div>
+            <div>
+              <UITextarea
+                label="About me"
+                {...form.register("about")}
+                error={hasError(form, "about")}
+              />
+              <UIFieldError name="about" />
+            </div>
+            <div>
+              <div className="relative w-full">
+                <UIInput
+                  label="Email"
+                  type="email"
+                  {...form.register("email")}
+                  error={hasError(form, "email")}
+                  className="pr-10"
+                  disabled
+                />
+                {/* <UIIconButton
+                    color="white"
+                    className="absolute right-[2px] top-[2px] border rounded"
+                  >
+                    <AiFillEdit className="text-[20px]" />
+                  </UIIconButton> */}
+              </div>
+              <UIFieldError name="email" />
+            </div>
+            <div>
+              <div className="relative w-full">
+                <UIInput
+                  label="Password"
+                  type="password"
+                  {...form.register("password")}
+                  error={hasError(form, "password")}
+                  className="pr-10"
+                  disabled
+                />
+                <UIIconButton
+                  color="white"
+                  className="absolute right-[2px] top-[2px] border rounded"
+                  onClick={() => setChangePasswordModalOpen(true)}
+                >
+                  <AiFillEdit className="text-[20px]" />
+                </UIIconButton>
+              </div>
+              <UIFieldError name="password" />
+            </div>
+            <div>
+              <div className="relative w-full">
+                <UIInput
+                  label="Phone"
+                  {...form.register("phone")}
+                  error={hasError(form, "phone")}
+                  className="pr-10"
+                  disabled
+                />
+                {/* <UIIconButton
+                    color="white"
+                    className="absolute right-[2px] top-[2px] border rounded"
+                  >
+                    <AiFillEdit className="text-[20px]" />
+                  </UIIconButton> */}
+              </div>
+              <UIFieldError name="phone" />
+            </div>
+            <div className="flex gap-8">
+              <UIButton variant="outlined" className="w-full" onClick={() => resetForm()}>
+                CANCEL
+              </UIButton>
+              <UIButton type="submit" className="w-full" loading={updateUserLoading}>
+                SUBMIT
+              </UIButton>
+            </div>
+          </UIForm>
+        </UICardBody>
+      </UICard>
+      <ChangePasswordModal open={changePasswordModalOpen} handleOpen={handleOpen} />
+    </PageStatus>
+  )
+}

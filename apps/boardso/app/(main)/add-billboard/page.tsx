@@ -33,13 +33,10 @@ import {
   billboardTypes,
   currencies,
   periods,
-  // stringToObject,
   unitsOfMeasurement,
 } from "../../../utils"
 
 export default function Page() {
-  // const user = stringToObject(localStorage.getItem("userInfo"))
-
   const { trigger, isLoading } = useAddBillboard()
   const [selectedImages, setSelectedImages] = useState<File[]>([])
   const [imagePreviews, setImagePreviews] = useState<string[]>([])
@@ -217,7 +214,6 @@ export default function Page() {
             <UIFieldError name="title" />
           </div>
           <div>
-            <label>Price</label>
             <div className="flex items-center gap-2">
               <div className="flex flex-col w-full">
                 <div className="flex">
