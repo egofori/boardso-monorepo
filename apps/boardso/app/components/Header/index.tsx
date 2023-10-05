@@ -71,10 +71,12 @@ function ProfileMenu() {
             Dashboard
           </UIMenuItem>
         </Link>
+        <Link href="/profile?t=2">
         <UIMenuItem className="flex flex-row gap-1">
           <BiBookmarks />
           Saved billboards
         </UIMenuItem>
+        </Link>
         <UIDivider type="horizontal" className="my-1" />
         <UIMenuItem
           color="red"

@@ -1,10 +1,11 @@
 "use client"
 
+import { useRemoveBookmark, useSaveBillboard } from "@/services/hooks"
 import { Billboard } from "@/types/Billboard"
 import { defaultBillboardThumbnail } from "@/utils/constants"
 import Link from "next/link"
-import { useMemo } from "react"
-import { BsBookmarkDashFill } from "react-icons/bs"
+import { useMemo, useState } from "react"
+import { BsBookmarkDashFill, BsBookmarkHeart } from "react-icons/bs"
 import { FaAngleRight } from "react-icons/fa6"
 import { RiAccountCircleFill } from "react-icons/ri"
 import {
@@ -15,6 +16,7 @@ import {
   UICardHeader,
   UIIconButton,
   UITypography,
+  notification,
 } from "ui"
 
 export default function BillboardCard({
@@ -24,6 +26,11 @@ export default function BillboardCard({
   className?: string
   data: Billboard
 }) {
+  const { isLoading: saveBillboardLoading, trigger: saveBillboard } = useSaveBillboard(data.id)
+  const { isLoading: removeBookmarkLoading, trigger: removeBookmark } = useRemoveBookmark(data.id)
+
+  // save bookmarked status in the state for easier update
+  const [isBookmarked, setIsBookmarked] = useState(data.bookmarked)
 
   let thumbnail = useMemo(() => {
     // if the image list is empty return the default billboard thumbnail path
@@ -36,6 +43,28 @@ export default function BillboardCard({
     // if the thumbnail id is missing return the url of the first image in the image list
     return data.images[0]?.url
   }, [data.images, data.thumbnailId])
+
+  const onBookmarkClick = (e: any) => {
+    e.preventDefault()
+    if (isBookmarked)
+      removeBookmark(
+        null,
+        () => {
+          setIsBookmarked(false)
+          notification("success", "Bookmark removed successfully")
+        },
+        () => notification("error", "An error occurred while removing bookmark")
+      )
+    else
+      saveBillboard(
+        null,
+        () => {
+          setIsBookmarked(true)
+          notification("success", "Billboard added to bookmarks successfully")
+        },
+        () => notification("error", "An error occurred while adding billboard to bookmarks")
+      )
+  }
 
   return (
     <Link href={`/billboards/${data.slug}`}>
@@ -53,11 +82,11 @@ export default function BillboardCard({
             style={{ backgroundImage: `url(${thumbnail})` }}
           />
           <div className="w-full h-full flex flex-col justify-between items-start p-2">
-            <Link href="#" className="z-[1]">
+            <Link href={`/${data.owner.username}`} className="z-[1]">
               <div className="flex flex-row items-center gap-0 bg-slate-700/50 rounded-full px-1 py-1">
                 <div className="flex flex-row items-center gap-1">
-                  {data.owner.profileImage ? (
-                    <UIAvatar src={data.owner.profileImage} alt="avatar" size="xs" />
+                  {data.owner.userProfile?.profileImage ? (
+                    <UIAvatar src={data.owner.userProfile.profileImage} alt="avatar" size="xs" />
                   ) : (
                     <RiAccountCircleFill />
                   )}
@@ -69,8 +98,18 @@ export default function BillboardCard({
               </div>
             </Link>
             <div className="w-full flex flex-row justify-end">
-              <UIIconButton color="amber" variant="text" className="rounded-full">
-                <BsBookmarkDashFill className="text-xl" />
+              <UIIconButton
+                color="gray"
+                variant="filled"
+                className="rounded-full bg-slate-100"
+                onClick={onBookmarkClick}
+                loading={saveBillboardLoading || removeBookmarkLoading}
+              >
+                {isBookmarked ? (
+                  <BsBookmarkDashFill className="text-xl text-amber-500" />
+                ) : (
+                  <BsBookmarkHeart className="text-xl text-amber-500" />
+                )}
               </UIIconButton>
             </div>
           </div>

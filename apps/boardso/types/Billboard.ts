@@ -15,6 +15,7 @@ export interface Billboard {
   price: number
   billboardLocation: BillboardLocation
   owner: Owner
+  bookmarked: boolean
 }
 
 export interface BillboardLocation {

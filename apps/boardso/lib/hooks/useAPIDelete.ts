@@ -1,13 +1,13 @@
 import { useState } from "react"
 import apiClient from "../apiClient"
 
-const useAPIPost = (url: string) => {
+const useAPIDelete = (url: string) => {
   const [data, setData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<any>(null)
 
   const trigger = (
-    options?: { data?: any; config?: any } | null,
+    config?: any,
     onSuccess?: Function,
     onFailure?: Function
   ) => {
@@ -16,7 +16,7 @@ const useAPIPost = (url: string) => {
     setError(null)
 
     apiClient
-      .post(url, options?.data, options?.config)
+      .delete(url, config)
       .then((response) => {
         setData(response)
         setIsLoading(false)
@@ -32,4 +32,4 @@ const useAPIPost = (url: string) => {
   return { data, isLoading, error, trigger }
 }
 
-export default useAPIPost
+export default useAPIDelete

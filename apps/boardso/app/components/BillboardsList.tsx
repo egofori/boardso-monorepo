@@ -75,7 +75,7 @@ export function BillboardsList({ params, setParams }: { params: any; setParams: 
         <div className="h-[150px] w-full flex flex-row justify-center items-center">
           <Loader size="40px" />
         </div>
-      ) : billboards.length === 0 ? (
+      ) : billboards?.length === 0 ? (
         <div className="h-[150px] w-full flex flex-row justify-center items-center bg-white">
           <UITypography className="text-slate-800 text-2xl">
             No billboards are available yet!
@@ -88,7 +88,7 @@ export function BillboardsList({ params, setParams }: { params: any; setParams: 
             username ? "lg:grid-cols-2 xl:grid-cols-2" : "lg:grid-cols-3 2xl:grid-cols-4"
           )}
         >
-          {billboards.map((billboard) => (
+          {billboards?.map((billboard) => (
             <BillboardCard key={billboard.slug} data={billboard} />
           ))}
         </div>
