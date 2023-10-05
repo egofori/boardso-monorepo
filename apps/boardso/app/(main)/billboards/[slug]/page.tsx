@@ -1,6 +1,6 @@
 "use client"
 
-import { BsBookmarkDashFill, BsCircleFill } from "react-icons/bs"
+import { BsBookmarkDashFill, BsBookmarkHeart, BsCircleFill } from "react-icons/bs"
 import { IoLocationOutline } from "react-icons/io5"
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6"
 import {
@@ -13,10 +13,11 @@ import {
   UIMenuItem,
   UIMenuList,
   UITypography,
+  notification,
 } from "ui"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { useGetBillboard } from "@/services/hooks"
+import { useGetBillboard, useRemoveBookmark, useSaveBillboard } from "@/services/hooks"
 import { useParams } from "next/navigation"
 import { Billboard, UserContact } from "@/types/Billboard"
 import { RiAccountCircleFill } from "react-icons/ri"
@@ -33,8 +34,43 @@ export default function Page() {
     isLoading,
     error,
   }: { data: Billboard | null; [x: string]: any } = useGetBillboard(params["slug"])
+  const { isLoading: saveBillboardLoading, trigger: saveBillboard } = useSaveBillboard(
+    billboard?.id
+  )
+  const { isLoading: removeBookmarkLoading, trigger: removeBookmark } = useRemoveBookmark(
+    billboard?.id
+  )
+
+  // save bookmarked status in the state for easier update
+  const [isBookmarked, setIsBookmarked] = useState(false)
+
+  useEffect(() => {
+    setIsBookmarked(billboard?.bookmarked || false)
+  }, [billboard])
 
   const [selectedContact, setSelectedContact] = useState<UserContact | null>(null)
+
+  const onBookmarkClick = (e: any) => {
+    e.preventDefault()
+    if (isBookmarked)
+      removeBookmark(
+        null,
+        () => {
+          setIsBookmarked(false)
+          notification("success", "Bookmark removed successfully")
+        },
+        () => notification("error", "An error occurred while removing bookmark")
+      )
+    else
+      saveBillboard(
+        null,
+        () => {
+          setIsBookmarked(true)
+          notification("success", "Billboard added to bookmarks successfully")
+        },
+        () => notification("error", "An error occurred while adding billboard to bookmarks")
+      )
+  }
 
   return (
     <PageStatus isLoading={isLoading} data={billboard} error={error && "Billboard does not exist"}>
@@ -77,7 +113,7 @@ export default function Page() {
               </UIIconButton>
             )}
           >
-            {billboard?.images.map((image) => {
+            {billboard?.images?.map((image) => {
               if (image.id !== billboard.thumbnailId) {
                 return (
                   <div
@@ -166,13 +202,24 @@ export default function Page() {
             </UITypography>
           </UICard>
           <UIButton
-            color="amber"
-            variant="text"
-            className="flex flex-row justify-center items-center gap-1 bg-amber-500/10 hover:bg-amber-600/10"
+            color="gray"
+            variant="filled"
+            className="flex flex-row justify-center items-center gap-1 bg-slate-100 hover:bg-slate-100 text-amber-500"
+            onClick={onBookmarkClick}
+            loading={saveBillboardLoading || removeBookmarkLoading}
+            icon={
+              isBookmarked ? (
+                <BsBookmarkDashFill className="text-xl" />
+              ) : (
+                <BsBookmarkHeart className="text-xl" />
+              )
+            }
           >
-            <BsBookmarkDashFill className="text-xl" />
-            {/* <BsBookmarkHeart color="#2dd4bf" className="text-3xl" /> */}
-            <UITypography className="font-bold">Bookmark</UITypography>
+            {isBookmarked ? (
+              <UITypography className="font-bold">Bookmarked</UITypography>
+            ) : (
+              <UITypography className="font-bold">Bookmark</UITypography>
+            )}
           </UIButton>
           <div className="flex flex-col gap-1 ">
             <UICard className="p-4 gap-1">
@@ -203,7 +250,10 @@ export default function Page() {
                     menu={
                       <UIMenuList>
                         {billboard?.owner?.userProfile?.userContacts?.map((userContact) => (
-                          <UIMenuItem key={userContact.id} onClick={() => setSelectedContact(userContact)}>
+                          <UIMenuItem
+                            key={userContact.id}
+                            onClick={() => setSelectedContact(userContact)}
+                          >
                             {userContact.title}
                           </UIMenuItem>
                         ))}

@@ -42,9 +42,13 @@ export function Contacts() {
   useEffect(() => {
     if (!addContactModalOpen) mutate()
   }, [addContactModalOpen, mutate])
-  
+
   return (
-    <PageStatus data={userContacts} isLoading={isLoading} error={error && "Unable to list contacts"}>
+    <PageStatus
+      data={userContacts}
+      isLoading={isLoading}
+      error={error && "Unable to list contacts"}
+    >
       <UICard className="w-full p-2 pt-6">
         <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
           Contacts
@@ -112,7 +116,11 @@ export function Contacts() {
           </table>
         </UICardBody>
       </UICard>
-      <AddContactModal open={addContactModalOpen} handleOpen={handleOpen} userContact={selectedUserContact} />
+      <AddContactModal
+        open={addContactModalOpen}
+        handleOpen={handleOpen}
+        userContact={selectedUserContact}
+      />
     </PageStatus>
   )
 }

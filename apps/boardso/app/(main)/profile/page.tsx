@@ -5,6 +5,7 @@ import { UICard, UITab, UITabPanel, UITabs, UITabsBody, UITabsHeader } from "ui"
 import Profile from "./Profile"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Contacts } from "./Contacts"
+import { Bookmarks } from "./Bookmarks"
 
 export default function Page() {
   const searchParams = useSearchParams()
@@ -53,14 +54,20 @@ export default function Page() {
             <UITab value={1} onClick={() => setActiveTab(1)}>
               Contacts
             </UITab>
+            <UITab value={2} onClick={() => setActiveTab(2)}>
+              Bookmarks
+            </UITab>
           </UICard>
         </UITabsHeader>
         <UITabsBody className="w-full">
           <UITabPanel value={0} className="p-0">
-            <Profile />
+            {activeTab === 0 && <Profile />}
           </UITabPanel>
           <UITabPanel value={1} className="p-0">
-            <Contacts />
+            {activeTab === 1 && <Contacts />}
+          </UITabPanel>
+          <UITabPanel value={2} className="p-0">
+            {activeTab === 2 && <Bookmarks />}
           </UITabPanel>
         </UITabsBody>
       </UITabs>
