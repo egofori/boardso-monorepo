@@ -63,3 +63,10 @@ export interface UserContact {
   contacts: string[]
   type: string
 }
+
+export interface PopularPlace {
+  _count:                   number;
+  sublocality:              null | string;
+  locality:                 string;
+  administrativeAreaLevel2: string;
+}

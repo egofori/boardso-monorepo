@@ -13,9 +13,6 @@ module.exports = withMT({
         "secondary": colors.amber,
         "tertiary": colors.slate,
       },
-      backgroundImage: {
-        "hero-image": "url('/assets/images/jon-tyson-YpR2V2C1IP0-unsplash.jpg')",
-      },
     },
   },
   plugins: [],
