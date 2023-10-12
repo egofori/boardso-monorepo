@@ -35,3 +35,16 @@ export const useSaveBillboard = (billboardId: number | undefined | null) =>
 
 export const useRemoveBookmark = (billboardId: number | undefined | null) =>
   useAPIDelete(`/bookmarks/${billboardId}`)
+
+export const useGetPopularPlaces = () =>
+  useAPIGet({
+    url: "/billboard-locations/popular-places",
+  })
+
+export const useLocationBillboards = (location: string | null) =>
+  useAPIGet({
+    url: "/billboard-locations/billboards",
+    config: {
+      params: { location },
+    },
+  })

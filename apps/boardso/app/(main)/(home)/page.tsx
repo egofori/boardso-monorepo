@@ -1,41 +1,191 @@
 "use client"
 
-import { UIButton, UITypography } from "ui";
-import SearchInput from "../../components/SearchInput";
+import { UIButton, UITypography, notification } from "ui"
+import SearchInput from "../../components/SearchInput"
 import { BiPlus } from "react-icons/bi"
-import MoreLoader from "@/components/MoreLoader";
-import PlaceCard from "@/components/PlaceCard";
-import Link from "next/link";
+import PlaceCard from "@/components/PlaceCard"
+import Link from "next/link"
+import { useGetPopularPlaces, useLocationBillboards } from "@/services/hooks"
+import { Billboard, PopularPlace } from "@/types/Billboard"
+import GoogleMapWrapper from "@/components/GoogleMapWrapper"
+import Loader from "@/components/Loader"
+import { useCallback, useEffect, useState } from "react"
+import { LocationCoordinates } from "@/types/index"
+import { MarkerF } from "@react-google-maps/api"
+import place01 from "../../../public/assets/images/places/place01.jpg"
+import place02 from "../../../public/assets/images/places/place02.jpg"
+import place03 from "../../../public/assets/images/places/place03.jpg"
+import place04 from "../../../public/assets/images/places/place04.jpg"
+import place05 from "../../../public/assets/images/places/place05.jpg"
+import place06 from "../../../public/assets/images/places/place06.jpg"
 
 export default function Page() {
-  // dummy data
-  const places = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((place, i) => ({ id: i, location: "Ablekuma, Accra", image: "https://images.unsplash.com/photo-1541951991883-a34a3024c94a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80" }))
+  const [locationValue, setLocationValue] = useState("")
+
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  const {
+    data: popularPlacesData,
+    isLoading: popularPlacesLoading,
+  }: { data: PopularPlace[]; [x: string]: any } = useGetPopularPlaces()
+
+  const {
+    data: locationBillboardsData,
+  }: { data: ({ billboard: Billboard; id: any } & LocationCoordinates)[]; [x: string]: any } =
+    useLocationBillboards(locationValue)
+
+  const popularPlaces = popularPlacesData ?? []
+  const locationBillboards = locationBillboardsData ?? []
+
+  // defaults to Tema
+  const [center, setCenter] = useState<LocationCoordinates>({
+    lat: 5.709749,
+    lng: 0.018562,
+  })
+
+  // list of background images for the popular places
+  const placeImages = [place01, place06, place04, place03, place02, place05]
+
+  const processLocation = (result: google.maps.GeocoderResult) => {
+    let location: any = {}
+    const locationTypes = [
+      { name: "sublocality", key: "sublocality" },
+      { name: "locality", key: "locality" },
+      { name: "administrative_area_level_2", key: "administrativeAreaLevel2" },
+    ]
+    let addressComponents = result["address_components"]
+    locationTypes.forEach((type) => {
+      for (let i = 0; i < addressComponents.length; i++) {
+        if (addressComponents[i].types.includes(type.name)) {
+          location[type.key] = addressComponents[i].long_name
+          addressComponents = addressComponents.filter((value, index) => index !== i)
+        }
+      }
+    })
+
+    return location
+  }
+
+  const coordinatesToLocation = useCallback((location: LocationCoordinates) => {
+    const geocoder = new google.maps.Geocoder()
+    geocoder.geocode(
+      { location },
+      (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+        if (status === "OK" && results !== null) {
+          const components = processLocation(results[0])
+          setLocationValue(
+            components?.sublocality || components?.locality || components?.administrativeAreaLevel2
+          )
+        }
+      }
+    )
+  }, [])
+
+  // prompt user for permission to access their location if supoorted by the browser
+  const getUserLocation = useCallback(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude
+          const lng = position.coords.longitude
+
+          setCenter({ lat, lng })
+          coordinatesToLocation({ lat, lng })
+        },
+        (error) => {
+          notification("error", `Error getting user location: ${error.message}`)
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+        }
+      )
+    }
+  }, [coordinatesToLocation])
+
+  useEffect(() => {
+    if (isLoaded) getUserLocation()
+  }, [getUserLocation, isLoaded])
 
   return (
-    <>
-      <div className="h-[500px] flex justify-center items-center flex-col gap-5 bg-hero-image bg-no-repeat bg-cover bg-center relative" >
+    <main>
+      <div
+        className="h-[500px] flex justify-center items-center flex-col gap-5 bg-no-repeat bg-cover relative"
+        style={{
+          backgroundImage: "url('/assets/images/hero_image.jpg')",
+          backgroundPositionY: -150,
+        }}
+      >
         <div className="h-full w-full bg-black/40 absolute" />
         <SearchInput className="z-[1]" />
         <Link href="/add-billboard" className="z-[1]">
-          <UIButton size="md" className="text-white bg-tertiary-200/50 hover:bg-tertiary-200/60 rounded-full text-lg font-medium flex items-center">
+          <UIButton
+            size="md"
+            className="text-white bg-tertiary-200/50 hover:bg-tertiary-200/60 rounded-full text-lg font-medium flex items-center"
+          >
             <BiPlus fontSize="25px" />
             Add Billboard
           </UIButton>
         </Link>
       </div>
       <div className="py-5">
-        <div className="layout-wrapper">
-          <UITypography variant="h4" className="pl-2 text-tertiary-700 my-2">Popular places</UITypography>
-          <div className="flex flex-row flex-wrap">
-            {
-              places.map((place) => <PlaceCard key={place.id} data={place} />)
-            }
+        <div className="layout-wrapper flex flex-col gap-6 my-2">
+          <div className="flex flex-col gap-2">
+            <UITypography variant="h4" className="text-tertiary-700">
+              Popular places
+            </UITypography>
+            {popularPlacesLoading ? (
+              <div className="h-[150px] w-full flex flex-row justify-center items-center ">
+                <Loader size="40px" />
+              </div>
+            ) : (
+              <>
+                {popularPlaces.length === 0 ? (
+                  <div className="h-[150px] w-full flex flex-row justify-center items-center ">
+                    <UITypography className="text-slate-800 text-2xl">
+                      No billboards are available yet!
+                    </UITypography>
+                  </div>
+                ) : (
+                  <div className="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                    {popularPlaces?.map((place, i) => (
+                      <PlaceCard
+                        key={place.sublocality || place.locality}
+                        data={place}
+                        image={placeImages[i]?.src}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
           </div>
-          <div className="w-full flex justify-center">
-            <MoreLoader />
+          <div className="flex flex-col gap-2">
+            <UITypography variant="h4" className="text-tertiary-700">
+              Map of billboards
+            </UITypography>
+            <div className="">
+              <GoogleMapWrapper
+                mapContainerClassName="w-full h-[500px]"
+                center={center}
+                zoom={13}
+                options={{
+                  streetViewControl: false,
+                  mapTypeControl: false,
+                }}
+                setIsLoaded={setIsLoaded}
+              >
+                {locationBillboards.map((locationBillboard) => (
+                  <MarkerF
+                    key={locationBillboard.id}
+                    position={{ lat: locationBillboard.lat, lng: locationBillboard.lng }}
+                  />
+                ))}
+              </GoogleMapWrapper>
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </main>
   )
 }

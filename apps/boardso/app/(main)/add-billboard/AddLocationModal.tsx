@@ -22,6 +22,7 @@ import { useEffect, useState } from "react"
 import { object, string } from "zod"
 import { BiSearch } from "react-icons/bi"
 import GoogleMapWrapper from "../../components/GoogleMapWrapper"
+import { LocationCoordinates } from "@/types/index"
 
 type Props = {
   open: boolean
@@ -37,7 +38,6 @@ export default function AddLocationModal({ open, handleOpen, setLocationDetails 
 
   const [map, setMap] = useState<google.maps.Map>()
 
-  type LocationCoordinates = { lat: number; lng: number }
   // defaults to Tema
   const [center, setCenter] = useState<LocationCoordinates>({
     lat: 5.709749,
