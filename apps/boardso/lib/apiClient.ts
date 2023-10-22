@@ -11,8 +11,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem("accessToken")
-
-    if (accessToken && !(apiClient.defaults.headers.common.Authorization === "")) {
+    if (accessToken && !(config.headers.Authorization === "")) {
       config.headers.Authorization = `Bearer ${accessToken}`
     } else {
       config.headers.Authorization = null
