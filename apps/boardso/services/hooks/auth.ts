@@ -16,12 +16,7 @@ export const useRegister = () => {
           },
         },
       },
-      (response: any) => {
-        setStorageItem("accessToken", response.data.token)
-        setStorageItem("userInfo", response.data.user)
-        setStorageItem("isLoggedIn", true)
-        onSuccess && onSuccess(response)
-      },
+      onSuccess,
       onFailure
     )
   }
@@ -66,10 +61,64 @@ export const useLogOut = () => {
     removeStorageItem("isLoggedIn")
     setIsLoading(false)
 
-    if(onSuccess) onSuccess()
+    if (onSuccess) onSuccess()
   }
 
   return { isLoading, trigger }
 }
 
 export const useChangePassword = () => useAPIPost("auth/change-password")
+
+export const useRegisterSocial = () => {
+  const { trigger: registerTrigger, ...rest } = useAPIPost("/auth/social/sign-up")
+
+  const trigger: any = async (data: any, onSuccess?: Function, onFailure?: Function) => {
+    registerTrigger(
+      {
+        data: { username: uniqueString(), ...data },
+        config: {
+          headers: {
+            Authorization: "",
+          },
+        },
+      },
+      (response: any) => {
+        if (response.data) {
+          setStorageItem("accessToken", response.data.token)
+          setStorageItem("userInfo", response.data.user)
+          setStorageItem("isLoggedIn", true)
+        }
+        onSuccess && onSuccess(response)
+      },
+      onFailure
+    )
+  }
+
+  return { trigger, ...rest }
+}
+
+export const useSignInSocial = () => {
+  const { trigger, ...rest } = useAPIPost("/auth/social/sign-in")
+
+  const signInTrigger: any = async (data: any, onSuccess?: Function, onFailure?: Function) => {
+    trigger(
+      {
+        data,
+        config: {
+          headers: {
+            Authorization: "",
+          },
+        },
+      },
+      (response: any) => {
+        setStorageItem("accessToken", response.data.token)
+        setStorageItem("userInfo", response.data.user)
+        setStorageItem("isLoggedIn", true)
+        onSuccess && onSuccess(response)
+      },
+      onFailure
+    )
+  }
+
+  return { trigger: signInTrigger, ...rest }
+}
