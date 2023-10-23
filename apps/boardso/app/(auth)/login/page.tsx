@@ -37,7 +37,7 @@ export default function Page() {
   const { trigger: signInWithGoogleTrigger } = useSignInSocial()
 
   const signInSchema = object({
-    email: string().min(1, { message: "Invalid email" }).email({ message: "Invalid email" }),
+    email: string().min(1, { message: "Invalid email" }).email({ message: "Invalid email" }).trim(),
     password: string().min(1, { message: "Password is required" }),
   })
 
@@ -65,10 +65,15 @@ export default function Page() {
           }
         )
       } else {
-        sendEmailVerification(userCredential.user).then(() => {
-          notification("success", "Verification email sent")
-          signOut(firebaseAuth)
-        })
+        sendEmailVerification(userCredential.user)
+          .then(() => {
+            notification("success", "Verification email sent")
+            signOut(firebaseAuth)
+          })
+          .catch(() => {
+            signOut(firebaseAuth)
+            notification("error", "Could not send verification email. Please try again")
+          })
       }
     })
   }
