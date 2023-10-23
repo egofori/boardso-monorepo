@@ -122,3 +122,24 @@ export const useSignInSocial = () => {
 
   return { trigger: signInTrigger, ...rest }
 }
+
+export const useResetPassword = () => {
+  const { trigger, ...rest } = useAPIPost("/auth/reset-password")
+
+  const resetPasswordTrigger: any = async (data: any, onSuccess?: Function, onFailure?: Function) => {
+    trigger(
+      {
+        data,
+        config: {
+          headers: {
+            Authorization: "",
+          },
+        },
+      },
+      onSuccess,
+      onFailure
+    )
+  }
+
+  return { trigger: resetPasswordTrigger, ...rest }
+}

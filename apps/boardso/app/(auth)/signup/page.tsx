@@ -70,26 +70,29 @@ export default function Page() {
           () => {
             setLoading(false)
             form.reset()
+            sendEmailVerification(userCredential.user)
+              .then(() => {
+                setVerifyEmail(true)
+                notification("success", "Verification email sent")
+                signOut(firebaseAuth)
+              })
+              .catch(() => {
+                signOut(firebaseAuth)
+                notification(
+                  "error",
+                  "Could not send verification email. Try logging in to initiate another email verification"
+                )
+              })
           },
           (error: any) => {
+            signOut(firebaseAuth)
             setLoading(false)
             notification("error", error.response?.data?.message || "Error occurred during sign up")
           }
         )
-        sendEmailVerification(userCredential.user)
-          .then(() => {
-            setVerifyEmail(true)
-            notification("success", "Verification email sent")
-            signOut(firebaseAuth)
-          })
-          .catch(() =>
-            notification(
-              "error",
-              "Could not send verification email. Try logging in to initiate another email verification"
-            )
-          )
       })
       .catch(() => {
+        setLoading(false)
         notification("error", "Error occurred during sign up")
       })
   }
@@ -133,15 +136,17 @@ export default function Page() {
                         notification("success", "Verification email sent")
                         signOut(firebaseAuth)
                       })
-                      .catch(() =>
+                      .catch(() => {
+                        signOut(firebaseAuth)
                         notification(
                           "error",
                           "Could not send verification email. Try logging in to initiate another email verification"
                         )
-                      )
+                      })
                   }
                 },
                 (error: any) => {
+                  signOut(firebaseAuth)
                   setGoogleLoading(false)
                   notification(
                     "error",

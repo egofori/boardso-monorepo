@@ -11,7 +11,7 @@ import { UIButton, UICard, UITypography } from "ui"
 export default function Page() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [isLoading, setIsLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [confirmed, setConfirmed] = useState(false)
 
   // Get the action to complete.
@@ -25,10 +25,10 @@ export default function Page() {
       applyActionCode(firebaseAuth, actionCode)
         .then(() => {
           setConfirmed(true)
-          setIsLoading(false)
+          setLoading(false)
         })
         .catch(() => {
-          setIsLoading(false)
+          setLoading(false)
         })
     } else {
       router.back()
@@ -37,7 +37,7 @@ export default function Page() {
 
   return (
     <main className="relative flex flex-col justify-center items-center">
-      {isLoading ? (
+      {loading ? (
         <Loader size="40px" />
       ) : (
         <UICard className="w-[410px] p-10 m-auto rounded-2xl">
@@ -58,7 +58,7 @@ export default function Page() {
           ) : (
             <>
               <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
-                An error occured!
+                An error occurred!
               </UITypography>
               <div className="flex flex-col gap-6 text-center">
                 <UITypography>
