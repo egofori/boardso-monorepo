@@ -75,7 +75,7 @@ export default function Page() {
             notification("error", "Could not send verification email. Please try again")
           })
       }
-    })
+    }).catch(() => notification("error", "Invalid credentials"))
   }
 
   const onSignInWithGoogle = () => {

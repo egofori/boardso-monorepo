@@ -11,8 +11,17 @@ import { useParams, useSearchParams } from "next/navigation"
 import { sorts } from "@/utils/constants"
 import { Pagination } from "@/types/index"
 import Loader from "@/components/Loader"
+import { User } from "@/types/User"
 
-export function BillboardsList({ params, setParams }: { params: any; setParams: Function }) {
+export function BillboardsList({
+  params,
+  setParams,
+  owner,
+}: {
+  params: any
+  setParams: Function
+  owner: User | null
+}) {
   const { owner: username } = useParams()
   const searchParams = useSearchParams()
 
@@ -29,8 +38,9 @@ export function BillboardsList({ params, setParams }: { params: any; setParams: 
     [params.limit, params.offset]
   )
 
-  const { data: billboardsData, isLoading }: { data: Pagination | null; [x: string]: any } =
+  const { data: billboardsData, isLoading, mutate }: { data: Pagination | null; [x: string]: any } =
     useSearchBillboards({ ...params, username: username })
+
   const billboards: Billboard[] = billboardsData ? billboardsData.results : []
 
   useEffect(() => {
@@ -50,8 +60,13 @@ export function BillboardsList({ params, setParams }: { params: any; setParams: 
 
   return (
     <>
-      <div className={twMerge("flex flex-row items-center", billboardsData && (billboardsData.count > 0) ? "justify-between" : "justify-end")}>
-        {billboardsData && (billboardsData.count > 0) ? (
+      <div
+        className={twMerge(
+          "flex flex-row items-center",
+          billboardsData && billboardsData.count > 0 ? "justify-between" : "justify-end"
+        )}
+      >
+        {billboardsData && billboardsData.count > 0 ? (
           <UITypography className="text-slate-800 text-lg">
             Showing{" "}
             <b>
@@ -89,7 +104,12 @@ export function BillboardsList({ params, setParams }: { params: any; setParams: 
           )}
         >
           {billboards?.map((billboard) => (
-            <BillboardCard key={billboard.slug} data={billboard} />
+            <BillboardCard
+              key={billboard.slug}
+              data={billboard}
+              editable={billboard.owner.username === owner?.username}
+              refetch={mutate}
+            />
           ))}
         </div>
       )}

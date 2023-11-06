@@ -5,7 +5,7 @@ import { UITypography, UICard, UIAvatar, UIIconButton } from "ui"
 import { BillboardsSearch } from "@/components/BillboardsSearch"
 import { useParams, useSearchParams } from "next/navigation"
 import { BillboardsList } from "@/components/BillboardsList"
-import { useGetUser } from "@/services/hooks/users"
+import { useGetUser, useGetUserProfile } from "@/services/hooks/users"
 import { User } from "@/types/User"
 import { PageStatus } from "@/components/PageStatus"
 import { RiAccountCircleFill } from "react-icons/ri"
@@ -38,6 +38,12 @@ export default function Page() {
     error,
   }: { data: User | null; [x: string]: any } = useGetUser(username)
 
+  // get current user
+  const {
+    data: currentUser,
+    isLoading: currentUserLoading,
+  }: { data: User | null;[x: string]: any } = useGetUserProfile()
+  
   const renderContacts = useCallback(() => {
     if (owner?.userProfile?.userContacts?.length === 0) {
       return <UITypography className="text-center">No contacts available</UITypography>
@@ -73,7 +79,7 @@ export default function Page() {
   }, [owner?.userProfile?.userContacts])
 
   return (
-    <PageStatus data={owner} isLoading={isLoading} error={error && "User does not exist!"}>
+    <PageStatus data={owner} isLoading={isLoading || currentUserLoading} error={error && "User does not exist!"}>
       <main className="layout-wrapper flex 2xl:flex-row flex-col items-start justify-center gap-6 py-5">
         <div className="shrink-0 2xl:w-96 w-full flex flex-col gap-6">
           <UICard className="flex flex-col justify-center items-center gap-1 p-4">
@@ -82,10 +88,6 @@ export default function Page() {
             ) : (
               <RiAccountCircleFill className="text-slate-800" size="74px" />
             )}
-            {/* <div className="flex flex-row gap-1 items-center">
-              <UIRating value={4} ratedColor="amber" readonly />
-              <UITypography className="font-medium">{owner?.userProfile?.rating} Rated</UITypography>
-            </div> */}
             <UITypography variant="h4">
               {owner?.firstName} {owner?.lastName}
             </UITypography>
@@ -93,11 +95,13 @@ export default function Page() {
             <UITypography>
               {owner?.zipCode} {owner?.phone}
             </UITypography>
-            <Link href="/profile">
-              <UIIconButton color="white" className="absolute right-[5px] top-[5px] rounded">
-                <AiFillEdit className="text-[20px]" />
-              </UIIconButton>
-            </Link>
+            {currentUser?.username === username && (
+              <Link href="/profile">
+                <UIIconButton color="white" className="absolute right-[5px] top-[5px] rounded">
+                  <AiFillEdit className="text-[20px]" />
+                </UIIconButton>
+              </Link>
+            )}
           </UICard>
           <UICard className="flex flex-col justify-center items-center gap-1 p-4">
             <UITypography variant="h5">Contacts</UITypography>
@@ -116,7 +120,7 @@ export default function Page() {
             <BillboardsSearch params={params} setParams={setParams} />
           </div>
           <div className="flex flex-col gap-7 py-7">
-            <BillboardsList params={params} setParams={setParams} />
+            <BillboardsList params={params} setParams={setParams} owner={currentUser} />
           </div>
         </div>
       </main>

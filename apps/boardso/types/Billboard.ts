@@ -2,8 +2,9 @@ export interface Billboard {
   currency: string
   description: string
   height: number
-  images: Image[]
+  images: BillboardImage[]
   id: number
+  uid: string
   rate: string
   slug: string
   thumbnailId: number
@@ -24,7 +25,7 @@ export interface BillboardLocation {
   lng: number
 }
 
-export interface Image {
+export interface BillboardImage {
   id: number
   createdAt: Date
   updateAt: Date

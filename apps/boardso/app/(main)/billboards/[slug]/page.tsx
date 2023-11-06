@@ -12,12 +12,18 @@ import {
   UIIconButton,
   UIMenuItem,
   UIMenuList,
+  UITooltip,
   UITypography,
   notification,
 } from "ui"
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { useGetBillboard, useRemoveBookmark, useSaveBillboard } from "@/services/hooks"
+import {
+  useDeleteBillboard,
+  useGetBillboard,
+  useRemoveBookmark,
+  useSaveBillboard,
+} from "@/services/hooks"
 import { useParams } from "next/navigation"
 import { Billboard, UserContact } from "@/types/Billboard"
 import { RiAccountCircleFill } from "react-icons/ri"
@@ -26,20 +32,31 @@ import { MarkerF } from "@react-google-maps/api"
 import { periods } from "@/utils/constants"
 import { PageStatus } from "@/components/PageStatus"
 import { stringToHref } from "@/utils/index"
+import { MdDelete } from "react-icons/md"
+import { AiFillEdit } from "react-icons/ai"
+import { useGetUserProfile } from "@/services/hooks/users"
+import { User } from "@/types/User"
 
 export default function Page() {
-  const params = useParams()
+  const { slug } = useParams()
   const {
     data: billboard,
     isLoading,
     error,
-  }: { data: Billboard | null; [x: string]: any } = useGetBillboard(params["slug"])
+  }: { data: Billboard | null; [x: string]: any } = useGetBillboard({ slug })
   const { isLoading: saveBillboardLoading, trigger: saveBillboard } = useSaveBillboard(
     billboard?.id
   )
   const { isLoading: removeBookmarkLoading, trigger: removeBookmark } = useRemoveBookmark(
     billboard?.id
   )
+  const { isLoading: deleteBillboardLoading, trigger: deleteBillboard } = useDeleteBillboard(
+    billboard?.id
+  )
+  // get current user
+  const {
+    data: currentUser,
+  }: { data: User | null; [x: string]: any } = useGetUserProfile()
 
   // save bookmarked status in the state for easier update
   const [isBookmarked, setIsBookmarked] = useState(false)
@@ -76,14 +93,40 @@ export default function Page() {
     <PageStatus isLoading={isLoading} data={billboard} error={error && "Billboard does not exist"}>
       <main className="layout-wrapper flex lg:flex-row flex-col items-start justify-center gap-4 py-5">
         <UICard className="w-full p-8 bg-white flex flex-col gap-4">
-          <div className="flex flex-col">
-            <UITypography variant="h4">{billboard?.title}</UITypography>
-            <div className="flex flex-row gap-1 text-slate-500">
-              <IoLocationOutline className="text-sm" />
-              <UITypography className="text-sm">
-                {billboard?.billboardLocation?.address}
-              </UITypography>
+          <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-col">
+              <UITypography variant="h4">{billboard?.title}</UITypography>
+              <div className="flex flex-row gap-1 text-slate-500">
+                <IoLocationOutline className="text-sm" />
+                <UITypography className="text-sm">
+                  {billboard?.billboardLocation?.address}
+                </UITypography>
+              </div>
             </div>
+            {billboard?.owner?.username === currentUser?.username && (
+              <div className="flex flex-row gap-2">
+                <UITooltip content="Edit billboard">
+                  <Link href={`/edit-billboard/${billboard?.uid}`}>
+                    <UIIconButton color="white" className="border">
+                      <AiFillEdit className="text-[20px]" />
+                    </UIIconButton>
+                  </Link>
+                </UITooltip>
+                <UITooltip content="Delete billboard">
+                  <UIIconButton
+                    color="red"
+                    variant="filled"
+                    onClick={(e: any) => {
+                      e.preventDefault()
+                      deleteBillboard()
+                    }}
+                    loading={deleteBillboardLoading}
+                  >
+                    <MdDelete className="text-[20px]" />
+                  </UIIconButton>
+                </UITooltip>
+              </div>
+            )}
           </div>
           <UICarousel
             className="rounded-lg h-[400px]"

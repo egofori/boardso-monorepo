@@ -1,7 +1,6 @@
 "use client"
 
 import { useAddBillboard } from "@/services/hooks"
-// import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { BiPlus } from "react-icons/bi"
 import { IoCloseSharp, IoLocationSharp } from "react-icons/io5"
@@ -25,16 +24,11 @@ import {
   useZodForm,
 } from "ui"
 import { object, number, string } from "zod"
-import AddLocationModal from "./AddLocationModal"
+import AddLocationModal from "../../components/AddLocationModal"
 import { ModalHandler } from "@/types/Modal"
 import { MarkerF } from "@react-google-maps/api"
 import GoogleMapWrapper from "../../components/GoogleMapWrapper"
-import {
-  billboardTypes,
-  currencies,
-  periods,
-  unitsOfMeasurement,
-} from "../../../utils"
+import { billboardTypes, currencies, periods, unitsOfMeasurement } from "../../../utils"
 
 export default function Page() {
   const { trigger, isLoading } = useAddBillboard()
@@ -140,7 +134,6 @@ export default function Page() {
         // clear images
         setSelectedImages([])
         setImagePreviews([])
-        // router.push(`/${user?.username}`)
         notification("success", "Billboard added successfully")
       },
       (error: any) => {
@@ -365,6 +358,7 @@ export default function Page() {
         open={openLocationModal}
         handleOpen={handleOpen}
         setLocationDetails={setLocationDetails}
+        locationDetailsCoordinates={locationDetails?.coordinates}
       />
     </main>
   )

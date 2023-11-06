@@ -21,16 +21,22 @@ import { MarkerF } from "@react-google-maps/api"
 import { useEffect, useState } from "react"
 import { object, string } from "zod"
 import { BiSearch } from "react-icons/bi"
-import GoogleMapWrapper from "../../components/GoogleMapWrapper"
+import GoogleMapWrapper from "./GoogleMapWrapper"
 import { LocationCoordinates } from "@/types/index"
 
 type Props = {
   open: boolean
   handleOpen: ModalHandler
   setLocationDetails: Function
+  locationDetailsCoordinates?: LocationCoordinates | null
 }
 
-export default function AddLocationModal({ open, handleOpen, setLocationDetails }: Props) {
+export default function AddLocationModal({
+  open,
+  handleOpen,
+  setLocationDetails,
+  locationDetailsCoordinates,
+}: Props) {
   const [autocompletePlaces, setAutocompletePlaces] = useState<
     google.maps.places.AutocompletePrediction[]
   >([])
@@ -62,7 +68,7 @@ export default function AddLocationModal({ open, handleOpen, setLocationDetails 
     mode: "onSubmit",
   })
 
-  // prompt user for permission to access their location if supoorted by the browser
+  // prompt user for permission to access their location if supported by the browser
   const getUserLocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -115,12 +121,14 @@ export default function AddLocationModal({ open, handleOpen, setLocationDetails 
       { name: "administrative_area_level_1", key: "administrativeAreaLevel1" },
       { name: "country", key: "country" },
     ]
-    const addressComponents = result["address_components"]
+    let addressComponents = result["address_components"]
     locationTypes.forEach((type) => {
       for (let i = 0; i < addressComponents.length; i++) {
+        // check if type-name is in the address-components-types 
         if (addressComponents[i].types.includes(type.name)) {
           location[type.key] = addressComponents[i].long_name
-          addressComponents.splice(i, 1)
+        } else {
+          location[type.key] = null
         }
       }
     })
@@ -172,6 +180,13 @@ export default function AddLocationModal({ open, handleOpen, setLocationDetails 
       }
     )
   }
+
+  useEffect(() => {
+    if (locationDetailsCoordinates) {
+      setCenter(locationDetailsCoordinates)
+      setMarkerCoordinates(locationDetailsCoordinates)
+    }
+  }, [locationDetailsCoordinates])
 
   return (
     <UIModal size="lg" className="min-w-[300px]" open={open} handler={handleOpen}>
@@ -227,8 +242,7 @@ export default function AddLocationModal({ open, handleOpen, setLocationDetails 
                 type="submit"
                 loading={autocompleteLoading}
                 icon={<BiSearch />}
-              >
-              </UIButton>
+              />
             </div>
           </UIForm>
         </div>

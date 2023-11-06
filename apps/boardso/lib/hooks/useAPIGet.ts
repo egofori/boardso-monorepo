@@ -1,8 +1,8 @@
 import useSWR from "swr"
 import apiClient from "../apiClient"
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios"
 
-type ParamsType = { url: string | null; config?: AxiosRequestConfig<any> } | string | null
+type ParamsType = { url: string | null; config?: AxiosRequestConfig<any> } | string | any[] | null
 
 const useAPIGet = (options: ParamsType) => {
   const fetcher = async (data: { url: string; config?: any } | string) => {

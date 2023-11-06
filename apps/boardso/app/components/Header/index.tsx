@@ -108,7 +108,7 @@ export default function Header() {
   })
 
   const onSubmit = (data: any) => {
-    router.push(`billboards?search=${data.search}`)
+    router.push(`/billboards?search=${data.search}`)
   }
   return (
     <Navbar className="sticky inset-0 z-10 h-max rounded-none max-w-full px-0">
