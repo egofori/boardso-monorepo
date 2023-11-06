@@ -1,6 +1,6 @@
 "use client"
 
-import { useRemoveBookmark, useSaveBillboard } from "@/services/hooks"
+import { useDeleteBillboard, useRemoveBookmark, useSaveBillboard } from "@/services/hooks"
 import { Billboard } from "@/types/Billboard"
 import { defaultBillboardThumbnail } from "@/utils/constants"
 import Link from "next/link"
@@ -8,6 +8,8 @@ import { useMemo, useState } from "react"
 import { BsBookmarkDashFill, BsBookmarkHeart } from "react-icons/bs"
 import { FaAngleRight } from "react-icons/fa6"
 import { RiAccountCircleFill } from "react-icons/ri"
+import { MdDelete } from "react-icons/md"
+import { AiFillEdit } from "react-icons/ai"
 import {
   UIAvatar,
   UICard,
@@ -15,6 +17,7 @@ import {
   UICardFooter,
   UICardHeader,
   UIIconButton,
+  UITooltip,
   UITypography,
   notification,
 } from "ui"
@@ -22,12 +25,19 @@ import {
 export default function BillboardCard({
   className,
   data,
+  editable,
+  refetch,
 }: {
   className?: string
   data: Billboard
+  editable: boolean
+  refetch?: Function
 }) {
   const { isLoading: saveBillboardLoading, trigger: saveBillboard } = useSaveBillboard(data.id)
   const { isLoading: removeBookmarkLoading, trigger: removeBookmark } = useRemoveBookmark(data.id)
+  const { isLoading: deleteBillboardLoading, trigger: deleteBillboard } = useDeleteBillboard(
+    data.id
+  )
 
   // save bookmarked status in the state for easier update
   const [isBookmarked, setIsBookmarked] = useState(data.bookmarked)
@@ -97,6 +107,41 @@ export default function BillboardCard({
                 <FaAngleRight className="text-xl font-light text-white" />
               </div>
             </Link>
+            {editable && (
+              <div className="flex flex-col gap-2 absolute right-2 top-2">
+                <UITooltip content="Edit billboard">
+                  <Link href={`/edit-billboard/${data.uid}`}>
+                    <UIIconButton color="white">
+                      <AiFillEdit className="text-[20px]" />
+                    </UIIconButton>
+                  </Link>
+                </UITooltip>
+                <UITooltip content="Delete billboard">
+                  <UIIconButton
+                    color="red"
+                    variant="filled"
+                    onClick={(e: any) => {
+                      e.preventDefault()
+                      deleteBillboard(
+                        null,
+                        () => {
+                          if (refetch) refetch()
+                          notification("success", "Billboard deleted successfully")
+                        },
+                        () =>
+                          notification(
+                            "error",
+                            "An error has occurred while deleting billboard. Please try again later"
+                          )
+                      )
+                    }}
+                    loading={deleteBillboardLoading}
+                  >
+                    <MdDelete className="text-[20px]" />
+                  </UIIconButton>
+                </UITooltip>
+              </div>
+            )}
             <div className="w-full flex flex-row justify-end">
               <UIIconButton
                 color="gray"

@@ -10,9 +10,10 @@ import {
 import { twMerge } from "tailwind-merge"
 import { BiLoaderCircle } from "react-icons/bi"
 
-interface Props extends ButtonProps {
+interface Props extends Omit<ButtonProps, "children"> {
   loading?: boolean
   icon?: React.ReactNode
+  children?: React.ReactNode
 }
 
 const UIButton = React.forwardRef<HTMLButtonElement, Props>(
@@ -34,7 +35,7 @@ const UIButton = React.forwardRef<HTMLButtonElement, Props>(
                 background: "hover:bg-primary-600",
               },
               amber: {
-                backgroud: "hover:bg-secondary-600",
+                background: "hover:bg-secondary-600",
               },
             },
           },

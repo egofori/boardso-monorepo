@@ -1,8 +1,11 @@
 import useAPIDelete from "@/lib/hooks/useAPIDelete"
 import useAPIGet from "@/lib/hooks/useAPIGet"
 import useAPIPost from "@/lib/hooks/useAPIPost"
+import useAPIPatch from "@/lib/hooks/useAPIPatch"
 
 export const useAddBillboard = () => useAPIPost("/billboards/add")
+
+export const useEditBillboard = (id: string) => useAPIPatch(`/billboards/${id}`)
 
 export const useSearchBillboards = (params?: any) =>
   useAPIGet({
@@ -20,7 +23,8 @@ export const useSearchLocations = (search: string | null) =>
     },
   })
 
-export const useGetBillboard = (slug: string) => useAPIGet({ url: `/billboards/${slug}` })
+export const useGetBillboard = (params: { slug?: string; uid?: string }) =>
+  useAPIGet({ url: `/billboards/billboard`, config: { params } })
 
 export const useGetBookmarks = (params?: any) =>
   useAPIGet({
@@ -48,3 +52,6 @@ export const useLocationBillboards = (location: string | null) =>
       params: { location },
     },
   })
+
+export const useDeleteBillboard = (billboardId: number | undefined | null) =>
+  useAPIDelete(`/billboards/${billboardId}`)
