@@ -5,7 +5,7 @@ import useAPIPatch from "@/lib/hooks/useAPIPatch"
 
 export const useAddBillboard = () => useAPIPost("/billboards/add")
 
-export const useEditBillboard = (id: string) => useAPIPatch(`/billboards/${id}`)
+export const useEditBillboard = (id: number | null | undefined) => useAPIPatch(`/billboards/${id}`)
 
 export const useSearchBillboards = (params?: any) =>
   useAPIGet({

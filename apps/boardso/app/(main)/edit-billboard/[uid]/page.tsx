@@ -32,7 +32,6 @@ import { billboardTypes, currencies, periods, unitsOfMeasurement } from "../../.
 import { useParams } from "next/navigation"
 import { Billboard } from "@/types/Billboard"
 import { PageStatus } from "@/components/PageStatus"
-import { useRouter } from "next/navigation"
 import Loader from "@/components/Loader"
 
 function ImageCard({ image, remove }: { image: string; remove: any }) {
@@ -63,7 +62,7 @@ export default function Page() {
     error,
   }: { data: Billboard | null; [x: string]: any } = useGetBillboard({ uid })
 
-  const { trigger, isLoading } = useEditBillboard(uid)
+  const { trigger, isLoading } = useEditBillboard(billboard?.id)
 
   const billboardImages = useMemo(
     () => billboard?.images?.filter((image) => image.id !== billboard.thumbnailId),
