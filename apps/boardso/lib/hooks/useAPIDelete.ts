@@ -1,7 +1,7 @@
 import { useState } from "react"
 import apiClient from "../apiClient"
 
-const useAPIDelete = (url: string) => {
+const useAPIDelete = (url?: string) => {
   const [data, setData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<any>(null)
@@ -16,7 +16,7 @@ const useAPIDelete = (url: string) => {
     setError(null)
 
     apiClient
-      .delete(url, config)
+      .delete(url || config?.url, config)
       .then((response) => {
         setData(response)
         setIsLoading(false)

@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { UITypography } from "ui"
 
 export default function AuthHeader() {
   return (

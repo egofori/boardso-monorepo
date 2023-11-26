@@ -29,25 +29,22 @@ export default function SearchInput({ className }: { className: string }) {
       className={twMerge("relative max-w-[600px] w-[95%]", className)}
     >
       <UIInput
-        className="pl-10 pr-20 bg-white"
+        className="pl-10 pr-[90px] bg-white !border-0 focus:!border-0 transition-none"
         placeholder="Type to search"
         {...form.register("search")}
       />
       <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
         <BiSearch size="22px" className="text-slate-400" />
       </div>
-      {form.watch("search") ? (
-        <UIButton
-          size="sm"
-          color="teal"
-          className="!absolute right-[6px] top-[6px] rounded"
-          type="submit"
-        >
-          SEARCH
-        </UIButton>
-      ) : (
-        <></>
-      )}
+
+      <UIButton
+        size="sm"
+        color="teal"
+        className="!absolute right-[6px] top-[6px] rounded"
+        type="submit"
+      >
+        {form.watch("search") ? "SEARCH" : "VIEW ALL BOARDS"}
+      </UIButton>
     </UIForm>
   )
 }

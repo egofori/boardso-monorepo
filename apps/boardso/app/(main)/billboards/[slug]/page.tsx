@@ -24,7 +24,7 @@ import {
   useRemoveBookmark,
   useSaveBillboard,
 } from "@/services/hooks"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { Billboard, UserContact } from "@/types/Billboard"
 import { RiAccountCircleFill } from "react-icons/ri"
 import GoogleMapWrapper from "@/components/GoogleMapWrapper"
@@ -36,8 +36,12 @@ import { MdDelete } from "react-icons/md"
 import { AiFillEdit } from "react-icons/ai"
 import { useGetUserProfile } from "@/services/hooks/users"
 import { User } from "@/types/User"
+import { DeleteConfirmationModal } from "@/components/DeleteConfirmationModal"
+import { ModalHandler } from "@/types/Modal"
 
 export default function Page() {
+  const router = useRouter()
+
   const { slug } = useParams()
   const {
     data: billboard,
@@ -60,6 +64,10 @@ export default function Page() {
 
   // save bookmarked status in the state for easier update
   const [isBookmarked, setIsBookmarked] = useState(false)
+
+  const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false)
+
+  const handleDeleteOpen: ModalHandler = () => setConfirmDeleteModalOpen((cur) => !cur)
 
   useEffect(() => {
     setIsBookmarked(billboard?.bookmarked || false)
@@ -87,6 +95,22 @@ export default function Page() {
         },
         () => notification("error", "An error occurred while adding billboard to bookmarks")
       )
+  }
+
+  const handleDeleteBillboard = () => {
+    deleteBillboard(
+      null,
+      () => {
+        setConfirmDeleteModalOpen(false)
+        router.push(`/${currentUser?.username}`)
+        notification("success", "Billboard deleted successfully")
+      },
+      () =>
+        notification(
+          "error",
+          "An error has occurred while deleting billboard. Please try again later"
+        )
+    )
   }
 
   return (
@@ -118,9 +142,8 @@ export default function Page() {
                     variant="filled"
                     onClick={(e: any) => {
                       e.preventDefault()
-                      deleteBillboard()
+                      setConfirmDeleteModalOpen(true)
                     }}
-                    loading={deleteBillboardLoading}
                   >
                     <MdDelete className="text-[20px]" />
                   </UIIconButton>
@@ -332,6 +355,12 @@ export default function Page() {
           </UICard>
         </div>
       </main>
+      <DeleteConfirmationModal
+        open={confirmDeleteModalOpen}
+        handleOpen={handleDeleteOpen}
+        onDelete={handleDeleteBillboard}
+        loading={deleteBillboardLoading}
+      />
     </PageStatus>
   )
 }

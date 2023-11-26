@@ -21,7 +21,7 @@ export default function PlaceCard({ className, data, image }: Props) {
         onClick={() => router.push("/billboards")}
         shadow={false}
         className={twMerge(
-          "cursor-pointer relative w-full h-[120px] m-2 overflow-hidden flex flex-col gap-1 justify-center items-center bg-cover bg-center",
+          "cursor-pointer relative w-full h-[120px] overflow-hidden flex flex-col gap-1 justify-center items-center bg-cover bg-center",
           className
         )}
         style={{ backgroundImage: `url('${image}')` }}

@@ -8,40 +8,60 @@ import {
   UIButton,
   UICard,
   UICardBody,
+  UICardFooter,
   UICardHeader,
   UIFieldError,
   UIForm,
   UIIconButton,
   UIInput,
   UITextarea,
+  UITooltip,
   // UIRating,
   UITypography,
   useZodForm,
 } from "ui"
 import { object, string } from "zod"
 import { AiFillEdit } from "react-icons/ai"
-import { useGetUserProfile, useUpdateProfilePicture, useUpdateUser } from "@/services/hooks/users"
+import {
+  useDeleteUser,
+  useGetUserProfile,
+  useRemoveProfilePicture,
+  useUpdateProfilePicture,
+  useUpdateUser,
+} from "@/services/hooks/users"
 import { User } from "@/types/User"
 import { PageStatus } from "@/components/PageStatus"
 import { RiAccountCircleFill } from "react-icons/ri"
+import { AiOutlineUpload } from "react-icons/ai"
+import { MdDelete } from "react-icons/md"
 import ChangePasswordModal from "./ChangePasswordModal"
 import { ModalHandler } from "@/types/Modal"
 import Loader from "@/components/Loader"
+import { DeleteConfirmationModal } from "@/components/DeleteConfirmationModal"
+import { useRouter } from "next/navigation"
 
 export default function Profile() {
+  const router = useRouter()
+
   const [changePasswordModalOpen, setChangePasswordModalOpen] = useState<boolean>(false)
+  const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false)
 
   const {
     data: owner,
     isLoading,
     error,
-    mutate
+    mutate,
   }: { data: User | null; [x: string]: any } = useGetUserProfile()
 
   const { trigger, isLoading: updateUserLoading } = useUpdateUser()
 
   const { trigger: updateProfilePictureTrigger, isLoading: updateProfilePictureLoading } =
     useUpdateProfilePicture()
+
+  const { trigger: removeProfilePictureTrigger, isLoading: removeProfilePictureLoading } =
+    useRemoveProfilePicture()
+
+  const { trigger: deleteUserTrigger, isLoading: deleteUserLoading } = useDeleteUser()
 
   const profileSchema = object({
     firstName: string().min(1, { message: "Invalid first name" }).trim(),
@@ -79,12 +99,10 @@ export default function Profile() {
   const onSubmit = (data: any) => {
     trigger(
       {
-        data: {
-          username: data.username,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          about: data.about,
-        },
+        username: data.username,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        about: data.about,
       },
       () => notification("success", "Profile updated successfully"),
       () => notification("error", "An error occurred while updating profile")
@@ -92,6 +110,8 @@ export default function Profile() {
   }
 
   const handleOpen: ModalHandler = () => setChangePasswordModalOpen((cur) => !cur)
+
+  const handleDeleteOpen: ModalHandler = () => setConfirmDeleteModalOpen((cur) => !cur)
 
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     let files = event.target.files
@@ -123,51 +143,87 @@ export default function Profile() {
     }
   }
 
+  const removeProfilePicture = () => {
+    removeProfilePictureTrigger(
+      null,
+      () => {
+        notification("success", "Profile picture removed successfully")
+        mutate()
+      },
+      () => notification("error", "An error occurred while removing profile picture")
+    )
+  }
+
+  const deleteUser = () => {
+    deleteUserTrigger(
+      null,
+      () => {
+        notification("success", "User permanently deleted")
+        router.push("/")
+      },
+      () => notification("error", "An error occurred during deletion")
+    )
+  }
+
   return (
-    <PageStatus data={owner} isLoading={isLoading} error={error && "Something went wrong"}>
+    <PageStatus
+      data={owner}
+      isLoading={isLoading}
+      error={error && "Something went wrong"}
+      className="flex flex-col gap-6"
+    >
       <UICard className="w-full p-2 pt-6 bg-white">
         <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
           My Profile
         </UITypography>
         <UICardHeader className="m-0 shadow-none flex flex-col gap-3 justify-center items-center ">
-          <label
-            htmlFor="dropzone-file"
-            className="w-[120px] h-[120px] relative cursor-pointer overflow-hidden rounded-full"
-          >
-            {owner?.userProfile?.profileImage ? (
+          <div className="w-[120px] h-[120px] relative overflow-hidden rounded-full">
+            {owner?.userProfile?.profileImage?.url ? (
               <UIAvatar
-                src={owner?.userProfile?.profileImage}
+                src={owner?.userProfile?.profileImage?.url}
                 alt="avatar"
                 className="w-[120px] h-[120px]"
               />
             ) : (
               <RiAccountCircleFill className="text-slate-800" size="120px" />
             )}
-            {updateProfilePictureLoading ? (
+            {updateProfilePictureLoading || removeProfilePictureLoading ? (
               <div className="absolute top-0 w-full h-full bg-slate-800/70 flex flex-col justify-center items-center group">
                 <Loader size="40px" />
               </div>
             ) : (
               <div className="absolute top-0 w-full h-full hover:bg-slate-800/70 flex flex-col justify-center items-center group">
-                <UITypography className="text-sm text-center text-white hidden group-hover:block">
-                  Upload a new profile picture
-                </UITypography>
+                <div className="group-hover:visible flex flex-row gap-2 invisible">
+                  <UITooltip content="Upload">
+                    <label
+                      htmlFor="dropzone-file"
+                      className="h-[40px] w-[40px] bg-white rounded-full flex flex-col justify-center items-center cursor-pointer"
+                    >
+                      <AiOutlineUpload className="text-[20px]" />
+                      <input
+                        id="dropzone-file"
+                        type="file"
+                        className="hidden"
+                        multiple
+                        accept="image/*"
+                        onChange={onSelectImage}
+                      />
+                    </label>
+                  </UITooltip>
+                  <UITooltip content="Delete">
+                    <UIIconButton
+                      color="red"
+                      variant="filled"
+                      className="rounded-full transition-none"
+                      onClick={removeProfilePicture}
+                    >
+                      <MdDelete className="text-[20px]" />
+                    </UIIconButton>
+                  </UITooltip>
+                </div>
               </div>
             )}
-
-            <input
-              id="dropzone-file"
-              type="file"
-              className="hidden"
-              multiple
-              accept="image/*"
-              onChange={onSelectImage}
-            />
-          </label>
-          {/* <div className="flex flex-row gap-1 items-center">
-              <UIRating value={4} ratedColor="amber" readonly />
-              <UITypography className="font-bold">{owner?.userProfile?.rating} Rated</UITypography>
-            </div> */}
+          </div>
         </UICardHeader>
         <UICardBody>
           <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
@@ -216,12 +272,6 @@ export default function Profile() {
                   className="pr-10"
                   disabled
                 />
-                {/* <UIIconButton
-                    color="white"
-                    className="absolute right-[2px] top-[2px] border rounded"
-                  >
-                    <AiFillEdit className="text-[20px]" />
-                  </UIIconButton> */}
               </div>
               <UIFieldError name="email" />
             </div>
@@ -254,12 +304,6 @@ export default function Profile() {
                   className="pr-10"
                   disabled
                 />
-                {/* <UIIconButton
-                    color="white"
-                    className="absolute right-[2px] top-[2px] border rounded"
-                  >
-                    <AiFillEdit className="text-[20px]" />
-                  </UIIconButton> */}
               </div>
               <UIFieldError name="phone" />
             </div>
@@ -275,6 +319,28 @@ export default function Profile() {
         </UICardBody>
       </UICard>
       <ChangePasswordModal open={changePasswordModalOpen} handleOpen={handleOpen} />
+      <UICard className="w-full p-2 pt-6 bg-white">
+        <UITypography variant="h4" className="ml-6" color="red">
+          Delete Account
+        </UITypography>
+        <UICardBody>
+          <UITypography>
+            Please note that once your account is deleted, all data under it will be permanently
+            removed from Boardso. Account deletion is irreversible.
+          </UITypography>
+        </UICardBody>
+        <UICardFooter className="pt-0 flex flex-row justify-center">
+          <UIButton color="red" onClick={handleDeleteOpen}>
+            Permanently delete account
+          </UIButton>
+        </UICardFooter>
+      </UICard>
+      <DeleteConfirmationModal
+        open={confirmDeleteModalOpen}
+        handleOpen={handleDeleteOpen}
+        onDelete={deleteUser}
+        loading={deleteUserLoading}
+      />
     </PageStatus>
   )
 }

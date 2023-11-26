@@ -28,9 +28,11 @@ import AddLocationModal from "../../components/AddLocationModal"
 import { ModalHandler } from "@/types/Modal"
 import { MarkerF } from "@react-google-maps/api"
 import GoogleMapWrapper from "../../components/GoogleMapWrapper"
-import { billboardTypes, currencies, periods, unitsOfMeasurement } from "../../../utils"
+import { billboardTypes, currencies, periods, unitsOfMeasurement, useProtectedRoute } from "../../../utils"
 
 export default function Page() {
+  // user must be logged in to access this page
+  useProtectedRoute()
   const { trigger, isLoading } = useAddBillboard()
   const [selectedImages, setSelectedImages] = useState<File[]>([])
   const [imagePreviews, setImagePreviews] = useState<string[]>([])

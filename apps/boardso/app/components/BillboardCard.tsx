@@ -21,6 +21,8 @@ import {
   UITypography,
   notification,
 } from "ui"
+import { DeleteConfirmationModal } from "./DeleteConfirmationModal"
+import { ModalHandler } from "@/types/Modal"
 
 export default function BillboardCard({
   className,
@@ -38,6 +40,10 @@ export default function BillboardCard({
   const { isLoading: deleteBillboardLoading, trigger: deleteBillboard } = useDeleteBillboard(
     data.id
   )
+
+  const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState<boolean>(false)
+
+  const handleDeleteOpen: ModalHandler = () => setConfirmDeleteModalOpen((cur) => !cur)
 
   // save bookmarked status in the state for easier update
   const [isBookmarked, setIsBookmarked] = useState(data.bookmarked)
@@ -76,113 +82,124 @@ export default function BillboardCard({
       )
   }
 
+  const handleDeleteBillboard = () => {
+    deleteBillboard(
+      null,
+      () => {
+        setConfirmDeleteModalOpen(false)
+        if (refetch) refetch()
+        notification("success", "Billboard deleted successfully")
+      },
+      () =>
+        notification(
+          "error",
+          "An error has occurred while deleting billboard. Please try again later"
+        )
+    )
+  }
+
   return (
-    <Link href={`/billboards/${data.slug}`}>
-      <UICard
-        className={`cursor-pointer border-gray-200 shadow-none min-w-[200px] w-full ${className}`}
-      >
-        <UICardHeader
-          floated={false}
-          shadow={false}
-          color="transparent"
-          className="m-0 border-0 rounded-b-none h-[200px]"
+    <>
+      <Link href={`/billboards/${data.slug}`}>
+        <UICard
+          className={`cursor-pointer border-gray-200 shadow-none min-w-[200px] w-full ${className}`}
         >
-          <div
-            className={"absolute w-full h-full bg-cover bg-center"}
-            style={{ backgroundImage: `url(${thumbnail})` }}
-          />
-          <div className="w-full h-full flex flex-col justify-between items-start p-2">
-            <Link href={`/${data.owner.username}`} className="z-[1]">
-              <div className="flex flex-row items-center gap-0 bg-slate-700/50 rounded-full px-1 py-1">
-                <div className="flex flex-row items-center gap-1">
-                  {data.owner.userProfile?.profileImage ? (
-                    <UIAvatar src={data.owner.userProfile.profileImage} alt="avatar" size="xs" />
-                  ) : (
-                    <RiAccountCircleFill />
-                  )}
-                  <UITypography className="text-sm font-medium normal-case text-white">
-                    {`${data.owner.firstName} ${data.owner.lastName}`}
-                  </UITypography>
+          <UICardHeader
+            floated={false}
+            shadow={false}
+            color="transparent"
+            className="m-0 border-0 rounded-b-none h-[200px]"
+          >
+            <div
+              className={"absolute w-full h-full bg-cover bg-center"}
+              style={{ backgroundImage: `url(${thumbnail})` }}
+            />
+            <div className="w-full h-full flex flex-col justify-between items-start p-2">
+              <Link href={`/${data.owner.username}`} className="z-[1]">
+                <div className="flex flex-row items-center gap-0 bg-slate-700/50 rounded-full px-1 py-1">
+                  <div className="flex flex-row items-center gap-1">
+                    {data.owner.userProfile?.profileImage ? (
+                      <UIAvatar src={data.owner.userProfile.profileImage} alt="avatar" size="xs" />
+                    ) : (
+                      <RiAccountCircleFill />
+                    )}
+                    <UITypography className="text-sm font-medium normal-case text-white">
+                      {`${data.owner.firstName} ${data.owner.lastName}`}
+                    </UITypography>
+                  </div>
+                  <FaAngleRight className="text-xl font-light text-white" />
                 </div>
-                <FaAngleRight className="text-xl font-light text-white" />
-              </div>
-            </Link>
-            {editable && (
-              <div className="flex flex-col gap-2 absolute right-2 top-2">
-                <UITooltip content="Edit billboard">
-                  <Link href={`/edit-billboard/${data.uid}`}>
-                    <UIIconButton color="white">
-                      <AiFillEdit className="text-[20px]" />
+              </Link>
+              {editable && (
+                <div className="flex flex-col gap-2 absolute right-2 top-2">
+                  <UITooltip content="Edit billboard">
+                    <Link href={`/edit-billboard/${data.uid}`}>
+                      <UIIconButton color="white">
+                        <AiFillEdit className="text-[20px]" />
+                      </UIIconButton>
+                    </Link>
+                  </UITooltip>
+                  <UITooltip content="Delete billboard">
+                    <UIIconButton
+                      color="red"
+                      variant="filled"
+                      onClick={(e: any) => {
+                        e.preventDefault()
+                        setConfirmDeleteModalOpen(true)
+                      }}
+                    >
+                      <MdDelete className="text-[20px]" />
                     </UIIconButton>
-                  </Link>
-                </UITooltip>
-                <UITooltip content="Delete billboard">
-                  <UIIconButton
-                    color="red"
-                    variant="filled"
-                    onClick={(e: any) => {
-                      e.preventDefault()
-                      deleteBillboard(
-                        null,
-                        () => {
-                          if (refetch) refetch()
-                          notification("success", "Billboard deleted successfully")
-                        },
-                        () =>
-                          notification(
-                            "error",
-                            "An error has occurred while deleting billboard. Please try again later"
-                          )
-                      )
-                    }}
-                    loading={deleteBillboardLoading}
-                  >
-                    <MdDelete className="text-[20px]" />
-                  </UIIconButton>
-                </UITooltip>
+                  </UITooltip>
+                </div>
+              )}
+              <div className="w-full flex flex-row justify-end">
+                <UIIconButton
+                  color="gray"
+                  variant="filled"
+                  className="rounded-full bg-slate-100"
+                  onClick={onBookmarkClick}
+                  loading={saveBillboardLoading || removeBookmarkLoading}
+                >
+                  {isBookmarked ? (
+                    <BsBookmarkDashFill className="text-xl text-amber-500" />
+                  ) : (
+                    <BsBookmarkHeart className="text-xl text-amber-500" />
+                  )}
+                </UIIconButton>
               </div>
-            )}
-            <div className="w-full flex flex-row justify-end">
-              <UIIconButton
-                color="gray"
-                variant="filled"
-                className="rounded-full bg-slate-100"
-                onClick={onBookmarkClick}
-                loading={saveBillboardLoading || removeBookmarkLoading}
-              >
-                {isBookmarked ? (
-                  <BsBookmarkDashFill className="text-xl text-amber-500" />
-                ) : (
-                  <BsBookmarkHeart className="text-xl text-amber-500" />
-                )}
-              </UIIconButton>
             </div>
-          </div>
-        </UICardHeader>
-        <UICardBody className="p-3 pb-0">
-          <div className="flex items-center justify-between">
-            <UITypography color="blue-gray" className="font-medium">
-              {data.title}
-            </UITypography>
-            <UITypography color="teal" className="font-bold text-xl">
-              {`GHS ${data.price}`}
-            </UITypography>
-          </div>
-          <div className="flex flex-row gap-1 text-slate-500">
-            <UITypography className="font-normal text-xs">
-              {data.billboardLocation.address}
-            </UITypography>
-          </div>
-          <div className="flex flex-row gap-1 text-slate-500">
-            <UITypography className="font-normal text-xs">
-              {`${data.width} ft x ${data.height} ft`}
-            </UITypography>
-          </div>
-        </UICardBody>
-        <UICardFooter className="flex justify-end p-3 pt-0">
-          {/* <UITypography className="text-xs font-normal italic">Promoted</UITypography> */}
-        </UICardFooter>
-      </UICard>
-    </Link>
+          </UICardHeader>
+          <UICardBody className="p-3 pb-0">
+            <div className="flex items-center justify-between">
+              <UITypography color="blue-gray" className="font-medium">
+                {data.title}
+              </UITypography>
+              <UITypography color="teal" className="font-bold text-xl">
+                {`GHS ${data.price}`}
+              </UITypography>
+            </div>
+            <div className="flex flex-row gap-1 text-slate-500">
+              <UITypography className="font-normal text-xs">
+                {data.billboardLocation.address}
+              </UITypography>
+            </div>
+            <div className="flex flex-row gap-1 text-slate-500">
+              <UITypography className="font-normal text-xs">
+                {`${data.width} ft x ${data.height} ft`}
+              </UITypography>
+            </div>
+          </UICardBody>
+          <UICardFooter className="flex justify-end p-3 pt-0">
+          </UICardFooter>
+        </UICard>
+      </Link>
+      <DeleteConfirmationModal
+        open={confirmDeleteModalOpen}
+        handleOpen={handleDeleteOpen}
+        onDelete={handleDeleteBillboard}
+        loading={deleteBillboardLoading}
+      />
+    </>
   )
 }
