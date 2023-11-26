@@ -1,4 +1,4 @@
-import { useAddContacts, useEditContacts } from "@/services/hooks/users"
+import { useAddContacts, useEditContact } from "@/services/hooks/users"
 import { ModalHandler } from "@/types/Modal"
 import { contactTypes } from "@/utils/constants"
 import { useEffect, useState } from "react"
@@ -31,7 +31,7 @@ type Props = {
 
 export function AddContactModal({ open, handleOpen, userContact }: Props) {
   const { trigger, isLoading } = useAddContacts()
-  const { trigger: editTrigger, isLoading: editLoading } = useEditContacts(userContact?.id)
+  const { trigger: editTrigger, isLoading: editLoading } = useEditContact(userContact?.id)
 
   const [selectedContactType, setSelectedContactType] = useState<{
     label: string
@@ -101,7 +101,7 @@ export function AddContactModal({ open, handleOpen, userContact }: Props) {
         (error: any) => {
           notification(
             "error",
-            error.response?.data?.message || "Error occurred while editting contacts"
+            error.response?.data?.message || "Error occurred while editing contacts"
           )
         }
       )
@@ -165,7 +165,6 @@ export function AddContactModal({ open, handleOpen, userContact }: Props) {
               <div className="h-[65px]">
                 <div>
                   <UIInput
-                    // name="title"
                     {...form.register("title")}
                     error={hasError(form, "title")}
                     placeholder={selectedContactType.titlePlaceholder}

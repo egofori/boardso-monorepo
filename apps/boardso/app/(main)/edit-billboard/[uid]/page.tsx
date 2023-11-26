@@ -28,11 +28,16 @@ import AddLocationModal from "../../../components/AddLocationModal"
 import { ModalHandler } from "@/types/Modal"
 import { MarkerF } from "@react-google-maps/api"
 import GoogleMapWrapper from "../../../components/GoogleMapWrapper"
-import { billboardTypes, currencies, periods, unitsOfMeasurement } from "../../../../utils"
+import {
+  billboardTypes,
+  currencies,
+  periods,
+  unitsOfMeasurement,
+  useProtectedRoute,
+} from "../../../../utils"
 import { useParams } from "next/navigation"
 import { Billboard } from "@/types/Billboard"
 import { PageStatus } from "@/components/PageStatus"
-import { useRouter } from "next/navigation"
 import Loader from "@/components/Loader"
 
 function ImageCard({ image, remove }: { image: string; remove: any }) {
@@ -55,6 +60,9 @@ function ImageCard({ image, remove }: { image: string; remove: any }) {
 }
 
 export default function Page() {
+  // user must be logged in to access this page
+  useProtectedRoute()
+
   const { uid } = useParams()
 
   const {
@@ -63,7 +71,7 @@ export default function Page() {
     error,
   }: { data: Billboard | null; [x: string]: any } = useGetBillboard({ uid })
 
-  const { trigger, isLoading } = useEditBillboard(uid)
+  const { trigger, isLoading } = useEditBillboard(billboard?.id)
 
   const billboardImages = useMemo(
     () => billboard?.images?.filter((image) => image.id !== billboard.thumbnailId),
@@ -238,7 +246,11 @@ export default function Page() {
                       className="overflow-hidden flex flex-col items-center justify-center gap-3 w-full h-full min-w-[256px] rounded-lg cursor-pointer bg-primary-100 hover:brightness-[0.98] active:brightness-90"
                     >
                       <div className="bg-primary-200 rounded-full p-1">
-                        { imagesLoading ? <Loader className="text-primary-400 text-7xl" /> : <BiPlus className="text-primary-400 text-7xl" />}
+                        {imagesLoading ? (
+                          <Loader className="text-primary-400 text-7xl" />
+                        ) : (
+                          <BiPlus className="text-primary-400 text-7xl" />
+                        )}
                       </div>
                       <input
                         id="dropzone-file"

@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  # development
+  boardso-web-dev:
+    image: boardso-web-dev
+    build:
+      context: .
+      target: dev
+    env_file:
+      - ./.env.local
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - '3000:3000'
+  # production
+  boardso-web:
+    image: boardso-web
+    build:
+      context: .
+      target: prod
+    env_file:
+      - ./.env
+    ports:
+      - '3000:3000'

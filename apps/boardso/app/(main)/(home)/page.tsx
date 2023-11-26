@@ -113,7 +113,6 @@ export default function Page() {
         className="h-[500px] flex justify-center items-center flex-col gap-5 bg-no-repeat bg-cover relative"
         style={{
           backgroundImage: "url('/assets/images/hero_image.jpg')",
-          backgroundPositionY: -150,
         }}
       >
         <div className="h-full w-full bg-black/40 absolute" />

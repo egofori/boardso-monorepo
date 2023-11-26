@@ -14,5 +14,5 @@ export interface User {
 export interface UserProfile {
   userContacts: UserContact[]
   about: string | null
-  profileImage: string | null
+  profileImage: { url: string | null } | null
 }

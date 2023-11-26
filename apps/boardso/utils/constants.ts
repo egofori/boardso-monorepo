@@ -29,7 +29,22 @@ export const sorts = [
 ]
 
 export const contactTypes = [
-  { label: "Link", value: "URL", titlePlaceholder: "eg. WhatsApp", contactPlaceholder: "https://example.com" },
-  { label: "Email", value: "EMAIL", titlePlaceholder: "eg. Support Email", contactPlaceholder: "john@example.com" },
-  { label: "Phone number", value: "PHONE", titlePlaceholder: "eg. Phone number", contactPlaceholder: "0540000000" },
+  {
+    label: "Link",
+    value: "URL",
+    titlePlaceholder: "eg. WhatsApp",
+    contactPlaceholder: "https://example.com",
+  },
+  {
+    label: "Email",
+    value: "EMAIL",
+    titlePlaceholder: "eg. Support Email",
+    contactPlaceholder: "john@example.com",
+  },
+  {
+    label: "Phone number",
+    value: "PHONE",
+    titlePlaceholder: "eg. Phone number",
+    contactPlaceholder: "0540000000",
+  },
 ]

@@ -1,11 +1,22 @@
 import { PageStatus } from "@/components/PageStatus"
-import { useGetContacts } from "@/services/hooks/users"
+import { useDeleteContact, useGetContacts } from "@/services/hooks/users"
 import { UserContact } from "@/types/Billboard"
 import { stringToHref } from "@/utils/index"
 import Link from "next/link"
-import { UIButton, UICard, UICardBody, UICardHeader, UITypography } from "ui"
+import {
+  UIButton,
+  UICard,
+  UICardBody,
+  UICardHeader,
+  UIIconButton,
+  UITooltip,
+  UITypography,
+  notification,
+} from "ui"
 import { AiOutlineLink, AiOutlineMail } from "react-icons/ai"
 import { BsPhone } from "react-icons/bs"
+import { AiFillEdit } from "react-icons/ai"
+import { MdDelete } from "react-icons/md"
 import { useCallback, useEffect, useState } from "react"
 import { AddContactModal } from "./AddContactModal"
 import { ModalHandler } from "@/types/Modal"
@@ -34,6 +45,8 @@ export function Contacts() {
 
   const handleOpen: ModalHandler = () => setAddContactModalOpen((cur) => !cur)
 
+  const { trigger: deleteContactTrigger } = useDeleteContact()
+
   const editUserContact = (userContact: UserContact) => {
     setSelectedUserContact(userContact)
     setAddContactModalOpen(true)
@@ -42,6 +55,17 @@ export function Contacts() {
   useEffect(() => {
     if (!addContactModalOpen) mutate()
   }, [addContactModalOpen, mutate])
+
+  const deleteContact = (id: number) => {
+    deleteContactTrigger(
+      id,
+      () => {
+        mutate()
+        notification("success", "Contacts deleted successfully")
+      },
+      () => notification("error", "Error occurred while editing contacts")
+    )
+  }
 
   return (
     <PageStatus
@@ -100,15 +124,27 @@ export function Contacts() {
                       </Link>
                     ))}
                   </td>
-                  <td className="p-4 flex flex-row justify-end">
-                    <UIButton
-                      color="amber"
-                      variant="text"
-                      className="normal-case font-normal text-sm"
-                      onClick={() => editUserContact(userContact)}
-                    >
-                      Edit
-                    </UIButton>
+                  <td className="p-4 flex flex-row justify-end gap-1">
+                    <UITooltip content="Edit">
+                      <UIIconButton
+                        color="amber"
+                        variant="text"
+                        className="normal-case font-normal text-sm"
+                        onClick={() => editUserContact(userContact)}
+                      >
+                        <AiFillEdit className="text-[20px]" />
+                      </UIIconButton>
+                    </UITooltip>
+                    <UITooltip content="Delete">
+                      <UIIconButton
+                        color="red"
+                        variant="text"
+                        className="normal-case font-normal text-sm"
+                        onClick={() => deleteContact(userContact.id)}
+                      >
+                        <MdDelete className="text-[20px]" />
+                      </UIIconButton>
+                    </UITooltip>
                   </td>
                 </tr>
               ))}

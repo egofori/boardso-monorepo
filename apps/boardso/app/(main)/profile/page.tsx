@@ -6,8 +6,12 @@ import Profile from "./Profile"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Contacts } from "./Contacts"
 import { Bookmarks } from "./Bookmarks"
+import { useProtectedRoute } from "@/utils/index"
 
 export default function Page() {
+    // user must be logged in to access this page
+  useProtectedRoute()
+  
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
