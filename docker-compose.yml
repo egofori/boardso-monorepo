@@ -5,9 +5,10 @@ services:
     image: boardso-web-dev
     build:
       context: .
+      dockerfile: ./apps/boardso/Dockerfile
       target: dev
     env_file:
-      - ./.env.local
+      - ./apps/boardso/.env.local
     volumes:
       - .:/app
       - /app/node_modules
@@ -19,8 +20,9 @@ services:
     image: boardso-web
     build:
       context: .
+      dockerfile: ./apps/boardso/Dockerfile
       target: prod
     env_file:
-      - ./.env
+      - ./apps/boardso/.env
     ports:
       - '3000:3000'
