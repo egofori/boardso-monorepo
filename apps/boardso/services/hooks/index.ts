@@ -1,4 +1,5 @@
 import useAPIGet from "@/lib/hooks/useAPIGet"
+import { useEffect, useState } from "react"
 import useSWRInfinite from "swr/infinite"
 
 export const useGetCountries = () => {
@@ -11,13 +12,76 @@ export const useGetCurrentCountry = () => {
   return value
 }
 
+// export const useGetImages = (imageURLs: string[]) => {
+//   const fetcher = (data: any) =>
+//     fetch(data).then((res) => res.blob())
+//   // const fetcher = (data: any): Promise<any> => {
+//   //   return new Promise(async (resolve, reject) => {
+//   //     var xhr = new XMLHttpRequest()
+//   //     xhr.open("GET", data, true)
+//   //     xhr.responseType = "blob"
+//   //     xhr.onload = () => {
+//   //       if (xhr.readyState == XMLHttpRequest.DONE) {
+//   //         resolve(xhr.response)
+//   //       } else {
+//   //         reject()
+//   //       }
+//   //     }
+
+//   //     xhr.send()
+//   //   })
+//   // }
+
+//   return useSWRInfinite((index: number) => imageURLs[index], fetcher, {
+//     initialSize: imageURLs.length,
+//     parallel: true,
+//   })
+// }
+
 export const useGetImages = (imageURLs: string[]) => {
-  const fetcher = (data: any) =>
-    fetch(data, { headers: { Origin: process.env["NEXT_PUBLIC_FRONTEND_BASE_URL"] } }).then((res) => res.blob())
-  return useSWRInfinite((index: number) => imageURLs[index], fetcher, {
-    initialSize: imageURLs.length,
-    parallel: true,
-  })
+  const [imagesData, setImagesData] = useState<any[]>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<any>(null)
+
+  const fetcher = async (data: any) => {
+    let domain = new URL(data).hostname.replace("www.", "")
+
+    if (domain === "storage.cloud.google.com") {
+      return new Promise(async (resolve, reject) => {
+        var xhr = new XMLHttpRequest()
+        xhr.open("GET", data, true)
+        xhr.responseType = "blob"
+        xhr.onload = () => {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            resolve(xhr.response)
+          } else {
+            reject()
+          }
+        }
+
+        xhr.send()
+      })
+    } else {
+      return await fetch(data).then((res) => res.blob())
+    }
+  }
+
+  useEffect(() => {
+    setIsLoading(true)
+    Promise.all(imageURLs.map((url) => fetcher(url)))
+      .then((res) => {
+        setIsLoading(false)
+        setImagesData(res)
+        setError(null)
+      })
+      .catch((err) => {
+        setIsLoading(false)
+        setError(err)
+      })
+  }, [imageURLs])
+
+  return { isLoading, data: imagesData, error }
 }
+
 export * from "./auth"
 export * from "./billboards"
