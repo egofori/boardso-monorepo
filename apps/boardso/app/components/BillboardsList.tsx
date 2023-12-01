@@ -20,7 +20,7 @@ export function BillboardsList({
 }: {
   params: any
   setParams: Function
-  owner: User | null
+  owner?: User | null
 }) {
   const { owner: username } = useParams()
   const searchParams = useSearchParams()

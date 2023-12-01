@@ -82,7 +82,11 @@ export default function Page() {
     [billboardImages]
   )
 
-  const { data: billboardImagesData, isLoading: imagesLoading } = useGetImages(imageURLs)
+  const { data: billboardImagesData, isLoading: imagesLoading, error: billboardImagesError } = useGetImages(imageURLs)
+
+  useEffect(() => {
+    if (billboardImagesError) notification("error", "Could not load the images. Reload the page to try again.")
+  }, [billboardImagesError])
 
   const [selectedImages, setSelectedImages] = useState<File[]>([])
   const [imagePreviews, setImagePreviews] = useState<string[]>([])
@@ -207,12 +211,12 @@ export default function Page() {
       setLocationDetails({ coordinates: { lat, lng }, ...rest })
       if (billboardImagesData) {
         const files =
-          billboardImages?.map(
-            (image, i) =>
-              new File([billboardImagesData[i]], `${image.name}${image.extension}`, {
-                type: image.mime,
-              })
-          ) || []
+          billboardImagesData.map((imageData, i) => {
+            const image = billboardImages?.at(i)
+            return new File([imageData], `${image?.name}${image?.extension}`, {
+              type: image?.mime,
+            })
+          }) || []
         setSelectedImages(files)
         const images = files.map((file) => URL.createObjectURL(file))
         setImagePreviews(images)

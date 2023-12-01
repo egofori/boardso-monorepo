@@ -83,8 +83,8 @@ export default function Page() {
       <main className="layout-wrapper flex 2xl:flex-row flex-col items-start justify-center gap-6 py-5">
         <div className="shrink-0 2xl:w-96 w-full flex flex-col gap-6">
           <UICard className="flex flex-col justify-center items-center gap-1 p-4">
-            {owner?.userProfile?.profileImage ? (
-              <UIAvatar src={owner.userProfile?.profileImage} alt="avatar" size="xl" />
+            {owner?.userProfile?.profileImage?.url ? (
+              <UIAvatar src={owner.userProfile.profileImage.url} alt="avatar" size="xl" />
             ) : (
               <RiAccountCircleFill className="text-slate-800" size="74px" />
             )}

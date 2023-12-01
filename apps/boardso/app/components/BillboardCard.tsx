@@ -32,7 +32,7 @@ export default function BillboardCard({
 }: {
   className?: string
   data: Billboard
-  editable: boolean
+  editable?: boolean
   refetch?: Function
 }) {
   const { isLoading: saveBillboardLoading, trigger: saveBillboard } = useSaveBillboard(data.id)
