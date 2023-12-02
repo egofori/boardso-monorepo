@@ -2,7 +2,8 @@ version: '3.9'
 services:
   # development
   boardso-web-dev:
-    image: boardso-web-dev
+    container_name: boardso-web-dev
+    image: egofori/boardso-web-dev:1.0.0
     build:
       context: .
       dockerfile: ./apps/boardso/Dockerfile
@@ -17,7 +18,8 @@ services:
       - '3000:3000'
   # production
   boardso-web:
-    image: boardso-web
+    container_name: boardso-web
+    image: egofori/boardso-web:1.0.0
     build:
       context: .
       dockerfile: ./apps/boardso/Dockerfile
