@@ -2,8 +2,6 @@ node_modules
 **/node_modules
 .next
 **/.next
-!apps/boardso/.env
-!apps/boardso/.env.local
 .env
 .env.local
 **/.env
