@@ -8,7 +8,6 @@ EXPOSE 3000
 # production
 FROM base as prod
 WORKDIR /app
-COPY ./apps/boardso/.env ./apps/boardso/.env
 ENV NODE_ENV=production
 RUN npm ci
 RUN npm run build -w boardso
@@ -17,7 +16,6 @@ CMD npm start -w boardso
 # development
 FROM base as dev
 WORKDIR /app
-COPY ./apps/boardso/.env.local ./apps/boardso/.env.local
 ENV NODE_ENV=development
 RUN npm install 
 CMD npm run dev -w boardso
