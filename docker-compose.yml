@@ -24,8 +24,6 @@ services:
       context: .
       dockerfile: ./apps/boardso/Dockerfile
       target: prod
-      args:
-        NEXT_PUBLIC_API_BASE_URL: https://api.boardso.com
     env_file:
       - ./apps/boardso/.env
     ports:

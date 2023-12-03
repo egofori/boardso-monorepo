@@ -1,7 +1,4 @@
-ARG NEXT_PUBLIC_API_BASE_URL
-
 FROM node:18-alpine as base
-ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
 # RUN apk add --no-cache g++ make py3-pip libc6-compat
 WORKDIR /app
 COPY . .
