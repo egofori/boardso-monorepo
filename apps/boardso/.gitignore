@@ -28,9 +28,6 @@ yarn-error.log*
 .env.local
 .env
 
-# firebase config
-firebaseConfig.json
-
 # vercel
 .vercel
 
