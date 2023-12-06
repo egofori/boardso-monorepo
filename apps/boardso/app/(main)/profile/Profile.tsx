@@ -172,8 +172,8 @@ export default function Profile() {
       error={error && "Something went wrong"}
       className="flex flex-col gap-6"
     >
-      <UICard className="w-full p-2 pt-6 bg-white">
-        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
+      <UICard className="w-full p-5 sm:p-8 bg-white">
+        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]">
           My Profile
         </UITypography>
         <UICardHeader className="m-0 shadow-none flex flex-col gap-3 justify-center items-center ">
@@ -225,7 +225,7 @@ export default function Profile() {
             )}
           </div>
         </UICardHeader>
-        <UICardBody>
+        <UICardBody className="p-0">
           <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
             <div>
               <UIInput
@@ -307,7 +307,7 @@ export default function Profile() {
               </div>
               <UIFieldError name="phone" />
             </div>
-            <div className="flex gap-8">
+            <div className="flex gap-2">
               <UIButton variant="outlined" className="w-full" onClick={() => resetForm()}>
                 CANCEL
               </UIButton>
@@ -319,17 +319,19 @@ export default function Profile() {
         </UICardBody>
       </UICard>
       <ChangePasswordModal open={changePasswordModalOpen} handleOpen={handleOpen} />
-      <UICard className="w-full p-2 pt-6 bg-white">
-        <UITypography variant="h4" className="ml-6" color="red">
-          Delete Account
-        </UITypography>
-        <UICardBody>
+      <UICard className="w-full p-5 sm:p-8 bg-white flex flex-col gap-6">
+        <div className="w-full">
+          <UITypography variant="h4" color="red">
+            Delete Account
+          </UITypography>
+        </div>
+        <UICardBody className="p-0">
           <UITypography>
             Please note that once your account is deleted, all data under it will be permanently
             removed from Boardso. Account deletion is irreversible.
           </UITypography>
         </UICardBody>
-        <UICardFooter className="pt-0 flex flex-row justify-center">
+        <UICardFooter className="p-0 flex flex-row justify-center">
           <UIButton color="red" onClick={handleDeleteOpen}>
             Permanently delete account
           </UIButton>

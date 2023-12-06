@@ -9,4 +9,7 @@
   .link {
     @apply text-primary-400 hover:text-primary-300
   }
+  .info-text {
+    @apply !text-slate-800 !text-lg md:!text-xl
+  }
 }

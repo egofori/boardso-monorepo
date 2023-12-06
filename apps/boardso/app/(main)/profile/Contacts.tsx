@@ -74,7 +74,7 @@ export function Contacts() {
       error={error && "Unable to list contacts"}
     >
       <UICard className="w-full p-2 pt-6">
-        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
+        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]">
           Contacts
         </UITypography>
         <UICardHeader className="m-0 shadow-none pr-6 flex flex-row justify-end">

@@ -180,13 +180,13 @@ export default function Page() {
   }
 
   return (
-    <main className="relative flex flex-col justify-between">
-      <UICard className="w-[410px] p-10 m-auto rounded-2xl">
+    <main className="relative flex flex-col justify-between px-6">
+      <UICard className="w-full max-w-[410px] p-5 sm:p-10 m-auto rounded-2xl">
         {verifyEmail ? (
           <VerifyEmail email={email} ok={() => setVerifyEmail(false)} />
         ) : (
           <>
-            <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
+            <UITypography variant="h3" className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]">
               New Account
             </UITypography>
             <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6">

@@ -21,7 +21,7 @@ export default function PlaceCard({ className, data, image }: Props) {
         onClick={() => router.push("/billboards")}
         shadow={false}
         className={twMerge(
-          "cursor-pointer relative w-full h-[120px] overflow-hidden flex flex-col gap-1 justify-center items-center bg-cover bg-center",
+          "cursor-pointer relative w-full h-[100px] sm:h-[120px] overflow-hidden flex flex-col gap-1 justify-center items-center bg-cover bg-center",
           className
         )}
         style={{ backgroundImage: `url('${image}')` }}
@@ -29,11 +29,11 @@ export default function PlaceCard({ className, data, image }: Props) {
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
         <UITypography
           color="white"
-          className="font-medium text-white text-2xl z-[1]"
+          className="font-medium text-white text-xl sm:text-[22px] z-[1]"
         >
           {data.sublocality || data.locality}
         </UITypography>
-        <UITypography className="mb-4 text-white text-xl z-[1]">
+        <UITypography className="mb-4 text-white text-lg sm:text-xl z-[1]">
           {data.administrativeAreaLevel2}
         </UITypography>
       </UICard>

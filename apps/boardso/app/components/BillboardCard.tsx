@@ -155,9 +155,9 @@ export default function BillboardCard({
               )}
               <div className="w-full flex flex-row justify-end">
                 <UIIconButton
-                  color="gray"
+                  color="white"
                   variant="filled"
-                  className="rounded-full bg-slate-100"
+                  className="rounded-full"
                   onClick={onBookmarkClick}
                   loading={saveBillboardLoading || removeBookmarkLoading}
                 >

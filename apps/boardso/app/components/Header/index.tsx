@@ -134,14 +134,14 @@ export default function Header() {
   }
   return (
     <Navbar className="sticky inset-0 z-10 h-max rounded-none max-w-full px-0">
-      <div className="layout-wrapper flex justify-between items-center">
-        <div className="flex gap-2 items-center">
+      <div className="layout-wrapper flex justify-between items-center gap-4">
+        <div className="flex gap-1 items-start">
           <Link href="/" className="font-bold text-4xl text-tertiary-800">
             boardso
           </Link>
           <CountryDropdown />
         </div>
-        <div className="flex flex-row items-center gap-3">
+        <div className="flex flex-row items-center gap-2 sm:gap-3 overflow-hidden">
           {pathname !== "/billboards" && pathname !== "/" && (
             <>
               <UIForm form={form} onSubmit={onSubmit} className="relative hidden md:block">
@@ -172,7 +172,7 @@ export default function Header() {
               <Link href="/add-billboard">
                 <UIButton
                   variant="text"
-                  className="text-base rounded-full p-3 md:[&>span]:mr-1 [&>span]:mr-0"
+                  className="text-base rounded-full p-2 [&>span]:!mr-0 bg-teal-500/10 md:bg-transparent"
                   icon={<BiPlus fontSize="25px" />}
                 >
                   <span className="md:block hidden">Add Billboard</span>

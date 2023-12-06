@@ -224,7 +224,7 @@ export function AddContactModal({ open, handleOpen, userContact }: Props) {
               </div>
             </div>
           </div>
-          <div className="flex gap-8">
+          <div className="flex gap-2">
             <UIButton variant="outlined" className="w-full" onClick={onClose}>
               Cancel
             </UIButton>

@@ -127,10 +127,10 @@ export default function AddLocationModal({
         // check if type-name is in the address-components-types 
         if (addressComponents[i].types.includes(type.name)) {
           location[type.key] = addressComponents[i].long_name
-        } else {
-          location[type.key] = null
+          addressComponents = addressComponents.filter((component, index) => index !== i)
         }
       }
+      if(!location[type.key]) location[type.key] = null
     })
 
     location = { ...location, address: result["formatted_address"], coordinates: markerCoordinates }
@@ -189,13 +189,13 @@ export default function AddLocationModal({
   }, [locationDetailsCoordinates])
 
   return (
-    <UIModal size="lg" className="min-w-[300px]" open={open} handler={handleOpen}>
-      <UIModalHeader className="flex flex-col  gap-2">
-        <div className="flex flex-row justify-between items-center w-full">
+    <UIModal size="lg" className="min-w-[300px] w-[90%] max-w-full" open={open} handler={handleOpen}>
+      <UIModalHeader className="flex flex-col gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 justify-between items-start sm:items-center w-full">
           <UITypography variant="h4" color="blue-gray" className="font-medium">
             Add Location
           </UITypography>
-          <div className="flex  flex-row gap-1">
+          <div className="flex flex-row gap-1 w-full sm:w-max justify-center">
             <UIButton variant="text" size="md" onClick={() => handleOpen(false)}>
               Cancel
             </UIButton>
@@ -249,7 +249,7 @@ export default function AddLocationModal({
       </UIModalHeader>
       <UIModalBody className="p-0">
         <GoogleMapWrapper
-          mapContainerClassName="w-full h-[400px]"
+          mapContainerClassName="w-full h-[300px] sm:h-[400px]"
           center={center}
           zoom={16}
           onLoad={(map) => {

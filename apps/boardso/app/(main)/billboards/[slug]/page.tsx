@@ -12,7 +12,6 @@ import {
   UIIconButton,
   UIMenuItem,
   UIMenuList,
-  UITooltip,
   UITypography,
   notification,
 } from "ui"
@@ -32,12 +31,11 @@ import { MarkerF } from "@react-google-maps/api"
 import { periods } from "@/utils/constants"
 import { PageStatus } from "@/components/PageStatus"
 import { stringToHref } from "@/utils/index"
-import { MdDelete } from "react-icons/md"
-import { AiFillEdit } from "react-icons/ai"
 import { useGetUserProfile } from "@/services/hooks/users"
 import { User } from "@/types/User"
 import { DeleteConfirmationModal } from "@/components/DeleteConfirmationModal"
 import { ModalHandler } from "@/types/Modal"
+import { MdOutlineMoreVert } from "react-icons/md"
 
 export default function Page() {
   const router = useRouter()
@@ -58,9 +56,7 @@ export default function Page() {
     billboard?.id
   )
   // get current user
-  const {
-    data: currentUser,
-  }: { data: User | null; [x: string]: any } = useGetUserProfile()
+  const { data: currentUser }: { data: User | null; [x: string]: any } = useGetUserProfile()
 
   // save bookmarked status in the state for easier update
   const [isBookmarked, setIsBookmarked] = useState(false)
@@ -116,43 +112,42 @@ export default function Page() {
   return (
     <PageStatus isLoading={isLoading} data={billboard} error={error && "Billboard does not exist"}>
       <main className="layout-wrapper flex lg:flex-row flex-col items-start justify-center gap-4 py-5">
-        <UICard className="w-full p-8 bg-white flex flex-col gap-4">
-          <div className="flex flex-row justify-between items-center">
-            <div className="flex flex-col">
-              <UITypography variant="h4">{billboard?.title}</UITypography>
+        <UICard className="w-full p-5 sm:p-10 bg-white flex flex-col gap-4">
+          <div className="flex flex-row gap-2 justify-between">
+            <div className="flex flex-col w-max">
+              <UITypography
+                variant="h4"
+                className="text-xl sm:text-2xl overflow-hidden overflow-ellipsis whitespace-nowrap"
+              >
+                {billboard?.title}
+              </UITypography>
               <div className="flex flex-row gap-1 text-slate-500">
-                <IoLocationOutline className="text-sm" />
-                <UITypography className="text-sm">
+                <IoLocationOutline className="text-xs sm:text-sm" />
+                <UITypography className="text-xs sm:text-sm">
                   {billboard?.billboardLocation?.address}
                 </UITypography>
               </div>
             </div>
             {billboard?.owner?.username === currentUser?.username && (
-              <div className="flex flex-row gap-2">
-                <UITooltip content="Edit billboard">
-                  <Link href={`/edit-billboard/${billboard?.uid}`}>
-                    <UIIconButton color="white" className="border">
-                      <AiFillEdit className="text-[20px]" />
-                    </UIIconButton>
-                  </Link>
-                </UITooltip>
-                <UITooltip content="Delete billboard">
-                  <UIIconButton
-                    color="red"
-                    variant="filled"
-                    onClick={(e: any) => {
-                      e.preventDefault()
-                      setConfirmDeleteModalOpen(true)
-                    }}
-                  >
-                    <MdDelete className="text-[20px]" />
-                  </UIIconButton>
-                </UITooltip>
-              </div>
+              <UIDropdownButton
+                icon={<MdOutlineMoreVert />}
+                color="gray"
+                variant="text"
+                className="w-9 h-9 p-0 rounded-full text-slate-900 text-2xl [&>span]:mr-0"
+                arrow={false}
+                menu={
+                  <UIMenuList>
+                    <Link href={`/edit-billboard/${billboard?.uid}`}>
+                      <UIMenuItem>Edit</UIMenuItem>
+                    </Link>
+                    <UIMenuItem className="text-red-600" onClick={() => setConfirmDeleteModalOpen(true)}>Delete</UIMenuItem>
+                  </UIMenuList>
+                }
+              />
             )}
           </div>
           <UICarousel
-            className="rounded-lg h-[400px]"
+            className="rounded-lg h-64 sm:h-[400px]"
             loop
             prevArrow={({ handlePrev, firstIndex }) => (
               <UIIconButton
@@ -199,14 +194,14 @@ export default function Page() {
             {billboard?.description && (
               <div className="flex flex-col gap-1">
                 <UITypography className="text-md font-bold">Description</UITypography>
-                <UITypography>{billboard?.description}</UITypography>
+                <UITypography className="text-sm">{billboard?.description}</UITypography>
               </div>
             )}
             <div>
               <table className="w-full min-w-max table-auto text-center border border-slate-200 [&>thead>tr>th]:bg-transparent [&>thead>tr>th]:p-0 [&>thead>tr>th]:pt-1 [&>thead>tr>th]:border [&>thead>tr>th]:border-slate-200 [&>thead>tr>th]:border-b-0">
                 <thead>
                   <tr>
-                    <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                    <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 w-[50%]">
                       <UITypography className="text-xs font-medium text-slate-400">
                         TYPE
                       </UITypography>
@@ -268,9 +263,9 @@ export default function Page() {
             </UITypography>
           </UICard>
           <UIButton
-            color="gray"
-            variant="filled"
-            className="flex flex-row justify-center items-center gap-1 bg-slate-100 hover:bg-slate-100 text-amber-500"
+            color="amber"
+            variant="text"
+            className="flex flex-row justify-center items-center gap-1 bg-amber-500/10"
             onClick={onBookmarkClick}
             loading={saveBillboardLoading || removeBookmarkLoading}
             icon={
@@ -289,7 +284,7 @@ export default function Page() {
           </UIButton>
           <div className="flex flex-col gap-1 ">
             <UICard className="p-4 gap-1">
-              <UITypography className="text-sm">Owned by</UITypography>
+              <UITypography className="text-sm font-medium">Owned by</UITypography>
               <div className="flex lg:flex-col flex-row justify-between gap-6 mb-3">
                 <Link href={`/${billboard?.owner?.username}`}>
                   <div className="flex flex-row items-center gap-2">

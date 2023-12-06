@@ -7,7 +7,6 @@ import {
   CardBody,
   CardFooter,
   type CardProps,
-  type CardStylesType,
 } from "@material-tailwind/react"
 import { twMerge } from "tailwind-merge"
 

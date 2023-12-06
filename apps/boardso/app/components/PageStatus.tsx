@@ -13,7 +13,7 @@ export function PageStatus({ isLoading, data, error, children, className }: Prop
   const renderContent = () => {
     if (isLoading) return <Loader size="40px" />
     else if (data) return children
-    else if (error) return <UITypography className="text-slate-800 text-2xl">{error}</UITypography>
+    else if (error) return <UITypography className="info-text">{error}</UITypography>
   }
   return (
     <div

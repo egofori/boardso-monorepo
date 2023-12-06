@@ -1,4 +1,4 @@
-export const defaultBillboardThumbnail = "/assets/images/erik-mclean-wj_Tjw7oV-g-unsplash.jpg"
+export const defaultBillboardThumbnail = "https://storage.googleapis.com/boardso-media/site-media/default-billboard-thumbnail.jpg"
 
 export const billboardTypes = [
   { label: "Static billboard", value: "STATIC" },
@@ -47,4 +47,13 @@ export const contactTypes = [
     titlePlaceholder: "eg. Phone number",
     contactPlaceholder: "0540000000",
   },
+]
+
+export const placeImages = [
+  "https://storage.googleapis.com/boardso-media/site-media/place01.jpg",
+  "https://storage.googleapis.com/boardso-media/site-media/place02.jpg",
+  "https://storage.googleapis.com/boardso-media/site-media/place03.jpg",
+  "https://storage.googleapis.com/boardso-media/site-media/place04.jpg",
+  "https://storage.googleapis.com/boardso-media/site-media/place05.jpg",
+  "https://storage.googleapis.com/boardso-media/site-media/place06.jpg",
 ]

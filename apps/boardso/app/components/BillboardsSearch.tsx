@@ -193,7 +193,7 @@ export function BillboardsSearch({ params, setParams }: { params: any; setParams
             <BiSearch size="22px" className="text-slate-400" />
           </div>
         </div>
-        <div className="flex flex-row gap-3">
+        <div className="flex flex-row gap-3 flex-wrap sm:flex-nowrap w-full sm:w-max justify-center">
           <UIMenu
             open={locationMenuOpen}
             handler={setLocationMenuOpen}
@@ -205,7 +205,7 @@ export function BillboardsSearch({ params, setParams }: { params: any; setParams
               <UIButton
                 color="white"
                 size="sm"
-                className="flex gap-1 items-center active:brightness-95 border border-gray-200 w-max max-w-[232px]"
+                className="flex gap-1 items-center active:brightness-95 border border-gray-200 w-full sm:w-max sm:max-w-[232px]"
               >
                 <UITypography className="normal-case  overflow-hidden overflow-ellipsis whitespace-nowrap">
                   {params?.location && params?.location !== ""
@@ -265,7 +265,7 @@ export function BillboardsSearch({ params, setParams }: { params: any; setParams
             </UIMenuList>
           </UIMenu>
           <UIDropdownButton
-            className="border border-gray-200 w-max"
+            className="border border-gray-200 w-full sm:w-max"
             size="sm"
             menu={
               <UIMenuList className="max-h-[500px] max-w-[100px] rounded-xl">
@@ -293,7 +293,7 @@ export function BillboardsSearch({ params, setParams }: { params: any; setParams
               {selectedType ? selectedType.label : "Billboard type"}
             </UITypography>
           </UIDropdownButton>
-          <UIButton size="sm" type="submit">
+          <UIButton size="md" type="submit" className="hidden sm:block">
             Search
           </UIButton>
         </div>
@@ -313,7 +313,7 @@ export function BillboardsSearch({ params, setParams }: { params: any; setParams
         </UIButton>
       </div>
       {moreOpen && (
-        <div className={twMerge("flex gap-4 justify-between", username ? "flex-col md:flex-row 2xl:flex-col" : "flex-row")}>
+        <div className={twMerge("flex gap-4 justify-between flex-col md:flex-row 2xl:flex-col")}>
           <div className="flex flex-col justify-start items-start gap-3 w-full">
             <div className="flex flex-row gap-1">
               <label>Price range</label>
@@ -348,7 +348,7 @@ export function BillboardsSearch({ params, setParams }: { params: any; setParams
               <UITypography>10000</UITypography>
             </div>
           </div>
-          <UIDivider type="vertical" />
+          <UIDivider type="vertical" className="hidden sm:block" />
           <div className="flex flex-col justify-start items-start gap-3 w-full">
             <label>Dimension</label>
             <div className="flex items-center gap-2">
@@ -361,6 +361,9 @@ export function BillboardsSearch({ params, setParams }: { params: any; setParams
           </div>
         </div>
       )}
+      <UIButton size="md" type="submit" className="block sm:hidden">
+        Search
+      </UIButton>
     </UIForm>
   )
 }
