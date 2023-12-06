@@ -62,12 +62,12 @@ export function BillboardsList({
     <>
       <div
         className={twMerge(
-          "flex flex-row items-center",
+          "flex flex-row items-start",
           billboardsData && billboardsData.count > 0 ? "justify-between" : "justify-end"
         )}
       >
         {billboardsData && billboardsData.count > 0 ? (
-          <UITypography className="text-slate-800 text-lg">
+          <UITypography className="text-slate-800">
             Showing{" "}
             <b>
               {start} - {end < billboardsData.count ? end : billboardsData.count}
@@ -92,7 +92,7 @@ export function BillboardsList({
         </div>
       ) : billboards?.length === 0 ? (
         <div className="h-[150px] w-full flex flex-row justify-center items-center bg-white">
-          <UITypography className="text-slate-800 text-2xl">
+          <UITypography className="info-text">
             No billboards are available yet!
           </UITypography>
         </div>

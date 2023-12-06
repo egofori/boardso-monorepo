@@ -12,12 +12,7 @@ import Loader from "@/components/Loader"
 import { useCallback, useEffect, useState } from "react"
 import { LocationCoordinates } from "@/types/index"
 import { MarkerF } from "@react-google-maps/api"
-import place01 from "../../../public/assets/images/places/place01.jpg"
-import place02 from "../../../public/assets/images/places/place02.jpg"
-import place03 from "../../../public/assets/images/places/place03.jpg"
-import place04 from "../../../public/assets/images/places/place04.jpg"
-import place05 from "../../../public/assets/images/places/place05.jpg"
-import place06 from "../../../public/assets/images/places/place06.jpg"
+import { placeImages } from "@/utils/constants"
 
 export default function Page() {
   const [locationValue, setLocationValue] = useState("")
@@ -42,9 +37,6 @@ export default function Page() {
     lat: 5.709749,
     lng: 0.018562,
   })
-
-  // list of background images for the popular places
-  const placeImages = [place01, place06, place04, place03, place02, place05]
 
   const processLocation = (result: google.maps.GeocoderResult) => {
     let location: any = {}
@@ -81,7 +73,7 @@ export default function Page() {
     )
   }, [])
 
-  // prompt user for permission to access their location if supoorted by the browser
+  // prompt user for permission to access their location if supported by the browser
   const getUserLocation = useCallback(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -110,9 +102,9 @@ export default function Page() {
   return (
     <main>
       <div
-        className="h-[500px] flex justify-center items-center flex-col gap-5 bg-no-repeat bg-cover relative"
+        className="h-[300px] sm:h-[400px] md:h-[500px] flex justify-center items-center flex-col gap-5 bg-no-repeat bg-cover relative px-4"
         style={{
-          backgroundImage: "url('/assets/images/hero_image.jpg')",
+          backgroundImage: "url('https://storage.googleapis.com/boardso-media/site-media/hero_image.jpg')",
         }}
       >
         <div className="h-full w-full bg-black/40 absolute" />
@@ -130,7 +122,7 @@ export default function Page() {
       <div className="py-5">
         <div className="layout-wrapper flex flex-col gap-6 my-2">
           <div className="flex flex-col gap-2">
-            <UITypography variant="h4" className="text-tertiary-700">
+            <UITypography variant="h4" className="text-tertiary-700 text-[20px]">
               Popular places
             </UITypography>
             {popularPlacesLoading ? (
@@ -141,17 +133,17 @@ export default function Page() {
               <>
                 {popularPlaces.length === 0 ? (
                   <div className="h-[150px] w-full flex flex-row justify-center items-center ">
-                    <UITypography className="text-slate-800 text-2xl">
+                    <UITypography className="info-text">
                       No billboards are available yet!
                     </UITypography>
                   </div>
                 ) : (
-                  <div className="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                  <div className="grid grid-flow-row grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                     {popularPlaces?.map((place, i) => (
                       <PlaceCard
                         key={place.sublocality || place.locality}
                         data={place}
-                        image={placeImages[i]?.src}
+                        image={placeImages[i]}
                       />
                     ))}
                   </div>
@@ -160,12 +152,12 @@ export default function Page() {
             )}
           </div>
           <div className="flex flex-col gap-2">
-            <UITypography variant="h4" className="text-tertiary-700">
+            <UITypography variant="h4" className="text-tertiary-700 text-[20px]">
               Map of billboards
             </UITypography>
-            <div className="">
+            <div>
               <GoogleMapWrapper
-                mapContainerClassName="w-full h-[500px]"
+                mapContainerClassName="w-full h-[300px] sm:h-[400px] md:h-[500px]"
                 center={center}
                 zoom={13}
                 options={{

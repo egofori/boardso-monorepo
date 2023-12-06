@@ -74,7 +74,7 @@ export default function ChangePasswordModal({ open, handleOpen }: Props) {
               />
             <UIFieldError name="password" />
           </div>
-          <div className="flex gap-8">
+          <div className="flex gap-2">
             <UIButton variant="outlined" className="w-full" onClick={onClose}>
               Cancel
             </UIButton>

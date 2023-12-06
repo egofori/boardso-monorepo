@@ -7,10 +7,11 @@ import { BsCaretDownFill } from "react-icons/bs"
 import { type ButtonProps } from "@material-tailwind/react"
 import { twMerge } from "tailwind-merge"
 
-interface DropdownButtonProps {
+interface DropdownButtonProps extends Omit<ButtonProps, "children"> {
   children?: React.ReactNode
   menu?: React.ReactNode
   arrow?: boolean
+  icon?: React.ReactNode
 }
 
 function UIDropdownButton(
@@ -21,7 +22,7 @@ function UIDropdownButton(
     className,
     color,
     ...rest
-  }: DropdownButtonProps & ButtonProps,
+  }: DropdownButtonProps,
   ref: any
 ) {
   const [openMenu, setOpenMenu] = useState(false)

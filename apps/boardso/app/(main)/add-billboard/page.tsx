@@ -28,7 +28,14 @@ import AddLocationModal from "../../components/AddLocationModal"
 import { ModalHandler } from "@/types/Modal"
 import { MarkerF } from "@react-google-maps/api"
 import GoogleMapWrapper from "../../components/GoogleMapWrapper"
-import { billboardTypes, currencies, periods, unitsOfMeasurement, useProtectedRoute } from "../../../utils"
+import {
+  billboardTypes,
+  currencies,
+  periods,
+  unitsOfMeasurement,
+  useProtectedRoute,
+} from "../../../utils"
+import { ImageCard } from "../edit-billboard/[uid]/page"
 
 export default function Page() {
   // user must be logged in to access this page
@@ -155,30 +162,19 @@ export default function Page() {
 
   return (
     <main className="layout-wrapper">
-      <UICard className="mx-auto my-5 max-w-3xl p-10 bg-white">
-        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
+      <UICard className="mx-auto my-5 max-w-3xl p-5 sm:p-10 bg-white">
+        <UITypography
+          variant="h3"
+          className="text-tertiary-800 text-center text-[25px] sm:text-[30px]"
+        >
           Add Billboard
         </UITypography>
-        <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6 mt-8">
+        <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6 mt-5 sm:mt-10">
           <div>
             <label>Add images ({selectedImages.length}/5)</label>
-            <div className="pb-4 h-[262px] w-full flex flex-row gap-6 overflow-x-auto">
+            <div className="pb-4 h-[230px] sm:h-[262px] w-full flex flex-row gap-6 overflow-x-auto">
               {imagePreviews.map((image, i) => (
-                <div
-                  key={i}
-                  className="relative rounded-lg h-full w-full min-w-[256px] bg-cover overflow-hidden group"
-                  style={{
-                    backgroundImage: `url('${image}')`,
-                  }}
-                >
-                  <UIIconButton
-                    className="text-xl !absolute rounded-full bg-slate-800/70 hover:bg-slate-800/90 right-1 top-1 peer z-[1] hidden group-hover:block active:block"
-                    onClick={() => removeImage(i)}
-                  >
-                    <IoCloseSharp className="text-slate-100" />
-                  </UIIconButton>
-                  <div className="absolute w-full h-full hover:bg-slate-800/10 peer-hover:bg-slate-800/10" />
-                </div>
+                <ImageCard key={i} image={image} remove={() => removeImage(i)} />
               ))}
               {/* Owners can upload up to 5 images */}
               {selectedImages.length! < 5 && (
@@ -326,7 +322,7 @@ export default function Page() {
                   <GoogleMapWrapper
                     center={locationDetails.coordinates}
                     zoom={16}
-                    mapContainerClassName="w-full h-64 rounded-lg"
+                    mapContainerClassName="w-full !h-[214px] sm:!h-64 rounded-lg"
                     options={{
                       fullscreenControl: false,
                       streetViewControl: false,
@@ -337,7 +333,7 @@ export default function Page() {
                     <MarkerF position={locationDetails.coordinates} draggable={false} />
                   </GoogleMapWrapper>
                 ) : (
-                  <div className="cursor-pointer overflow-hidden flex flex-col items-center justify-center gap-3 w-full h-64 rounded-lg bg-secondary-100 hover:brightness-[0.98] active:brightness-90">
+                  <div className="cursor-pointer overflow-hidden flex flex-col items-center justify-center gap-3 w-full h-[214px] sm:h-64 rounded-lg bg-secondary-100 hover:brightness-[0.98] active:brightness-90">
                     <div className="bg-secondary-200 rounded-full p-3">
                       <IoLocationSharp className="text-secondary-400 text-6xl" />
                     </div>
@@ -346,7 +342,7 @@ export default function Page() {
               </div>
             </UITooltip>
           </div>
-          <div className="flex gap-8">
+          <div className="flex gap-2">
             <UIButton variant="outlined" className="w-full">
               CANCEL
             </UIButton>

@@ -71,7 +71,7 @@ export function Bookmarks() {
       error={error && "Unable to list contacts"}
     >
       <UICard className="w-full p-2 pt-6">
-        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3">
+        <UITypography variant="h3" className="text-tertiary-800 text-center text-[25px] sm:text-[30px] mb-3">
           Bookmarks
         </UITypography>
         <UICardBody className="overflow-x-auto">
@@ -107,7 +107,7 @@ export function Bookmarks() {
             </div>
           ) : billboards?.length === 0 ? (
             <div className="h-[150px] w-full flex flex-row justify-center items-center bg-white">
-              <UITypography className="text-slate-800 text-2xl">
+              <UITypography className="info-text">
                 No bookmarks are available yet!
               </UITypography>
             </div>

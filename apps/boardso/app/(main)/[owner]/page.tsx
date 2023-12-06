@@ -116,7 +116,7 @@ export default function Page() {
           <UITypography variant="h4" className="mb-4">
             List of billboards
           </UITypography>
-          <div className="w-full p-10 bg-white">
+          <div className="w-full px-2 py-5 sm:p-10 bg-white">
             <BillboardsSearch params={params} setParams={setParams} />
           </div>
           <div className="flex flex-col gap-7 py-7">

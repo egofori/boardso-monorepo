@@ -1,6 +1,5 @@
 import useAPIGet from "@/lib/hooks/useAPIGet"
 import { useEffect, useState } from "react"
-import useSWRInfinite from "swr/infinite"
 
 export const useGetCountries = () => {
   const value = useAPIGet("https://restcountries.com/v3.1/all?fields=name,cca2,flags,currencies")
@@ -11,32 +10,6 @@ export const useGetCurrentCountry = () => {
   const value = useAPIGet("https://ipapi.co/json/")
   return value
 }
-
-// export const useGetImages = (imageURLs: string[]) => {
-//   const fetcher = (data: any) =>
-//     fetch(data).then((res) => res.blob())
-//   // const fetcher = (data: any): Promise<any> => {
-//   //   return new Promise(async (resolve, reject) => {
-//   //     var xhr = new XMLHttpRequest()
-//   //     xhr.open("GET", data, true)
-//   //     xhr.responseType = "blob"
-//   //     xhr.onload = () => {
-//   //       if (xhr.readyState == XMLHttpRequest.DONE) {
-//   //         resolve(xhr.response)
-//   //       } else {
-//   //         reject()
-//   //       }
-//   //     }
-
-//   //     xhr.send()
-//   //   })
-//   // }
-
-//   return useSWRInfinite((index: number) => imageURLs[index], fetcher, {
-//     initialSize: imageURLs.length,
-//     parallel: true,
-//   })
-// }
 
 export const useGetImages = (imageURLs: string[]) => {
   const [imagesData, setImagesData] = useState<any[]>()
