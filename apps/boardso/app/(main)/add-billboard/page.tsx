@@ -35,7 +35,7 @@ import {
   unitsOfMeasurement,
   useProtectedRoute,
 } from "../../../utils"
-import { ImageCard } from "../edit-billboard/[uid]/page"
+import { ImageCard } from "@/components/ImageCard"
 
 export default function Page() {
   // user must be logged in to access this page

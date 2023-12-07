@@ -39,25 +39,7 @@ import { useParams } from "next/navigation"
 import { Billboard } from "@/types/Billboard"
 import { PageStatus } from "@/components/PageStatus"
 import Loader from "@/components/Loader"
-
-export function ImageCard({ image, remove }: { image: string; remove: any }) {
-  return (
-    <div
-      className="relative rounded-lg h-full w-full min-w-[256px] bg-cover overflow-hidden group"
-      style={{
-        backgroundImage: `url('${image}')`,
-      }}
-    >
-      <UIIconButton
-        className="text-xl !absolute rounded-full bg-slate-800/70 hover:bg-slate-800/90 right-1 top-1 peer z-[1] active:block"
-        onClick={remove}
-      >
-        <IoCloseSharp className="text-slate-100" />
-      </UIIconButton>
-      <div className="absolute w-full h-full hover:bg-slate-800/10 peer-hover:bg-slate-800/10" />
-    </div>
-  )
-}
+import { ImageCard } from "@/components/ImageCard"
 
 export default function Page() {
   // user must be logged in to access this page
