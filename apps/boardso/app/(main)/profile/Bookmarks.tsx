@@ -69,20 +69,21 @@ export function Bookmarks() {
       data={billboardsData}
       isLoading={isLoading}
       error={error && "Unable to list contacts"}
+      className="flex flex-col gap-6"
     >
-      <UICard className="w-full p-2 pt-6">
+      <UICard className="w-full p-5 sm:p-8">
         <UITypography variant="h3" className="text-tertiary-800 text-center text-[25px] sm:text-[30px] mb-3">
           Bookmarks
         </UITypography>
-        <UICardBody className="overflow-x-auto">
+        <UICardBody className="overflow-x-auto p-0">
           <div
             className={twMerge(
-              "flex flex-row items-center",
+              "flex flex-row items-center mb-1",
               billboardsData && billboardsData.count > 0 ? "justify-between" : "justify-end"
             )}
           >
             {billboardsData && billboardsData.count > 0 ? (
-              <UITypography className="text-slate-800 text-lg">
+              <UITypography className="text-slate-800">
                 Showing{" "}
                 <b>
                   {start} - {end < billboardsData.count ? end : billboardsData.count}

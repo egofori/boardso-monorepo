@@ -15,7 +15,6 @@ import {
   UIPasswordInput,
 } from "ui"
 import { FcGoogle } from "react-icons/fc"
-import { IoPhonePortrait } from "react-icons/io5"
 import { object, string } from "zod"
 import { useSignIn, useSignInSocial } from "@/services/hooks"
 import { useRouter } from "next/navigation"
@@ -159,14 +158,6 @@ export default function Page() {
             icon={<FcGoogle size="20px" />}
           >
             Google
-          </UIButton>
-          <UIButton
-            color="blue"
-            className="flex items-center justify-center gap-1 hover:brightness-95"
-            fullWidth
-            icon={<IoPhonePortrait size="15px" />}
-          >
-            Phone
           </UIButton>
         </div>
         <UITypography className="text-sm mt-3 text-center font-medium">

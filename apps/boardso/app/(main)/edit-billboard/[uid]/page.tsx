@@ -12,7 +12,6 @@ import {
   UIDropdownButton,
   UIFieldError,
   UIForm,
-  UIIconButton,
   UIInput,
   UIMenuItem,
   UIMenuList,
@@ -64,10 +63,15 @@ export default function Page() {
     [billboardImages]
   )
 
-  const { data: billboardImagesData, isLoading: imagesLoading, error: billboardImagesError } = useGetImages(imageURLs)
+  const {
+    data: billboardImagesData,
+    isLoading: imagesLoading,
+    error: billboardImagesError,
+  } = useGetImages(imageURLs)
 
   useEffect(() => {
-    if (billboardImagesError) notification("error", "Could not load the images. Reload the page to try again.")
+    if (billboardImagesError)
+      notification("error", "Could not load the images. Reload the page to try again.")
   }, [billboardImagesError])
 
   const [selectedImages, setSelectedImages] = useState<File[]>([])
@@ -214,7 +218,10 @@ export default function Page() {
     >
       <main className="layout-wrapper">
         <UICard className="mx-auto my-5 max-w-3xl p-5 sm:p-10 bg-white">
-          <UITypography variant="h3" className="text-tertiary-800 text-center text-[25px] sm:text-[30px]">
+          <UITypography
+            variant="h3"
+            className="text-tertiary-800 text-center text-[25px] sm:text-[30px]"
+          >
             Edit Billboard
           </UITypography>
           <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6 mt-5 sm:mt-10">
@@ -307,7 +314,7 @@ export default function Page() {
             </div>
             <div>
               <label>Dimension</label>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
                 <div className="flex flex-col w-full">
                   <div className="flex">
                     <UIInput
@@ -330,7 +337,7 @@ export default function Page() {
                     <UIFieldError name="width" />
                   </div>
                 </div>
-                <div className="h-8 w-8 -mt-4">
+              <div className="h-8 w-8 -mt-4 hidden sm:inline-block">
                   <IoCloseSharp className="text-3xl text-slate-500" />
                 </div>
                 <div className="flex flex-col w-full">

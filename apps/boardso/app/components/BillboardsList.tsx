@@ -62,7 +62,7 @@ export function BillboardsList({
     <>
       <div
         className={twMerge(
-          "flex flex-row items-start",
+          "flex flex-row items-center",
           billboardsData && billboardsData.count > 0 ? "justify-between" : "justify-end"
         )}
       >

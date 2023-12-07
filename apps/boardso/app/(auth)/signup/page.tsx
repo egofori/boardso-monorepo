@@ -15,7 +15,6 @@ import {
   UIPasswordInput,
 } from "ui"
 import { FcGoogle } from "react-icons/fc"
-import { IoPhonePortrait } from "react-icons/io5"
 import { object, string } from "zod"
 import { useRegister, useRegisterSocial } from "@/services/hooks"
 import { useState } from "react"
@@ -240,14 +239,6 @@ export default function Page() {
                 loading={googleLoading}
               >
                 Google
-              </UIButton>
-              <UIButton
-                color="blue"
-                className="flex items-center justify-center gap-1 hover:brightness-95"
-                fullWidth
-                icon={<IoPhonePortrait size="15px" />}
-              >
-                Phone
               </UIButton>
             </div>
             <UITypography className="[&>a]:text-primary-500 hover:[&>a]:text-primary-400 text-xs">

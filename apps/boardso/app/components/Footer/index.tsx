@@ -17,7 +17,7 @@ export default function Footer() {
             through a growing database of billboards.
           </UITypography>
         </div>
-        <div className="flex justify-between gap-10 text-sm">
+        <div className="flex justify-between text-sm w-full gap-1 [&>ul>li:first-child]:mb-1">
           <ul>
             <li>
               <Link href="#">About Us</Link>
