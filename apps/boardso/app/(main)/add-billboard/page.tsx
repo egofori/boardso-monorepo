@@ -12,7 +12,6 @@ import {
   UIDropdownButton,
   UIFieldError,
   UIForm,
-  UIIconButton,
   UIInput,
   UIMenuItem,
   UIMenuList,
@@ -254,7 +253,7 @@ export default function Page() {
           </div>
           <div>
             <label>Dimension</label>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
               <div className="flex flex-col w-full">
                 <div className="flex">
                   <UIInput
@@ -277,7 +276,7 @@ export default function Page() {
                   <UIFieldError name="width" />
                 </div>
               </div>
-              <div className="h-8 w-8 -mt-4">
+              <div className="h-8 w-8 -mt-4 hidden sm:inline-block">
                 <IoCloseSharp className="text-3xl text-slate-500" />
               </div>
               <div className="flex flex-col w-full">

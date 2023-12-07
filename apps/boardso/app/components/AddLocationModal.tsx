@@ -79,9 +79,7 @@ export default function AddLocationModal({
           setCenter({ lat, lng })
           setMarkerCoordinates({ lat, lng })
         },
-        (error) => {
-          notification("error", `Error getting user location: ${error.message}`)
-        },
+        null,
         {
           enableHighAccuracy: true,
           timeout: 10000,
@@ -124,13 +122,13 @@ export default function AddLocationModal({
     let addressComponents = result["address_components"]
     locationTypes.forEach((type) => {
       for (let i = 0; i < addressComponents.length; i++) {
-        // check if type-name is in the address-components-types 
+        // check if type-name is in the address-components-types
         if (addressComponents[i].types.includes(type.name)) {
           location[type.key] = addressComponents[i].long_name
           addressComponents = addressComponents.filter((component, index) => index !== i)
         }
       }
-      if(!location[type.key]) location[type.key] = null
+      if (!location[type.key]) location[type.key] = null
     })
 
     location = { ...location, address: result["formatted_address"], coordinates: markerCoordinates }
@@ -189,7 +187,12 @@ export default function AddLocationModal({
   }, [locationDetailsCoordinates])
 
   return (
-    <UIModal size="lg" className="min-w-[300px] w-[90%] max-w-full" open={open} handler={handleOpen}>
+    <UIModal
+      size="lg"
+      className="min-w-[300px] w-[90%] max-w-full"
+      open={open}
+      handler={handleOpen}
+    >
       <UIModalHeader className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row gap-2 justify-between items-start sm:items-center w-full">
           <UITypography variant="h4" color="blue-gray" className="font-medium">

@@ -33,7 +33,7 @@ export default function PlaceCard({ className, data, image }: Props) {
         >
           {data.sublocality || data.locality}
         </UITypography>
-        <UITypography className="mb-4 text-white text-lg sm:text-xl z-[1]">
+        <UITypography className="text-white text-lg sm:text-xl z-[1]">
           {data.administrativeAreaLevel2}
         </UITypography>
       </UICard>

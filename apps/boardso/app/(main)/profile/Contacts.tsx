@@ -72,15 +72,16 @@ export function Contacts() {
       data={userContacts}
       isLoading={isLoading}
       error={error && "Unable to list contacts"}
+      className="flex flex-col"
     >
-      <UICard className="w-full p-2 pt-6">
+      <UICard className="w-full p-5 sm:p-8">
         <UITypography variant="h3" className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]">
           Contacts
         </UITypography>
-        <UICardHeader className="m-0 shadow-none pr-6 flex flex-row justify-end">
+        <UICardHeader className="m-0 shadow-none flex flex-row justify-end mb-2">
           <UIButton onClick={() => setAddContactModalOpen(true)}>Add Contact</UIButton>
         </UICardHeader>
-        <UICardBody className="overflow-x-auto">
+        <UICardBody className="overflow-x-auto p-0">
           <table className="w-full min-w-max table-auto text-left [&>thead>tr>th>p]:text-center [&>thead>tr>th>p]:text-slate-500">
             <thead>
               <tr>

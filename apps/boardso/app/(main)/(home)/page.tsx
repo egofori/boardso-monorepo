@@ -84,9 +84,7 @@ export default function Page() {
           setCenter({ lat, lng })
           coordinatesToLocation({ lat, lng })
         },
-        (error) => {
-          notification("error", `Error getting user location: ${error.message}`)
-        },
+        null,
         {
           enableHighAccuracy: true,
           timeout: 10000,
