@@ -28,7 +28,7 @@ export const useProtectedRoute = () => {
     if (isLoggedIn !== undefined) {
       if (!isLoggedIn) {
         notification("info", "Users must be logged in to access this page")
-        router.push("/")
+        router.push("/login")
       }
     }
   }, [isLoggedIn, router])

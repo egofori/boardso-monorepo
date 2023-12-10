@@ -146,6 +146,10 @@ export default function Page() {
       notification("error", "Add location")
       return
     }
+    if (selectedImages.length === 0) {
+      notification("error", "Add at least one image")
+      return
+    }
     const formData = new FormData()
     selectedImages.map((image) => formData.append("images", image))
     formData.append("title", data.title)
@@ -238,9 +242,9 @@ export default function Page() {
                       htmlFor="dropzone-file"
                       className="overflow-hidden flex flex-col items-center justify-center gap-3 w-full h-full min-w-[256px] rounded-lg cursor-pointer bg-primary-100 hover:brightness-[0.98] active:brightness-90"
                     >
-                      <div className="bg-primary-200 rounded-full p-1">
+                      <div className="bg-primary-200 rounded-full w-[72px] h-[72px] flex justify-center items-center">
                         {imagesLoading ? (
-                          <Loader className="text-primary-400 text-7xl" />
+                          <Loader className="text-primary-400 text-4xl" />
                         ) : (
                           <BiPlus className="text-primary-400 text-7xl" />
                         )}

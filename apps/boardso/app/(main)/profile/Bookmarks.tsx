@@ -99,7 +99,7 @@ export function Bookmarks() {
               size="sm"
               menu={sortMenu(sorts, setSelectedSort)}
             >
-              <UITypography className="normal-case">{selectedSort.label}</UITypography>
+              <UITypography className="normal-case  whitespace-nowrap">{selectedSort.label}</UITypography>
             </UIDropdownButton>
           </div>
           {isLoading ? (

@@ -59,40 +59,60 @@ export default function Page() {
     setEmail(data.email)
     createUserWithEmailAndPassword(firebaseAuth, data.email, data.password)
       .then((userCredential) => {
-        trigger(
-          {
-            firstName: data.firstName,
-            lastName: data.lastName,
-            password: data.password,
-            email: data.email,
-          },
-          () => {
-            setLoading(false)
-            form.reset()
-            sendEmailVerification(userCredential.user)
-              .then(() => {
-                setVerifyEmail(true)
-                notification("success", "Verification email sent")
+        const user = userCredential.user
+        user
+          .getIdToken()
+          .then((idToken: any) => {
+            trigger(
+              {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                password: data.password,
+                email: data.email,
+                token: idToken,
+              },
+              () => {
+                setLoading(false)
+                form.reset()
+                sendEmailVerification(userCredential.user)
+                  .then(() => {
+                    setVerifyEmail(true)
+                    notification("success", "Verification email sent")
+                    signOut(firebaseAuth)
+                  })
+                  .catch(() => {
+                    signOut(firebaseAuth)
+                    notification(
+                      "error",
+                      "Could not send verification email. Try logging in to initiate another email verification"
+                    )
+                  })
+              },
+              (error: any) => {
                 signOut(firebaseAuth)
-              })
-              .catch(() => {
-                signOut(firebaseAuth)
+                setLoading(false)
                 notification(
                   "error",
-                  "Could not send verification email. Try logging in to initiate another email verification"
+                  error.response?.data?.message || "Error occurred during sign up"
                 )
-              })
-          },
-          (error: any) => {
-            signOut(firebaseAuth)
+              }
+            )
+          })
+          .catch(() => {
             setLoading(false)
-            notification("error", error.response?.data?.message || "Error occurred during sign up")
-          }
-        )
+            notification("error", "Error occurred during sign up")
+          })
       })
-      .catch(() => {
+      .catch((err) => {
         setLoading(false)
-        notification("error", "Error occurred during sign up")
+        switch (err?.code) {
+          case "auth/email-already-in-use":
+            notification("error", "User already exists")
+            break
+          default:
+            notification("error", "Error occurred during sign up")
+            break
+        }
       })
   }
 
@@ -185,7 +205,10 @@ export default function Page() {
           <VerifyEmail email={email} ok={() => setVerifyEmail(false)} />
         ) : (
           <>
-            <UITypography variant="h3" className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]">
+            <UITypography
+              variant="h3"
+              className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]"
+            >
               New Account
             </UITypography>
             <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6">

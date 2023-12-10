@@ -57,7 +57,7 @@ export const useDeleteUser = () => {
 
   const deleteUser: any = (data: any, onSuccess?: Function, onFailure?: Function) =>
     trigger(
-      null,
+      { data },
       (response: any) => {
         deleteLogOut()
         if (onSuccess) onSuccess(response)

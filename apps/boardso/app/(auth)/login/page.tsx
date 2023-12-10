@@ -29,7 +29,8 @@ import { firebaseAuth } from "@/utils/firebase"
 import { useState } from "react"
 
 export default function Page() {
-  const { isLoading, trigger } = useSignIn()
+  const [emailLoading, setEmailLoading] = useState(false)
+  const { trigger } = useSignIn()
   const provider = new GoogleAuthProvider()
 
   const [googleLoading, setGoogleLoading] = useState(false)
@@ -48,33 +49,54 @@ export default function Page() {
   const router = useRouter()
 
   const onSubmit = (data: any) => {
-    signInWithEmailAndPassword(firebaseAuth, data.email, data.password).then((userCredential) => {
-      if (userCredential.user.emailVerified) {
-        trigger(
-          {
-            email: data.email,
-            password: data.password,
-          },
-          () => {
-            form.reset()
-            router.push("/")
-          },
-          (error: any) => {
-            notification("error", error.response?.data?.message || "Error occurred during sign in")
-          }
-        )
-      } else {
-        sendEmailVerification(userCredential.user)
-          .then(() => {
-            notification("success", "Verification email sent")
-            signOut(firebaseAuth)
+    setEmailLoading(true)
+    signInWithEmailAndPassword(firebaseAuth, data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user
+        if (user.emailVerified) {
+          user.getIdToken().then((idToken: any) => {
+            trigger(
+              {
+                email: data.email,
+                password: data.password,
+                token: idToken,
+              },
+              async () => {
+                setEmailLoading(false)
+                form.reset()
+                notification("success", "Sign in successful")
+                router.push("/")
+              },
+              (error: any) => {
+                setEmailLoading(false)
+                notification(
+                  "error",
+                  error.response?.data?.message || "Error occurred during sign in"
+                )
+              }
+            )
           })
-          .catch(() => {
-            signOut(firebaseAuth)
-            notification("error", "Could not send verification email. Please try again")
-          })
-      }
-    }).catch(() => notification("error", "Invalid credentials"))
+        } else {
+          setEmailLoading(false)
+          sendEmailVerification(userCredential.user)
+            .then(async () => {
+              notification("success", "Verification email sent")
+              try {
+                await signOut(firebaseAuth)
+              } catch {}
+            })
+            .catch(async () => {
+              try {
+                await signOut(firebaseAuth)
+              } catch {}
+              notification("error", "Could not send verification email. Please try again")
+            })
+        }
+      })
+      .catch(() => {
+        setEmailLoading(false)
+        notification("error", "Invalid credentials")
+      })
   }
 
   const onSignInWithGoogle = () => {
@@ -119,7 +141,10 @@ export default function Page() {
   return (
     <main className="relative flex flex-col justify-between px-6">
       <UICard className="w-full max-w-[410px] p-5 sm:p-10 m-auto rounded-2xl">
-        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]">
+        <UITypography
+          variant="h3"
+          className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]"
+        >
           Log In
         </UITypography>
         <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
@@ -143,7 +168,7 @@ export default function Page() {
               Forgot password?
             </Link>
           </div>
-          <UIButton type="submit" loading={isLoading}>
+          <UIButton type="submit" loading={emailLoading}>
             LOG IN
           </UIButton>
         </UIForm>

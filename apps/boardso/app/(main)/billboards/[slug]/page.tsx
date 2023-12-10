@@ -28,7 +28,7 @@ import { Billboard, UserContact } from "@/types/Billboard"
 import { RiAccountCircleFill } from "react-icons/ri"
 import GoogleMapWrapper from "@/components/GoogleMapWrapper"
 import { MarkerF } from "@react-google-maps/api"
-import { periods } from "@/utils/constants"
+import { defaultBillboardThumbnail, periods } from "@/utils/constants"
 import { PageStatus } from "@/components/PageStatus"
 import { stringToHref } from "@/utils/index"
 import { useGetUserProfile } from "@/services/hooks/users"
@@ -140,56 +140,72 @@ export default function Page() {
                     <Link href={`/edit-billboard/${billboard?.uid}`}>
                       <UIMenuItem>Edit</UIMenuItem>
                     </Link>
-                    <UIMenuItem className="text-red-600" onClick={() => setConfirmDeleteModalOpen(true)}>Delete</UIMenuItem>
+                    <UIMenuItem
+                      className="text-red-600"
+                      onClick={() => setConfirmDeleteModalOpen(true)}
+                    >
+                      Delete
+                    </UIMenuItem>
                   </UIMenuList>
                 }
               />
             )}
           </div>
-          <UICarousel
-            className="rounded-lg h-64 sm:h-[400px]"
-            loop
-            prevArrow={({ handlePrev, firstIndex }) => (
-              <UIIconButton
-                variant="text"
-                color="white"
-                size="lg"
-                onClick={handlePrev}
-                className="!absolute top-2/4 -translate-y-2/4 left-4 rounded-full !bg-black/50"
-                disabled={firstIndex}
-              >
-                <FaAngleLeft strokeWidth={2} className="w-6 h-6" />
-              </UIIconButton>
-            )}
-            nextArrow={({ handleNext, lastIndex }) => (
-              <UIIconButton
-                variant="text"
-                color="white"
-                size="lg"
-                onClick={handleNext}
-                className="!absolute top-2/4 -translate-y-2/4 !right-4 rounded-full !bg-black/50"
-                disabled={lastIndex}
-              >
-                <FaAngleRight strokeWidth={2} className="w-6 h-6" />
-              </UIIconButton>
-            )}
-          >
-            {billboard?.images?.map((image) => {
-              if (image.id !== billboard.thumbnailId) {
-                return (
-                  <div
-                    key={image.name}
-                    className="h-full w-full bg-contain"
-                    style={{
-                      background: `url('${image.url}') no-repeat`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center center",
-                    }}
-                  />
-                )
-              }
-            })}
-          </UICarousel>
+          {billboard?.images?.length !== 0 ? (
+            <UICarousel
+              className="rounded-lg h-64 sm:h-[400px]"
+              loop
+              prevArrow={({ handlePrev, firstIndex }) => (
+                <UIIconButton
+                  variant="text"
+                  color="white"
+                  size="lg"
+                  onClick={handlePrev}
+                  className="!absolute top-2/4 -translate-y-2/4 left-4 rounded-full !bg-black/50"
+                  disabled={firstIndex}
+                >
+                  <FaAngleLeft strokeWidth={2} className="w-6 h-6" />
+                </UIIconButton>
+              )}
+              nextArrow={({ handleNext, lastIndex }) => (
+                <UIIconButton
+                  variant="text"
+                  color="white"
+                  size="lg"
+                  onClick={handleNext}
+                  className="!absolute top-2/4 -translate-y-2/4 !right-4 rounded-full !bg-black/50"
+                  disabled={lastIndex}
+                >
+                  <FaAngleRight strokeWidth={2} className="w-6 h-6" />
+                </UIIconButton>
+              )}
+            >
+              {billboard?.images?.map((image) => {
+                if (image.id !== billboard.thumbnailId) {
+                  return (
+                    <div
+                      key={image.name}
+                      className="h-full w-full bg-contain"
+                      style={{
+                        background: `url('${image.url}') no-repeat`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center center",
+                      }}
+                    />
+                  )
+                }
+              })}
+            </UICarousel>
+          ) : (
+            <div
+              className="rounded-lg h-64 sm:h-[400px] w-full bg-contain"
+              style={{
+                background: `url('${defaultBillboardThumbnail}') no-repeat`,
+                backgroundSize: "cover",
+                backgroundPosition: "center center",
+              }}
+            />
+          )}
           <div className="flex flex-col gap-8">
             {billboard?.description && (
               <div className="flex flex-col gap-1">
@@ -265,7 +281,7 @@ export default function Page() {
           <UIButton
             color="amber"
             variant="text"
-            className="flex flex-row justify-center items-center gap-1 bg-amber-500/10"
+            className="flex flex-row justify-center items-center gap-1 bg-amber-500/10 text-[16px]"
             onClick={onBookmarkClick}
             loading={saveBillboardLoading || removeBookmarkLoading}
             icon={
