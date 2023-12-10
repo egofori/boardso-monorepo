@@ -14,6 +14,8 @@ import {
   useZodForm,
 } from "ui"
 import { object, string } from "zod"
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import { Typography } from "@material-tailwind/react";
 
 type Props = {
   open: boolean
@@ -24,7 +26,7 @@ export default function ChangePasswordModal({ open, handleOpen }: Props) {
   const { trigger, isLoading } = useChangePassword()
 
   const changePasswordSchema = object({
-    oldPassword: string().min(1, { message: "Password is required" }),
+    oldPassword: string(),
     password: string().min(8, { message: "Password must be more than 8 characters" }),
   })
 
@@ -56,11 +58,15 @@ export default function ChangePasswordModal({ open, handleOpen }: Props) {
           Change Password
         </UITypography>
       </UIModalHeader>
-      <UIModalBody>
+      <UIModalBody className="pt-0">
+        <div className="flex flex-row items-start gap-1 py-2">
+          <IoMdInformationCircleOutline />
+          <Typography className="text-xs">Provide current password if any else leave empty</Typography>
+        </div>
         <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
           <div>
             <UIPasswordInput
-              label="Old password"
+              label="Current password"
               name="oldPassword"
               error={hasError(form, "oldPassword")}
               />

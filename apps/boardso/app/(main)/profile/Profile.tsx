@@ -39,6 +39,8 @@ import { ModalHandler } from "@/types/Modal"
 import Loader from "@/components/Loader"
 import { DeleteConfirmationModal } from "@/components/DeleteConfirmationModal"
 import { useRouter } from "next/navigation"
+import { getIdToken } from "firebase/auth"
+import { firebaseAuth } from "@/utils/firebase"
 
 export default function Profile() {
   const router = useRouter()
@@ -158,6 +160,7 @@ export default function Profile() {
     deleteUserTrigger(
       null,
       () => {
+        setConfirmDeleteModalOpen(false)
         notification("success", "User permanently deleted")
         router.push("/")
       },
@@ -173,10 +176,13 @@ export default function Profile() {
       className="flex flex-col gap-6"
     >
       <UICard className="w-full p-5 sm:p-8 bg-white">
-        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]">
+        <UITypography
+          variant="h3"
+          className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]"
+        >
           My Profile
         </UITypography>
-        <UICardHeader className="m-0 shadow-none flex flex-col gap-3 justify-center items-center ">
+        <UICardHeader className="m- mb-6 shadow-none flex flex-col gap-3 justify-center items-center ">
           <div className="w-[120px] h-[120px] relative overflow-hidden rounded-full">
             {owner?.userProfile?.profileImage?.url ? (
               <UIAvatar
@@ -210,16 +216,18 @@ export default function Profile() {
                       />
                     </label>
                   </UITooltip>
-                  <UITooltip content="Delete">
-                    <UIIconButton
-                      color="red"
-                      variant="filled"
-                      className="rounded-full transition-none"
-                      onClick={removeProfilePicture}
-                    >
-                      <MdDelete className="text-[20px]" />
-                    </UIIconButton>
-                  </UITooltip>
+                  {owner?.userProfile?.profileImage?.url && (
+                    <UITooltip content="Delete">
+                      <UIIconButton
+                        color="red"
+                        variant="filled"
+                        className="rounded-full transition-none"
+                        onClick={removeProfilePicture}
+                      >
+                        <MdDelete className="text-[20px]" />
+                      </UIIconButton>
+                    </UITooltip>
+                  )}
                 </div>
               </div>
             )}

@@ -1,6 +1,6 @@
 "use client"
 
-import { UIButton, UITypography, notification } from "ui"
+import { UIButton, UITypography } from "ui"
 import SearchInput from "../../components/SearchInput"
 import { BiPlus } from "react-icons/bi"
 import PlaceCard from "@/components/PlaceCard"

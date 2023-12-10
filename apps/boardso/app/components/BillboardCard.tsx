@@ -157,14 +157,14 @@ export default function BillboardCard({
                 <UIIconButton
                   color="white"
                   variant="filled"
-                  className="rounded-full"
+                  className="rounded-full text-xl text-amber-500"
                   onClick={onBookmarkClick}
                   loading={saveBillboardLoading || removeBookmarkLoading}
                 >
                   {isBookmarked ? (
-                    <BsBookmarkDashFill className="text-xl text-amber-500" />
+                    <BsBookmarkDashFill />
                   ) : (
-                    <BsBookmarkHeart className="text-xl text-amber-500" />
+                    <BsBookmarkHeart />
                   )}
                 </UIIconButton>
               </div>

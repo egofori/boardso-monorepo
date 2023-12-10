@@ -112,6 +112,10 @@ export default function Page() {
       notification("error", "Add location")
       return
     }
+    if (selectedImages.length === 0) {
+      notification("error", "Add at least one image")
+      return
+    }
     const formData = new FormData()
     selectedImages.map((image) => formData.append("images", image))
     formData.append("title", data.title)
