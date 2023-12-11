@@ -28,6 +28,7 @@ import { object, string } from "zod"
 import { getStorageItem } from "@/lib/storage"
 import { useValue } from "@/lib/hooks/useValue"
 import { VscSignIn } from "react-icons/vsc"
+import Logo from "../Logo"
 
 function ProfileMenu() {
   const [open, setOpen] = useState(false)
@@ -137,7 +138,7 @@ export default function Header() {
       <div className="layout-wrapper flex justify-between items-center gap-4">
         <div className="flex gap-1 items-start">
           <Link href="/" className="font-bold text-4xl text-tertiary-800">
-            boardso
+            <Logo />
           </Link>
           <CountryDropdown />
         </div>

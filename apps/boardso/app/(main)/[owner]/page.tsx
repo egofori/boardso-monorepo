@@ -42,8 +42,8 @@ export default function Page() {
   const {
     data: currentUser,
     isLoading: currentUserLoading,
-  }: { data: User | null;[x: string]: any } = useGetUserProfile()
-  
+  }: { data: User | null; [x: string]: any } = useGetUserProfile()
+
   const renderContacts = useCallback(() => {
     if (owner?.userProfile?.userContacts?.length === 0) {
       return <UITypography className="text-center">No contacts available</UITypography>
@@ -79,7 +79,11 @@ export default function Page() {
   }, [owner?.userProfile?.userContacts])
 
   return (
-    <PageStatus data={owner} isLoading={isLoading || currentUserLoading} error={error && "User does not exist!"}>
+    <PageStatus
+      data={owner}
+      isLoading={isLoading || currentUserLoading}
+      error={error && "User does not exist!"}
+    >
       <main className="layout-wrapper flex 2xl:flex-row flex-col items-start justify-center gap-6 py-5">
         <div className="shrink-0 2xl:w-96 w-full flex flex-col gap-6">
           <UICard className="flex flex-col justify-center items-center gap-1 p-4">

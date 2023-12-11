@@ -78,7 +78,7 @@ export function Contacts() {
         <UITypography variant="h3" className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]">
           Contacts
         </UITypography>
-        <UICardHeader className="m-0 shadow-none flex flex-row justify-end mb-2">
+        <UICardHeader className="m-0 shadow-none flex flex-row justify-end mb-2 rounded-none">
           <UIButton onClick={() => setAddContactModalOpen(true)}>Add Contact</UIButton>
         </UICardHeader>
         <UICardBody className="overflow-x-auto p-0">
