@@ -18,7 +18,7 @@ export const currencies = [
 export const periods = [
   { label: "per month", value: "PER_MONTH" },
   { label: "per year", value: "PER_YEAR" },
-  { label: "for sale", value: "PER_SALE" },
+  { label: "for sale", value: "FOR_SALE" },
 ]
 
 export const sorts = [
