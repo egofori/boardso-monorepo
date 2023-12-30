@@ -72,7 +72,7 @@ export function Bookmarks() {
       className="flex flex-col gap-6"
     >
       <UICard className="w-full p-5 sm:p-8">
-        <UITypography variant="h3" className="text-tertiary-800 text-center text-[25px] sm:text-[30px] mb-3">
+        <UITypography variant="h3" className="page-card-title">
           Bookmarks
         </UITypography>
         <UICardBody className="overflow-x-auto p-0">

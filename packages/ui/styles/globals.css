@@ -12,4 +12,19 @@
   .info-text {
     @apply !text-slate-800 !text-lg md:!text-xl
   }
+  .auth-card {
+    @apply w-full max-w-[410px] p-5 sm:p-10 m-auto rounded-2xl
+  }
+  .auth-card-title {
+    @apply !text-tertiary-800 text-center !text-[25px] sm:!text-[30px]
+  }
+  .auth-main {
+    @apply relative flex flex-col justify-between px-6
+  }
+  .page-card {
+    @apply 
+  }
+  .page-card-title {
+    @apply !text-tertiary-800 text-center !text-[25px] sm:!text-[30px]
+  }
 }

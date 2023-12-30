@@ -75,7 +75,7 @@ export function Contacts() {
       className="flex flex-col"
     >
       <UICard className="w-full p-5 sm:p-8">
-        <UITypography variant="h3" className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]">
+        <UITypography variant="h3" className="page-card-title">
           Contacts
         </UITypography>
         <UICardHeader className="m-0 shadow-none flex flex-row justify-end mb-2 rounded-none">

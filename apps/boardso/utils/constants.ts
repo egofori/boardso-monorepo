@@ -1,3 +1,5 @@
+import { Metadata } from "next"
+
 export const defaultBillboardThumbnail = "https://storage.googleapis.com/boardso-media/site-media/default-billboard-thumbnail.jpg"
 
 export const billboardTypes = [
@@ -57,3 +59,43 @@ export const placeImages = [
   "https://storage.googleapis.com/boardso-media/site-media/place05.jpg",
   "https://storage.googleapis.com/boardso-media/site-media/place06.jpg",
 ]
+
+export const defaultMetadata: Metadata = {
+  title: {
+    template: "%s - Boardso",
+    default: "Add & Find Billboard spaces at Boardso.com",
+  },
+  description:
+    "Add & find billboard spaces. Boardso.com will help you find your billboard spaces available for free. Billboard owners can add billboards for free. We have static and digital billboards for all your advertising needs.",
+  applicationName: "Boardso",
+  keywords: ["Board", "Billboard", "Ghana", "Advert", "Advertisement", "Spaces"],
+  openGraph: {
+    title: "Boardso: Add & Find Billboard spaces",
+    description:
+      "Add & find billboard spaces. Boardso.com will help you find your billboard spaces available for free. Billboard owners can add billboards for free. We have static and digital billboards for all your advertising needs.",
+    url: "https://boardso.com",
+    siteName: "Boardso",
+    images: [
+      {
+        url: "https://storage.googleapis.com/boardso-media/site-media/boardso-ogg.jpg",
+        width: 889,
+        height: 500,
+        alt: "Boardso preview image",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Boardso",
+    description:
+      "Add & find billboard spaces. Boardso.com will help you find your billboard spaces available for free. Billboard owners can add billboards for free. We have static and digital billboards for all your advertising needs.",
+    images: ["https://storage.googleapis.com/boardso-media/site-media/boardso-ogg.jpg"],
+  },
+  icons: {
+    icon: "https://storage.googleapis.com/boardso-media/site-media/icon.png",
+    shortcut: "https://storage.googleapis.com/boardso-media/site-media/icon.png",
+    apple: "https://storage.googleapis.com/boardso-media/site-media/icon.png",
+  },
+}
