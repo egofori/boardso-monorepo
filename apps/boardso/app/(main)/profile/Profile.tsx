@@ -178,7 +178,7 @@ export default function Profile() {
       <UICard className="w-full p-5 sm:p-8 bg-white">
         <UITypography
           variant="h3"
-          className="text-tertiary-800 text-center mb-3 text-[25px] sm:text-[30px]"
+          className="page-card-title"
         >
           My Profile
         </UITypography>
