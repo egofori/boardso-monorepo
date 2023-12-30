@@ -5,13 +5,11 @@ import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer } from "react-toastify"
+import { defaultMetadata } from "@/utils/constants"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata = {
-  title: "Find available billboard spaces at Boardso.com",
-  description: "Boardso.com will help you find your billboard spaces available for free. Billboard owners can add billboards for free. We have static and digital billboards for all your advertising needs.",
-};
+export const metadata = defaultMetadata
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
