@@ -66,13 +66,13 @@ export const defaultMetadata: Metadata = {
     default: "Add & Find Billboard spaces at Boardso.com",
   },
   description:
-    "Add & find billboard spaces. Boardso.com will help you find your billboard spaces available for free. Billboard owners can add billboards for free. We have static and digital billboards for all your advertising needs.",
+    "Add & find billboard spaces. Boardso.com will help you find available billboard spaces. Billboard owners can add billboards for free. There are static and digital billboards for your advertising needs.",
   applicationName: "Boardso",
   keywords: ["Board", "Billboard", "Ghana", "Advert", "Advertisement", "Spaces"],
   openGraph: {
     title: "Boardso: Add & Find Billboard spaces",
     description:
-      "Add & find billboard spaces. Boardso.com will help you find your billboard spaces available for free. Billboard owners can add billboards for free. We have static and digital billboards for all your advertising needs.",
+    "Add & find billboard spaces. Boardso.com will help you find available billboard spaces. Billboard owners can add billboards for free. There are static and digital billboards for your advertising needs.",
     url: "https://boardso.com",
     siteName: "Boardso",
     images: [
