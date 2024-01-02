@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="flex flex-row items-start gap-4  lg:w-[50%]">
           <UITypography className="font-bold text-2xl">Boardso</UITypography>
           <UITypography className="text-justify text-sm">
-            Serves individuals and businesses looking for billboard space to advertise. Search
+            Serves individuals and businesss looking for billboard space to advertise. Search
             through a growing database of billboards.
           </UITypography>
         </div>
@@ -28,10 +28,10 @@ export default function Footer() {
           </ul>
           <ul>
             <li>
-              <Link href="#">Privacy Policy</Link>
+              <Link href="/privacy-policy.html">Privacy Policy</Link>
             </li>
             <li>
-              <Link href="#">Terms & Conditions</Link>
+              <Link href="/terms-of-service.html">Terms of Service</Link>
             </li>
           </ul>
           <ul>
