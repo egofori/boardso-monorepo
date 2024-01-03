@@ -39,7 +39,6 @@ export const useSignIn = () => {
       },
       (response: any) => {
         setStorageItem("accessToken", response.data.token)
-        setStorageItem("userInfo", response.data.user)
         setStorageItem("isLoggedIn", true)
         onSuccess && onSuccess(response)
       },
@@ -57,7 +56,6 @@ export const useLogOut = () => {
     setIsLoading(true)
     // reset local storage
     removeStorageItem("accessToken")
-    removeStorageItem("userInfo")
     removeStorageItem("isLoggedIn")
     setIsLoading(false)
 
@@ -85,7 +83,6 @@ export const useRegisterSocial = () => {
       (response: any) => {
         if (response.data) {
           setStorageItem("accessToken", response.data.token)
-          setStorageItem("userInfo", response.data.user)
           setStorageItem("isLoggedIn", true)
         }
         onSuccess && onSuccess(response)
@@ -112,7 +109,6 @@ export const useSignInSocial = () => {
       },
       (response: any) => {
         setStorageItem("accessToken", response.data.token)
-        setStorageItem("userInfo", response.data.user)
         setStorageItem("isLoggedIn", true)
         onSuccess && onSuccess(response)
       },

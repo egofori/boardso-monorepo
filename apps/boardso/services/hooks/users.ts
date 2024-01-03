@@ -2,34 +2,13 @@ import useAPIDelete from "@/lib/hooks/useAPIDelete"
 import useAPIGet from "@/lib/hooks/useAPIGet"
 import useAPIPatch from "@/lib/hooks/useAPIPatch"
 import useAPIPost from "@/lib/hooks/useAPIPost"
-import { getStorageItem, setStorageItem } from "@/lib/storage"
 import { useLogOut } from "./auth"
 
 export const useGetUser = (username: string) => useAPIGet({ url: `/users/${username}` })
 
 export const useGetUserProfile = () => useAPIGet({ url: "/users" })
 
-export const useUpdateUser = () => {
-  const { trigger, ...rest } = useAPIPatch("/users")
-
-  const updateUserTrigger: any = async (data: any, onSuccess?: Function, onFailure?: Function) => {
-    trigger(
-      { data },
-      (response: any) => {
-        const userInfo = getStorageItem("userInfo") || {}
-        setStorageItem("userInfo", {
-          ...userInfo,
-          username: response.data.username,
-          firstName: response.data.firstName,
-          lastName: response.data.lastName,
-        })
-        onSuccess && onSuccess(response)
-      },
-      onFailure
-    )
-  }
-  return { trigger: updateUserTrigger, ...rest }
-}
+export const useUpdateUser = () =>  useAPIPatch("/users")
 
 export const useGetContacts = () => useAPIGet("/contacts")
 

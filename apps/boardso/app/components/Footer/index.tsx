@@ -28,10 +28,10 @@ export default function Footer() {
           </ul>
           <ul>
             <li>
-              <Link href="#">Privacy Policy</Link>
+              <Link href="/privacy-policy">Privacy Policy</Link>
             </li>
             <li>
-              <Link href="#">Terms & Conditions</Link>
+              <Link href="/terms-of-service">Terms of Service</Link>
             </li>
           </ul>
           <ul>

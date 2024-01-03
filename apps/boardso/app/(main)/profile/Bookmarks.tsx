@@ -113,7 +113,7 @@ export function Bookmarks() {
               </UITypography>
             </div>
           ) : (
-            <div className={"grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2"}>
+            <div className={"grid grid-flow-row grid-cols-1 gap-3 sm:grid-cols-1 lg:grid-cols-2"}>
               {billboards?.map((billboard) => (
                 <BillboardCard key={billboard.slug} data={billboard} />
               ))}
