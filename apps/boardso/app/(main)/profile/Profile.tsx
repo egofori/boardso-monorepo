@@ -39,8 +39,6 @@ import { ModalHandler } from "@/types/Modal"
 import Loader from "@/components/Loader"
 import { DeleteConfirmationModal } from "@/components/DeleteConfirmationModal"
 import { useRouter } from "next/navigation"
-import { getIdToken } from "firebase/auth"
-import { firebaseAuth } from "@/utils/firebase"
 
 export default function Profile() {
   const router = useRouter()
@@ -101,10 +99,12 @@ export default function Profile() {
   const onSubmit = (data: any) => {
     trigger(
       {
-        username: data.username,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        about: data.about,
+        data: {
+          username: data.username,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          about: data.about,
+        }
       },
       () => notification("success", "Profile updated successfully"),
       () => notification("error", "An error occurred while updating profile")

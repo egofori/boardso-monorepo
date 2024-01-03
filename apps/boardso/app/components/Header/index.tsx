@@ -29,12 +29,14 @@ import { getStorageItem } from "@/lib/storage"
 import { useValue } from "@/lib/hooks/useValue"
 import { VscSignIn } from "react-icons/vsc"
 import Logo from "../Logo"
+import { useGetUserProfile } from "@/services/hooks/users"
+import { User } from "@/types/User"
 
 function ProfileMenu() {
   const [open, setOpen] = useState(false)
   const router = useRouter()
   const { trigger } = useLogOut()
-  const user = getStorageItem("userInfo")
+  const { data: user, isLoading }: { data: User | null; [x: string]: any } = useGetUserProfile()
 
   const logOut = () =>
     trigger(() => {
@@ -51,30 +53,36 @@ function ProfileMenu() {
         </UIIconButton>
       </UIMenuHandler>
       <UIMenuList className="max-w-[230px]">
-        <div className="text-center outline-none">
-          <UITypography className="font-medium text-ellipsis">
-            {user?.firstName} {user?.lastName}
-          </UITypography>
-          <Link href="/profile">
-            <UIButton variant="text" size="sm" className="normal-case font-normal">
-              View profile
-            </UIButton>
-          </Link>
-        </div>
-        <UIDivider type="horizontal" className="my-1" />
-        <Link href={`/${user?.username}`}>
-          <UIMenuItem className="flex flex-row gap-1">
-            <RiDashboardLine />
-            Dashboard
-          </UIMenuItem>
-        </Link>
-        <Link href="/profile?t=2">
-          <UIMenuItem className="flex flex-row gap-1">
-            <BiBookmarks />
-            Saved billboards
-          </UIMenuItem>
-        </Link>
-        <UIDivider type="horizontal" className="my-1" />
+        {user ? (
+          <>
+            <div className="text-center outline-none">
+              <UITypography className="font-medium text-ellipsis">
+                {user?.firstName} {user?.lastName}
+              </UITypography>
+              <Link href="/profile">
+                <UIButton variant="text" size="sm" className="normal-case font-normal">
+                  View profile
+                </UIButton>
+              </Link>
+            </div>
+            <UIDivider type="horizontal" className="my-1" />
+            <Link href={`/${user?.username}`}>
+              <UIMenuItem className="flex flex-row gap-1">
+                <RiDashboardLine />
+                Dashboard
+              </UIMenuItem>
+            </Link>
+            <Link href="/profile?t=2">
+              <UIMenuItem className="flex flex-row gap-1">
+                <BiBookmarks />
+                Saved billboards
+              </UIMenuItem>
+            </Link>
+            <UIDivider type="horizontal" className="my-1" />
+          </>
+        ) : (
+          <></>
+        )}
         <UIMenuItem
           color="red"
           className="flex flex-row gap-1 text-deep-orange-500 hover:!text-deep-orange-500"
