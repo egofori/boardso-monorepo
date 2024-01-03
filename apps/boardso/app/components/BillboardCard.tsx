@@ -10,7 +10,6 @@ import { FaAngleRight } from "react-icons/fa6"
 import { RiAccountCircleFill } from "react-icons/ri"
 import { MdDelete } from "react-icons/md"
 import { AiFillEdit } from "react-icons/ai"
-import { BiArea  } from "react-icons/bi"
 import { IoLocationSharp } from "react-icons/io5"
 import { TbDimensions } from "react-icons/tb";
 import {
