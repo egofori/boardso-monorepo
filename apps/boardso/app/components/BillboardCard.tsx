@@ -2,7 +2,7 @@
 
 import { useDeleteBillboard, useRemoveBookmark, useSaveBillboard } from "@/services/hooks"
 import { Billboard } from "@/types/Billboard"
-import { defaultBillboardThumbnail } from "@/utils/constants"
+import { defaultBillboardThumbnail, periods } from "@/utils/constants"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import { BsBookmarkDashFill, BsBookmarkHeart } from "react-icons/bs"
@@ -10,11 +10,13 @@ import { FaAngleRight } from "react-icons/fa6"
 import { RiAccountCircleFill } from "react-icons/ri"
 import { MdDelete } from "react-icons/md"
 import { AiFillEdit } from "react-icons/ai"
+import { BiArea  } from "react-icons/bi"
+import { IoLocationSharp } from "react-icons/io5"
+import { TbDimensions } from "react-icons/tb";
 import {
   UIAvatar,
   UICard,
   UICardBody,
-  UICardFooter,
   UICardHeader,
   UIIconButton,
   UITooltip,
@@ -170,28 +172,33 @@ export default function BillboardCard({
               </div>
             </div>
           </UICardHeader>
-          <UICardBody className="p-3 pb-0">
-            <div className="flex items-center justify-between">
+          <UICardBody className="p-3">
+            <div className="flex flex-col items-start justify-start gap-0">
               <UITypography color="blue-gray" className="font-medium">
                 {data.title}
               </UITypography>
-              <UITypography color="teal" className="font-bold text-xl">
-                {`GHS ${data.price}`}
-              </UITypography>
+              <div className="flex flex-row justify-center items-baseline whitespace-nowrap gap-1">
+                <UITypography color="teal" className="font-bold text-xl">
+                  {`${data?.currency} ${data?.price}`}
+                </UITypography>
+                <UITypography variant="small" className="text-slate-500">
+                  {periods.filter((period) => data?.rate === period.value)[0]?.label}
+                </UITypography>
+              </div>
             </div>
-            <div className="flex flex-row gap-1 text-slate-500">
+            <div className="flex flex-row gap-1 text-slate-500 items-start">
+              <IoLocationSharp size="14px" className="flex-shrink-0 mt-[0.5px]" />
               <UITypography className="font-normal text-xs">
                 {data.billboardLocation.address}
               </UITypography>
             </div>
-            <div className="flex flex-row gap-1 text-slate-500">
+            <div className="flex flex-row gap-1 text-slate-500 items-start">
+              <TbDimensions size="14px" className="flex-shrink-0 mt-[0.5px]" />
               <UITypography className="font-normal text-xs">
                 {`${data.width} ft x ${data.height} ft`}
               </UITypography>
             </div>
           </UICardBody>
-          <UICardFooter className="flex justify-end p-3 pt-0">
-          </UICardFooter>
         </UICard>
       </Link>
       <DeleteConfirmationModal

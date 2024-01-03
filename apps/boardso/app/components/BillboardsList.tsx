@@ -99,7 +99,7 @@ export function BillboardsList({
       ) : (
         <div
           className={twMerge(
-            "grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2",
+            "grid grid-flow-row grid-cols-1 gap-3 sm:grid-cols-1 md:grid-cols-2",
             username ? "lg:grid-cols-2 xl:grid-cols-2" : "lg:grid-cols-3 2xl:grid-cols-4"
           )}
         >

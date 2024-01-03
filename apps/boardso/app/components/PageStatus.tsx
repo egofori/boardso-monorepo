@@ -18,7 +18,8 @@ export function PageStatus({ isLoading, data, error, children, className }: Prop
   return (
     <div
       className={twMerge(
-        "w-full h-[calc(100%-83px)] flex flex-row justify-center items-center",
+        "w-full h-[calc(100%-83px)]",
+        isLoading || error ? "flex flex-row justify-center items-center" : "",
         className
       )}
     >
