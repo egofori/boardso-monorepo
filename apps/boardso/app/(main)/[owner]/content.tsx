@@ -45,7 +45,8 @@ export default function Content() {
   }: { data: User | null; [x: string]: any } = useGetUserProfile()
 
   const renderContacts = useCallback(() => {
-    if (owner?.userProfile?.userContacts?.length === 0) {
+    const userContacts = owner?.userProfile?.userContacts || []
+    if (userContacts.length === 0) {
       return <UITypography className="text-center">No contacts available</UITypography>
     }
 
@@ -95,10 +96,7 @@ export default function Content() {
             <UITypography variant="h4">
               {owner?.firstName} {owner?.lastName}
             </UITypography>
-            <UITypography>{owner?.email}</UITypography>
-            <UITypography>
-              {owner?.zipCode} {owner?.phone}
-            </UITypography>
+            <UITypography>@{owner?.username}</UITypography>
             {currentUser?.username === username && (
               <Link href="/profile">
                 <UIIconButton color="white" className="absolute right-[5px] top-[5px] rounded">
