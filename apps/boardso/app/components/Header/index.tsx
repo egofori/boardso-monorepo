@@ -36,7 +36,7 @@ function ProfileMenu() {
   const [open, setOpen] = useState(false)
   const router = useRouter()
   const { trigger } = useLogOut()
-  const { data: user, isLoading }: { data: User | null; [x: string]: any } = useGetUserProfile()
+  const { data: user }: { data: User | null; [x: string]: any } = useGetUserProfile()
 
   const logOut = () =>
     trigger(() => {
@@ -44,6 +44,8 @@ function ProfileMenu() {
       router.push("/")
       notification("success", "You are logged out")
     })
+
+  const closeMenu = () => setOpen(false)
 
   return (
     <UIMenu open={open} handler={setOpen} allowHover>
@@ -60,20 +62,20 @@ function ProfileMenu() {
                 {user?.firstName} {user?.lastName}
               </UITypography>
               <Link href="/profile">
-                <UIButton variant="text" size="sm" className="normal-case font-normal">
+                <UIButton variant="text" size="sm" className="normal-case font-normal" onClick={closeMenu}>
                   View profile
                 </UIButton>
               </Link>
             </div>
             <UIDivider type="horizontal" className="my-1" />
             <Link href={`/${user?.username}`}>
-              <UIMenuItem className="flex flex-row gap-1">
+              <UIMenuItem className="flex flex-row gap-1" onClick={closeMenu}>
                 <RiDashboardLine />
                 Dashboard
               </UIMenuItem>
             </Link>
             <Link href="/profile?t=2">
-              <UIMenuItem className="flex flex-row gap-1">
+              <UIMenuItem className="flex flex-row gap-1" onClick={closeMenu}>
                 <BiBookmarks />
                 Saved billboards
               </UIMenuItem>
