@@ -102,7 +102,8 @@ export default function Content() {
       <div
         className="h-[300px] sm:h-[400px] md:h-[500px] flex justify-center items-center flex-col gap-5 bg-no-repeat bg-cover relative px-4"
         style={{
-          backgroundImage: "url('https://storage.googleapis.com/boardso-media/site-media/hero_image.jpg')",
+          backgroundImage:
+            "url('https://storage.googleapis.com/boardso-media/site-media/hero_image.jpg')",
         }}
       >
         <div className="h-full w-full bg-black/40 absolute" />
@@ -117,7 +118,7 @@ export default function Content() {
           </UIButton>
         </Link>
       </div>
-      <div className="py-5">
+      <div className="py-14">
         <div className="layout-wrapper flex flex-col gap-6 my-2">
           <div className="flex flex-col gap-2">
             <UITypography variant="h4" className="text-tertiary-700 text-[20px]">
@@ -149,28 +150,27 @@ export default function Content() {
               </>
             )}
           </div>
-          <div className="flex flex-col gap-2">
-            <UITypography variant="h4" className="text-tertiary-700 text-[20px]">
-              Map of billboards
+        </div>
+      </div>
+      <div className="bg-teal-100 py-14">
+        <div className="layout-wrapper flex flex-col gap-10">
+          <div>
+            <UITypography variant="h2">Let Advertisers find your Billboards easily</UITypography>
+            <UITypography className="text-xl">Manage all your billboards in one place</UITypography>
+          </div>
+          <div>
+            <UITypography className="text-xl font-bold text-center uppercase mb-4">
+              Watch this video to help you get started
             </UITypography>
-            <div>
-              <GoogleMapWrapper
-                mapContainerClassName="w-full h-[300px] sm:h-[400px] md:h-[500px]"
-                center={center}
-                zoom={13}
-                options={{
-                  streetViewControl: false,
-                  mapTypeControl: false,
-                }}
-                setIsLoaded={setIsLoaded}
-              >
-                {locationBillboards.map((locationBillboard) => (
-                  <MarkerF
-                    key={locationBillboard.id}
-                    position={{ lat: locationBillboard.lat, lng: locationBillboard.lng }}
-                  />
-                ))}
-              </GoogleMapWrapper>
+            <div className="rounded-lg overflow-hidden relative aspect-w-16 aspect-h-9">
+              <iframe
+                width="852"
+                height="480"
+                src="https://www.youtube.com/embed/UPm83aiMFk0"
+                title="Getting started with Boardso app"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                ></iframe>
             </div>
           </div>
         </div>

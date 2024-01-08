@@ -35,5 +35,8 @@
     "ui": "*",
     "unique-string": "^3.0.0",
     "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2"
   }
 }
