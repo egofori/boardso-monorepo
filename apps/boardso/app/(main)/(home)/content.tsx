@@ -1,101 +1,25 @@
 "use client"
 
-import { UIButton, UITypography } from "ui"
+import { UIButton, UITooltip, UITypography } from "ui"
 import SearchInput from "../../components/SearchInput"
 import { BiPlus } from "react-icons/bi"
 import PlaceCard from "@/components/PlaceCard"
 import Link from "next/link"
-import { useGetPopularPlaces, useLocationBillboards } from "@/services/hooks"
-import { Billboard, PopularPlace } from "@/types/Billboard"
-import GoogleMapWrapper from "@/components/GoogleMapWrapper"
+import { useGetPopularPlaces } from "@/services/hooks"
+import { PopularPlace } from "@/types/Billboard"
 import Loader from "@/components/Loader"
-import { useCallback, useEffect, useState } from "react"
-import { LocationCoordinates } from "@/types/index"
-import { MarkerF } from "@react-google-maps/api"
 import { placeImages } from "@/utils/constants"
+import { useDisableAddBillboard } from "@/utils/hooks"
 
 export default function Content() {
-  const [locationValue, setLocationValue] = useState("")
-
-  const [isLoaded, setIsLoaded] = useState(false)
-
   const {
     data: popularPlacesData,
     isLoading: popularPlacesLoading,
   }: { data: PopularPlace[]; [x: string]: any } = useGetPopularPlaces()
 
-  const {
-    data: locationBillboardsData,
-  }: { data: ({ billboard: Billboard; id: any } & LocationCoordinates)[]; [x: string]: any } =
-    useLocationBillboards(locationValue)
+  const disableAddBillboard = useDisableAddBillboard()
 
   const popularPlaces = popularPlacesData ?? []
-  const locationBillboards = locationBillboardsData ?? []
-
-  // defaults to Tema
-  const [center, setCenter] = useState<LocationCoordinates>({
-    lat: 5.709749,
-    lng: 0.018562,
-  })
-
-  const processLocation = (result: google.maps.GeocoderResult) => {
-    let location: any = {}
-    const locationTypes = [
-      { name: "sublocality", key: "sublocality" },
-      { name: "locality", key: "locality" },
-      { name: "administrative_area_level_2", key: "administrativeAreaLevel2" },
-    ]
-    let addressComponents = result["address_components"]
-    locationTypes.forEach((type) => {
-      for (let i = 0; i < addressComponents.length; i++) {
-        if (addressComponents[i].types.includes(type.name)) {
-          location[type.key] = addressComponents[i].long_name
-          addressComponents = addressComponents.filter((value, index) => index !== i)
-        }
-      }
-    })
-
-    return location
-  }
-
-  const coordinatesToLocation = useCallback((location: LocationCoordinates) => {
-    const geocoder = new google.maps.Geocoder()
-    geocoder.geocode(
-      { location },
-      (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
-        if (status === "OK" && results !== null) {
-          const components = processLocation(results[0])
-          setLocationValue(
-            components?.sublocality || components?.locality || components?.administrativeAreaLevel2
-          )
-        }
-      }
-    )
-  }, [])
-
-  // prompt user for permission to access their location if supported by the browser
-  const getUserLocation = useCallback(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude
-          const lng = position.coords.longitude
-
-          setCenter({ lat, lng })
-          coordinatesToLocation({ lat, lng })
-        },
-        null,
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-        }
-      )
-    }
-  }, [coordinatesToLocation])
-
-  useEffect(() => {
-    if (isLoaded) getUserLocation()
-  }, [getUserLocation, isLoaded])
 
   return (
     <main>
@@ -108,15 +32,18 @@ export default function Content() {
       >
         <div className="h-full w-full bg-black/40 absolute" />
         <SearchInput className="z-[1]" />
-        <Link href="/add-billboard" className="z-[1]">
-          <UIButton
-            size="md"
-            className="text-white bg-tertiary-200/50 hover:bg-tertiary-200/60 rounded-full text-lg font-medium flex items-center"
-          >
-            <BiPlus fontSize="25px" />
-            Add Billboard
-          </UIButton>
-        </Link>
+        <UITooltip placement="bottom" content={disableAddBillboard ? "Subscribe/upgrade to add more billboard listings" : "Click to add a new billboard listing"}>
+          <Link href="/add-billboard" className="z-[1]">
+            <UIButton
+              size="md"
+              className="text-white bg-tertiary-200/50 hover:bg-tertiary-200/60 rounded-full text-lg font-medium flex items-center"
+              disabled={disableAddBillboard}
+            >
+              <BiPlus fontSize="25px" />
+              Add Billboard
+            </UIButton>
+          </Link>
+        </UITooltip>
       </div>
       <div className="py-14">
         <div className="layout-wrapper flex flex-col gap-6 my-2">
@@ -170,7 +97,7 @@ export default function Content() {
                 title="Getting started with Boardso app"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                ></iframe>
+              ></iframe>
             </div>
           </div>
         </div>

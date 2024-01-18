@@ -66,8 +66,8 @@ export interface UserContact {
 }
 
 export interface PopularPlace {
-  _count:                   number;
-  sublocality:              null | string;
-  locality:                 string;
-  administrativeAreaLevel2: string;
+  _count: number
+  sublocality: null | string
+  locality: string
+  administrativeAreaLevel2: string
 }

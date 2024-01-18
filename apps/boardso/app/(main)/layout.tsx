@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
-        <ToastContainer hideProgressBar={true} autoClose={2000} />
+        <ToastContainer hideProgressBar={true} autoClose={3000} />
       </body>
     </html>
   )

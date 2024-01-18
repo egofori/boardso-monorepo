@@ -16,3 +16,8 @@ export interface UserProfile {
   about: string | null
   profileImage: { url: string | null } | null
 }
+
+export interface UserStatus {
+  billboardCount: number
+  maxFreeListings: number
+}
