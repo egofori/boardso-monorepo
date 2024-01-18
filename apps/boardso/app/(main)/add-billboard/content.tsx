@@ -1,7 +1,7 @@
 "use client"
 
 import { useAddBillboard } from "@/services/hooks"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BiPlus } from "react-icons/bi"
 import { IoCloseSharp, IoLocationSharp } from "react-icons/io5"
 import {
@@ -35,6 +35,8 @@ import {
   useProtectedRoute,
 } from "../../../utils"
 import { ImageCard } from "@/components/ImageCard"
+import { useDisableAddBillboard } from "@/utils/hooks"
+import { useRouter } from "next/navigation"
 
 export default function Content() {
   // user must be logged in to access this page
@@ -56,6 +58,18 @@ export default function Content() {
   const [selectedBillboardType, setSelectedBillboardType] = useState(billboardTypes[0])
 
   const [locationDetails, setLocationDetails] = useState<any>(null)
+
+  const disableAddBillboard = useDisableAddBillboard()
+
+  const router = useRouter()
+
+  // check if user hasn't exhausted their limit
+  useEffect(() => {
+    if (disableAddBillboard) {
+      notification("info", "Subscribe/upgrade to add more billboard listings")
+      router.push("/")
+    }
+  }, [disableAddBillboard, router])
 
   const signUpSchema = object({
     title: string().min(1, { message: "Title must not be empty" }),

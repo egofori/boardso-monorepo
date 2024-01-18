@@ -3,6 +3,8 @@ import useAPIGet from "@/lib/hooks/useAPIGet"
 import useAPIPatch from "@/lib/hooks/useAPIPatch"
 import useAPIPost from "@/lib/hooks/useAPIPost"
 import { useLogOut } from "./auth"
+import { useValue } from "@/lib/hooks/useValue"
+import { getStorageItem } from "@/lib/storage"
 
 export const useGetUser = (username: string) => useAPIGet({ url: `/users/${username}` })
 
@@ -45,4 +47,10 @@ export const useDeleteUser = () => {
     )
 
   return { trigger: deleteUser, isLoading: isLoading || deleteLoading, ...rest }
+}
+
+export const useGetUserStatus = () => {
+  const isLoggedIn = useValue(getStorageItem("isLoggedIn"))
+
+  return useAPIGet(isLoggedIn ? "/users/status" : null)
 }

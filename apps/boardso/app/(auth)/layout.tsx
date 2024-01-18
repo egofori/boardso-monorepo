@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <AuthHeader />
         {children}
         <AuthFooter />
-        <ToastContainer hideProgressBar={true} autoClose={2000} />
+        <ToastContainer hideProgressBar={true} autoClose={3000} />
       </body>
     </html>
   )

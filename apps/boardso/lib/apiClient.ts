@@ -25,12 +25,16 @@ apiClient.interceptors.request.use(
 )
 
 apiClient.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response.status === 401) {
+  (response) => response,
+  (error) => {
+    // if the user accesses an unauthorized endpoint
+    if (error?.response?.status === 401) {
       localStorage.removeItem("accessToken")
       localStorage.removeItem("isLoggedIn")
+      window.location.href = "/login"
     }
-  });
+    return Promise.reject(error)
+  }
+)
 
 export default apiClient
