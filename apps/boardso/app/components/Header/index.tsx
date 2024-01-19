@@ -31,6 +31,7 @@ import { VscSignIn } from "react-icons/vsc"
 import Logo from "../Logo"
 import { useGetUserProfile } from "@/services/hooks/users"
 import { User } from "@/types/User"
+import { useDisableAddBillboard } from "@/utils/hooks"
 
 function ProfileMenu() {
   const [open, setOpen] = useState(false)
@@ -131,6 +132,8 @@ export default function Header() {
 
   const router = useRouter()
 
+  const disableAddBillboard = useDisableAddBillboard()
+
   const searchSchema = object({
     search: string(),
   })
@@ -143,6 +146,7 @@ export default function Header() {
   const onSubmit = (data: any) => {
     router.push(`/billboards?search=${data.search}`)
   }
+
   return (
     <Navbar className="sticky inset-0 z-10 h-max rounded-none max-w-full px-0">
       <div className="layout-wrapper flex justify-between items-center gap-4">
@@ -179,12 +183,13 @@ export default function Header() {
             </>
           )}
           {pathname !== "/add-billboard" && pathname !== "/" ? (
-            <UITooltip content="Add billboard">
+            <UITooltip content={disableAddBillboard ? "Subscribe/upgrade to add more billboard listings" : "Add billboard"}>
               <Link href="/add-billboard">
                 <UIButton
                   variant="text"
                   className="text-base rounded-full p-2 [&>span]:!mr-0 bg-teal-500/10 md:bg-transparent"
                   icon={<BiPlus fontSize="25px" />}
+                  disabled={disableAddBillboard}
                 >
                   <span className="md:block hidden">Add Billboard</span>
                 </UIButton>
