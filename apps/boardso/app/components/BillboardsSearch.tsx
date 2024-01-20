@@ -185,7 +185,7 @@ export function BillboardsSearch({ params, setParams }: { params: any; setParams
         <div className="relative w-full md:wg-[calc(100%-450px)]">
           <UIInput
             className="pl-10 bg-white"
-            placeholder="Type to search"
+            placeholder="Search billboards"
             {...form.register("search")}
             error={hasError(form, "search")}
           />
