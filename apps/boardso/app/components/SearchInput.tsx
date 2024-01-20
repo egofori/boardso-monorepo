@@ -33,7 +33,7 @@ export default function SearchInput({ className }: { className: string }) {
       <UIInput
         containerProps={{ className: "h-[52px]" }}
         className="h-[52px] pl-12 pr-[95px] bg-white !border-0 focus:!border-0 transition-none !text-[16px]"
-        placeholder="Type to search"
+        placeholder="Search billboards"
         {...form.register("search")}
         onFocus={() => setShowAllButton(false)}
         onBlur={() => setShowAllButton(true)}
