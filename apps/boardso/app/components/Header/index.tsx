@@ -162,7 +162,7 @@ export default function Header() {
               <UIForm form={form} onSubmit={onSubmit} className="relative hidden md:block">
                 <UIInput
                   className="placeholder:!text-slate-500 !w-[110px] focus:!w-[200px] pl-10 !bg-slate-400/10 rounded-full !border-transparent focus:border-[1px] focus:!border-slate-200"
-                  placeholder="Search"
+                  placeholder="Search billboards"
                   size="md"
                   {...form.register("search")}
                 />
@@ -170,7 +170,7 @@ export default function Header() {
                   <BiSearch size="22px" className="text-slate-500" />
                 </div>
               </UIForm>
-              <UITooltip content="Click to search">
+              <UITooltip content="Click to search billboards">
                 <Link href="/billboards">
                   <UIIconButton
                     color="white"
