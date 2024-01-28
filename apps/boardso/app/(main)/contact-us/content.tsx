@@ -8,7 +8,7 @@ export default function Content() {
     <main className="layout-wrapper">
       <UICard className="mx-auto my-5 max-w-3xl p-5 sm:p-10 bg-white">
         <article className="prose prose-slate mx-auto lg:prose-lg">
-          <UITypography variant="h1" className="text-center">Contact Us</UITypography>
+          <UITypography variant="h1" className="text-4xl text-center">Contact Us</UITypography>
           <UITypography variant="paragraph">
             Are you lost? Do you want to make an inquiry? Write us a testimonial? Send us a feedback? Or you would like to make a few suggestions?
             Please email us at <Link href="mailto:contact@boardso.com">contact@boardso.com</Link>.
