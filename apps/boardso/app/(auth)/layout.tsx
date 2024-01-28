@@ -26,6 +26,37 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Script id="ms-clarity" strategy="afterInteractive">
         {clarityCode}
       </Script>
+      <Script id="wa-bubble" strategy="afterInteractive">
+        {`var url = 'https://edna.io/wp-content/plugins/whatsapp-widget-generator/js/generator.js?34872';
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = url;
+        var options = {
+          "host":"https://edna.io",
+          "enabled":true,
+          "chatButtonSetting":{
+              "backgroundColor":"#4fce5d",
+              "ctaText":"",
+              "icon":"whatsapp",
+              "position":"right",
+          },
+          "brandSetting":{
+              "backgroundColor":"#085b53",
+              "brandImg":"https://storage.googleapis.com/boardso-media/site-media/icon.png",
+              "brandName":"Boardso",
+              "brandSubTitle":"Online",
+              "ctaText":"Start Chat",
+              "phoneNumber":"233546040671",
+              "welcomeText":"Hello there 👋🏿. How may I be of service today?"
+          }
+        };
+        s.onload = function() {
+            CreateWhatsappChatWidget(options);
+        };
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);`}
+      </Script>
       <body
         className={twMerge(
           inter.className,

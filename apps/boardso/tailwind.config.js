@@ -20,5 +20,6 @@ module.exports = withMT({
   },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
   ],
 })
