@@ -82,11 +82,11 @@ export default function Content() {
       <div className="bg-teal-100 py-14">
         <div className="layout-wrapper flex flex-col gap-10">
           <div>
-            <UITypography variant="h2">Let Advertisers find your Billboards easily</UITypography>
-            <UITypography className="text-xl">Manage all your billboards in one place</UITypography>
+            <UITypography variant="h2">Let the World find your Billboards easily</UITypography>
+            <UITypography className="text-xl">Manage all your billboard sites in one place</UITypography>
           </div>
           <div>
-            <UITypography className="text-xl font-bold text-center uppercase mb-4">
+            <UITypography className="text-2xl font-bold text-center uppercase mb-4">
               Watch this video to help you get started
             </UITypography>
             <div className="rounded-lg overflow-hidden relative aspect-w-16 aspect-h-9">

@@ -313,7 +313,7 @@ export function BillboardsSearch({ params, setParams }: { params: any; setParams
         </UIButton>
       </div>
       {moreOpen && (
-        <div className={twMerge("flex gap-4 justify-between flex-col md:flex-row 2xl:flex-col")}>
+        <div className="flex gap-4 justify-between flex-col md:flex-row">
           <div className="flex flex-col justify-start items-start gap-3 w-full">
             <div className="flex flex-row gap-1">
               <label>Price range</label>
