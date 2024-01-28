@@ -6,8 +6,9 @@ import { UITypography } from "ui"
 
 export default function Footer() {
   const pathname = usePathname()
+  const footerPages = ["/", "/about-us", "/contact-us"]
 
-  return pathname === "/" ? (
+  return footerPages.includes(pathname) ? (
     <footer className="bg-tertiary-100">
       <div className="layout-wrapper py-10 flex flex-col justify-between lg:flex-row gap-4">
         <div className="flex flex-row items-start gap-4  lg:w-[50%]">
@@ -20,10 +21,10 @@ export default function Footer() {
         <div className="flex justify-between text-sm w-full gap-1 [&>ul>li:first-child]:mb-1">
           <ul>
             <li>
-              <Link href="#">About Us</Link>
+              <Link href="/about-us">About Us</Link>
             </li>
             <li>
-              <Link href="#">Contact Us</Link>
+              <Link href="/contact-us">Contact Us</Link>
             </li>
           </ul>
           <ul>
@@ -36,10 +37,10 @@ export default function Footer() {
           </ul>
           <ul>
             <li>
-              <Link href="#">Report</Link>
+              <Link href="https://wa.link/ffitqj" target="_blank">Report</Link>
             </li>
             <li>
-              <Link href="#">Documentation</Link>
+              <Link href="/about-us">Documentation</Link>
             </li>
           </ul>
         </div>
