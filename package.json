@@ -21,7 +21,6 @@
   ],
   "dependencies": {
     "@react-google-maps/api": "^2.19.2",
-    "@tailwindcss/typography": "^0.5.10",
     "firebase": "^10.5.0"
   }
 }
