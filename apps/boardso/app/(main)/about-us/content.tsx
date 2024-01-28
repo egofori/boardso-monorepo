@@ -8,7 +8,7 @@ export default function Content() {
     <main className="layout-wrapper">
       <UICard className="mx-auto my-5 max-w-3xl p-5 sm:p-10 bg-white font-sans">
         <article className="prose prose-slate mx-auto lg:prose-lg">
-          <UITypography variant="h1" className="text-center">About Boardso</UITypography>
+          <UITypography variant="h1" className="text-center text-4xl">About Boardso</UITypography>
           <UITypography variant="paragraph">
             Boardso is a website with billboard listings from billboard owners, providing billboard
             seekers an easy way to find billboard sites on the internet. It is a cutting-edge
@@ -16,7 +16,7 @@ export default function Content() {
             internet. At Boardso we understand the importance of creating awareness for your
             products and services in today&apos;s competitive business environment.
           </UITypography>
-          <UITypography variant="h2">How to add a billboard site</UITypography>
+          <UITypography variant="h2" className="text-3xl" >How to add a billboard site</UITypography>
           <ol>
             <li>
               <UITypography variant="paragraph">
@@ -47,7 +47,7 @@ export default function Content() {
               <UITypography variant="paragraph">Your billboard site can now be seen by all billboard seekers on the internet.</UITypography>
             </li>
           </ol>
-          <h2>How to find a billboard site</h2>
+          <UITypography variant="h2" className="text-3xl">How to find a billboard site</UITypography>
           <ol>
             <li>
               <UITypography variant="paragraph">
@@ -76,7 +76,7 @@ export default function Content() {
           </ol>
           <hr />
           <section className="flex flex-col justify-center items-center">
-            <UITypography variant="h3" className="text-center mt-0">Do you have billboard sites that the world should know about? Register now and let&apos;s get it sorted.</UITypography>
+            <UITypography variant="h2" className="text-center text-3xl mt-0">Do you have billboard sites that the world should know about? Register now and let&apos;s get it sorted.</UITypography>
             <Link href="/signup">
               <UIButton>Sign Up</UIButton>
             </Link>
