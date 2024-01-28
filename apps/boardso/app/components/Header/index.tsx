@@ -114,11 +114,11 @@ function AuthMenu() {
         </UIIconButton>
       </UIMenuHandler>
       <UIMenuList className="!w-[100px]">
-        <Link href="/login">
-          <UIMenuItem>Log in</UIMenuItem>
-        </Link>
         <Link href="/signup">
           <UIMenuItem>Sign up</UIMenuItem>
+        </Link>
+        <Link href="/login">
+          <UIMenuItem>Log in</UIMenuItem>
         </Link>
       </UIMenuList>
     </UIMenu>
@@ -206,11 +206,11 @@ export default function Header() {
                 <AuthMenu />
               </div>
               <div className="md:flex hidden gap-2 text-tertiary-800 hover:[&>a]:text-teal-400">
+                <Link href="/signup">Sign up</Link>
+                <UITypography as="span">/</UITypography>
                 <Link href="/login" className="">
                   Log in
                 </Link>
-                <UITypography as="span">/</UITypography>
-                <Link href="/signup">Sign up</Link>
               </div>
             </>
           )}
