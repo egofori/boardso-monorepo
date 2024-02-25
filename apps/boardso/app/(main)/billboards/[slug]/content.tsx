@@ -110,7 +110,7 @@ export default function Content() {
   }
 
   return (
-    <PageStatus isLoading={isLoading} data={billboard} error={error && "Billboard does not exist"}>
+    <PageStatus isLoading={isLoading} data={billboard} error={(error || !billboard?.isActive) && "Billboard does not exist"}>
       <main className="layout-wrapper flex lg:flex-row flex-col items-start justify-center gap-4 py-5">
         <UICard className="w-full p-5 sm:p-10 bg-white flex flex-col gap-4">
           <div className="flex flex-row gap-2 justify-between">

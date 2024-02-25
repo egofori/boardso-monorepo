@@ -101,10 +101,15 @@ export default function BillboardCard({
 
   return (
     <>
-      <Link href={`/billboards/${data.slug}`}>
+      <Link href={data.isActive ? `/billboards/${data.slug}` : ""}>
         <UICard
-          className={`cursor-pointer border-gray-200 shadow-none min-w-[200px] w-full ${className}`}
+          className={`cursor-pointer border-gray-200 shadow-none min-w-[200px] w-full overflow-clip ${className}`}
         >
+          {!data.isActive &&
+          <UITooltip content={editable ? "Subscribe to make listing available" : "Listing unavailable"}>
+            <div className="h-full w-full bg-white/95 absolute z-[2]" />
+          </UITooltip>
+          }
           <UICardHeader
             floated={false}
             shadow={false}

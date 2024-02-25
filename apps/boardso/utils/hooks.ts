@@ -9,6 +9,6 @@ export const useDisableAddBillboard = () => {
   if (isLoading || error) {
     return true
   } else if (data) {
-    return data.billboardCount >= data.maxFreeListings
+    return data.billboardCount >= data.maxFreeListings && !data.isSubscriptionActive
   }
 }
