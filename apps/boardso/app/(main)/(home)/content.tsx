@@ -32,12 +32,11 @@ export default function Content() {
       >
         <div className="h-full w-full bg-black/40 absolute" />
         <SearchInput className="z-[1]" />
-        <UITooltip placement="bottom" content={disableAddBillboard ? "Subscribe/upgrade to add more billboard listings" : "Click to add a new billboard listing"}>
-          <Link href="/add-billboard" className="z-[1]">
+        <UITooltip placement="bottom" content="Click to add a new billboard listing">
+          <Link href={disableAddBillboard ? "/pricing" : "/add-billboard"} className="z-[1]">
             <UIButton
               size="md"
               className="text-white bg-tertiary-200/50 hover:bg-tertiary-200/60 rounded-full text-lg font-medium flex items-center"
-              disabled={disableAddBillboard}
             >
               <BiPlus fontSize="25px" />
               Add Billboard
@@ -83,7 +82,9 @@ export default function Content() {
         <div className="layout-wrapper flex flex-col gap-10">
           <div>
             <UITypography variant="h2">Let the World find your Billboards easily</UITypography>
-            <UITypography className="text-xl">Manage all your billboard sites in one place</UITypography>
+            <UITypography className="text-xl">
+              Manage all your billboard sites in one place
+            </UITypography>
           </div>
           <div>
             <UITypography className="text-2xl font-bold text-center uppercase mb-4">

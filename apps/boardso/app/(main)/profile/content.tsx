@@ -7,6 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Contacts } from "./Contacts"
 import { Bookmarks } from "./Bookmarks"
 import { useProtectedRoute } from "@/utils/index"
+import { Subscriptions } from "./Subscriptions"
 
 export default function Content() {
     // user must be logged in to access this page
@@ -56,9 +57,12 @@ export default function Content() {
               Profile
             </UITab>
             <UITab value={1} onClick={() => setActiveTab(1)}>
-              Contacts
+              Subscriptions
             </UITab>
             <UITab value={2} onClick={() => setActiveTab(2)}>
+              Contacts
+            </UITab>
+            <UITab value={3} onClick={() => setActiveTab(3)}>
               Bookmarks
             </UITab>
           </UICard>
@@ -68,10 +72,13 @@ export default function Content() {
             {activeTab === 0 && <Profile />}
           </UITabPanel>
           <UITabPanel value={1} className="p-0">
-            {activeTab === 1 && <Contacts />}
+            {activeTab === 1 && <Subscriptions />}
           </UITabPanel>
           <UITabPanel value={2} className="p-0">
-            {activeTab === 2 && <Bookmarks />}
+            {activeTab === 2 && <Contacts />}
+          </UITabPanel>
+          <UITabPanel value={3} className="p-0">
+            {activeTab === 3 && <Bookmarks />}
           </UITabPanel>
         </UITabsBody>
       </UITabs>

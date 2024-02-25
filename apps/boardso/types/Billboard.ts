@@ -16,6 +16,8 @@ export interface Billboard {
   price: number
   billboardLocation: BillboardLocation
   owner: Owner
+  premium:           boolean;
+  isActive:          boolean;
   bookmarked: boolean
 }
 

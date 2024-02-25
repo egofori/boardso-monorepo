@@ -11,7 +11,7 @@ export default function Content() {
           <UITypography variant="h1" className="text-center text-4xl">About Boardso</UITypography>
           <UITypography variant="paragraph">
             Boardso is a website with billboard listings from billboard owners, providing billboard
-            seekers an easy way to find billboard sites on the internet. It is a cutting-edge
+            seekers an easy way to find billboard spaces on the internet. It is a cutting-edge
             platform that can significantly increase the exposure of your billboard sites on the
             internet. At Boardso we understand the importance of creating awareness for your
             products and services in today&apos;s competitive business environment.
@@ -38,7 +38,7 @@ export default function Content() {
               <blockquote>
                 <UITypography variant="paragraph">
                   Note that standard accounts are only allowed to add up to 3 billboard sites for free and can
-                  only upload 5 images to their billboard per listing. Upgrade to post unlimited
+                  only upload 5 images to their billboard per listing. Subscribe to post unlimited
                   billboard sites and upload up to 10 images of your billboard per listing.
                 </UITypography>
               </blockquote>

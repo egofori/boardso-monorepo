@@ -29,9 +29,11 @@ import { getStorageItem } from "@/lib/storage"
 import { useValue } from "@/lib/hooks/useValue"
 import { VscSignIn } from "react-icons/vsc"
 import Logo from "../Logo"
-import { useGetUserProfile } from "@/services/hooks/users"
-import { User } from "@/types/User"
+import { useGetUserProfile, useGetUserStatus } from "@/services/hooks/users"
+import { User, UserStatus } from "@/types/User"
 import { useDisableAddBillboard } from "@/utils/hooks"
+import { TbCrown } from "react-icons/tb"
+import { AxiosError } from "axios"
 
 function ProfileMenu() {
   const [open, setOpen] = useState(false)
@@ -63,19 +65,30 @@ function ProfileMenu() {
                 {user?.firstName} {user?.lastName}
               </UITypography>
               <Link href="/profile">
-                <UIButton variant="text" size="sm" className="normal-case font-normal" onClick={closeMenu}>
+                <UIButton
+                  variant="text"
+                  size="sm"
+                  className="normal-case font-normal"
+                  onClick={closeMenu}
+                >
                   View profile
                 </UIButton>
               </Link>
             </div>
             <UIDivider type="horizontal" className="my-1" />
+            <Link href="/profile?t=1">
+              <UIMenuItem className="flex flex-row gap-1" onClick={closeMenu}>
+                <TbCrown />
+                Subscriptions
+              </UIMenuItem>
+            </Link>
             <Link href={`/${user?.username}`}>
               <UIMenuItem className="flex flex-row gap-1" onClick={closeMenu}>
                 <RiDashboardLine />
                 Dashboard
               </UIMenuItem>
             </Link>
-            <Link href="/profile?t=2">
+            <Link href="/profile?t=3">
               <UIMenuItem className="flex flex-row gap-1" onClick={closeMenu}>
                 <BiBookmarks />
                 Saved billboards
@@ -134,6 +147,9 @@ export default function Header() {
 
   const disableAddBillboard = useDisableAddBillboard()
 
+  const { data: userStatus }: { data: UserStatus; error: AxiosError; isLoading: boolean } =
+    useGetUserStatus()
+
   const searchSchema = object({
     search: string(),
   })
@@ -156,10 +172,10 @@ export default function Header() {
           </Link>
           <CountryDropdown />
         </div>
-        <div className="flex flex-row items-center gap-2 sm:gap-3 overflow-hidden">
+        <div className="flex flex-row items-center gap-2 sm:gap-3 overflow-x-auto">
           {pathname !== "/billboards" && pathname !== "/" && (
             <>
-              <UIForm form={form} onSubmit={onSubmit} className="relative hidden md:block">
+              <UIForm form={form} onSubmit={onSubmit} className="relative hidden lg:block">
                 <UIInput
                   className="placeholder:!text-slate-500 !w-[110px] focus:!w-[200px] pl-10 !bg-slate-400/10 rounded-full !border-transparent focus:border-[1px] focus:!border-slate-200"
                   placeholder="Search billboards"
@@ -174,7 +190,7 @@ export default function Header() {
                 <Link href="/billboards">
                   <UIIconButton
                     color="white"
-                    className="!bg-slate-400/10 rounded-full !border-transparent focus:border-[1px] focus:!border-slate-200 block md:hidden"
+                    className="!bg-slate-400/10 rounded-full !border-transparent focus:border-[1px] focus:!border-slate-200 block lg:hidden"
                   >
                     <BiSearch size="22px" className="text-slate-500" />
                   </UIIconButton>
@@ -183,13 +199,14 @@ export default function Header() {
             </>
           )}
           {pathname !== "/add-billboard" && pathname !== "/" ? (
-            <UITooltip content={disableAddBillboard ? "Subscribe/upgrade to add more billboard listings" : "Add billboard"}>
-              <Link href="/add-billboard">
+            <UITooltip
+              content={disableAddBillboard ? "Subscribe to add more billboard listings" : null}
+            >
+              <Link href={disableAddBillboard ? "/pricing" : "/add-billboard"}>
                 <UIButton
                   variant="text"
                   className="text-base rounded-full p-2 [&>span]:!mr-0 bg-teal-500/10 md:bg-transparent"
                   icon={<BiPlus fontSize="25px" />}
-                  disabled={disableAddBillboard}
                 >
                   <span className="md:block hidden">Add Billboard</span>
                 </UIButton>
@@ -198,22 +215,40 @@ export default function Header() {
           ) : (
             <></>
           )}
-          {isLoggedIn ? (
-            <ProfileMenu />
-          ) : (
-            <>
-              <div className="md:hidden block">
-                <AuthMenu />
-              </div>
-              <div className="md:flex hidden gap-2 text-tertiary-800 hover:[&>a]:text-teal-400">
-                <Link href="/signup">Sign up</Link>
-                <UITypography as="span">/</UITypography>
-                <Link href="/login" className="">
-                  Log in
-                </Link>
-              </div>
-            </>
+          {userStatus?.isSubscriptionActive === false && (
+            <UITooltip content="Subscribe">
+              <Link href="/pricing">
+                <UIButton
+                  variant="text"
+                  className="text-base rounded-full p-2 [&>span]:!mr-0 bg-amber-500/10 md:bg-transparent"
+                  icon={<TbCrown fontSize="25px" />}
+                  color="amber"
+                >
+                  <span className="md:block hidden">Go premium</span>
+                </UIButton>
+              </Link>
+            </UITooltip>
           )}
+          <div>
+            {isLoggedIn ? (
+              <ProfileMenu />
+            ) : (
+              <>
+                <div className="md:hidden block">
+                  <AuthMenu />
+                </div>
+                <div className="md:flex hidden gap-2">
+                  <Link href="/login" className="">
+                    <UIButton variant="outlined">Log in</UIButton>
+                    
+                  </Link>
+                  <Link href="/signup">
+                    <UIButton variant="gradient">Register</UIButton>
+                  </Link>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </Navbar>

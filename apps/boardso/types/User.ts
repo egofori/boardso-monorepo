@@ -20,4 +20,9 @@ export interface UserProfile {
 export interface UserStatus {
   billboardCount: number
   maxFreeListings: number
+  isSubscriptionActive: boolean
+  subscriptionExpiresAt: Date
+  subscribedAt: Date
+  currentPlan: string
+  daysLeft: number
 }

@@ -6,7 +6,7 @@ import { UITypography } from "ui"
 
 export default function Footer() {
   const pathname = usePathname()
-  const footerPages = ["/", "/about-us", "/contact-us"]
+  const footerPages = ["/", "/about-us", "/contact-us", "/pricing"]
 
   return footerPages.includes(pathname) ? (
     <footer className="bg-tertiary-100">
@@ -14,12 +14,15 @@ export default function Footer() {
         <div className="flex flex-row items-start gap-4  lg:w-[50%]">
           <UITypography className="font-bold text-2xl">Boardso</UITypography>
           <UITypography className="text-justify text-sm">
-            Serves individuals and businesses looking for billboard space to advertise. Search
+            Serves individuals and businesses looking for billboard spaces to advertise. Search
             through a growing database of billboards.
           </UITypography>
         </div>
         <div className="flex justify-between text-sm w-full gap-1 [&>ul>li:first-child]:mb-1">
           <ul>
+            <li>
+              <Link href="/pricing">Pricing</Link>
+            </li>
             <li>
               <Link href="/about-us">About Us</Link>
             </li>
@@ -37,7 +40,9 @@ export default function Footer() {
           </ul>
           <ul>
             <li>
-              <Link href="https://wa.link/ffitqj" target="_blank">Report</Link>
+              <Link href="https://wa.link/ffitqj" target="_blank">
+                Report
+              </Link>
             </li>
             <li>
               <Link href="/about-us">Documentation</Link>

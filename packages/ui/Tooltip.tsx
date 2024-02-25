@@ -1,5 +1,21 @@
 "use client"
 
-import { Tooltip } from "@material-tailwind/react";
+import { Tooltip, type TooltipProps } from "@material-tailwind/react"
+import React from "react"
 
-export { Tooltip as UITooltip}
+
+const UITooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
+  ({ children, content, ...rest }, ref) => {
+    return !content ? (
+      children
+    ) : (
+      <Tooltip content={content} {...rest} ref={ref}>
+        {children}
+      </Tooltip>
+    )
+  }
+)
+
+UITooltip.displayName = "UITooltip"
+
+export { UITooltip }

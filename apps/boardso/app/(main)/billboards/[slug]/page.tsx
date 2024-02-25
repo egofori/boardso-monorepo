@@ -11,8 +11,10 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   try {
     const baseURL = process.env["NEXT_PUBLIC_API_BASE_URL"]
     const billboard: Billboard = await fetch(`${baseURL}/billboards/billboard?slug=${slug}`).then((res) => res.json())
-    title = billboard.title
-    description = billboard.description
+    if (billboard.isActive) {
+      title = billboard.title
+      description = billboard.description
+    }
   } catch {}
 
   return { title, description }

@@ -33,3 +33,18 @@ export const useProtectedRoute = () => {
     }
   }, [isLoggedIn, router])
 }
+
+export const getStatusColor = (status: string) => {
+  const colors: { [x: string]: string } = {
+    active: "#16a34a",
+    success: "#16a34a",
+    true: "#16a34a",
+    pending: "#f59e0b",
+    failed: "#dc2626",
+    disabled: "#737373",
+    false: "#dc2626",
+    expired: "#dc2626"
+  }
+
+  return colors[status]
+}

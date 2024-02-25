@@ -218,7 +218,7 @@ export default function Content() {
     <PageStatus
       isLoading={getBillboardLoading}
       data={billboard}
-      error={error && "Billboard not available"}
+      error={(error || !billboard?.isActive) && "Billboard not available"}
     >
       <main className="layout-wrapper">
         <UICard className="mx-auto my-5 max-w-3xl p-5 sm:p-10 bg-white">
