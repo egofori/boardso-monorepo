@@ -38,7 +38,7 @@ export default function Content() {
   return (
     <main className="auth-main">
       {loading ? (
-        <Loader size="40px" />
+        <Loader size="40px" className="m-auto" />
       ) : (
         <UICard className="auth-card">
           {confirmed ? (
@@ -51,7 +51,7 @@ export default function Content() {
                   Your email address has been successfully verified. Log in to continue.
                 </UITypography>
                 <Link href="/login">
-                  <UIButton>Go to log in page</UIButton>
+                  <UIButton className="w-full">Go to log in page</UIButton>
                 </Link>
               </div>
             </>
@@ -66,7 +66,7 @@ export default function Content() {
                   verification.
                 </UITypography>
                 <Link href="/login">
-                  <UIButton>Go to log in page</UIButton>
+                  <UIButton className="w-full">Go to log in page</UIButton>
                 </Link>
               </div>
             </>

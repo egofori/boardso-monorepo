@@ -36,9 +36,9 @@ export const useDeleteUser = () => {
   const { trigger, isLoading, ...rest } = useAPIDelete("users")
   const { trigger: deleteLogOut, isLoading: deleteLoading } = useLogOut()
 
-  const deleteUser: any = (data: any, onSuccess?: Function, onFailure?: Function) =>
+  const deleteUser: any = (config: any, onSuccess?: Function, onFailure?: Function) =>
     trigger(
-      { data },
+      config,
       (response: any) => {
         deleteLogOut()
         if (onSuccess) onSuccess(response)
