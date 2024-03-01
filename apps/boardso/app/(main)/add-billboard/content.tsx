@@ -37,6 +37,9 @@ import {
 import { ImageCard } from "@/components/ImageCard"
 import { useDisableAddBillboard } from "@/utils/hooks"
 import { useRouter } from "next/navigation"
+import { UserStatus } from "@/types/User"
+import { AxiosError } from "axios"
+import { useGetUserStatus } from "@/services/hooks/users"
 
 export default function Content() {
   // user must be logged in to access this page
@@ -63,13 +66,24 @@ export default function Content() {
 
   const router = useRouter()
 
+  const [maxImages, setMaxImages] = useState(5)
+
+  const { data: statusData }: { data: UserStatus; error: AxiosError; isLoading: boolean } =
+  useGetUserStatus()
+
   // check if user hasn't exhausted their limit
   useEffect(() => {
     if (disableAddBillboard) {
-      notification("info", "Subscribe/upgrade to add more billboard listings")
+      notification("info", "Subscribe to add more billboard listings")
       router.push("/")
     }
   }, [disableAddBillboard, router])
+
+  useEffect(() => {
+    if (statusData) {
+      if(statusData.isSubscriptionActive) setMaxImages(10)
+    }
+  }, [statusData])
 
   const signUpSchema = object({
     title: string().min(1, { message: "Title must not be empty" }),
@@ -107,8 +121,8 @@ export default function Content() {
     let files = event.target.files
 
     if (files) {
-      if (files.length + selectedImages.length > 5) {
-        notification("error", "Users can upload up to 5 images", { autoClose: 4000 })
+      if (files.length + selectedImages.length > maxImages) {
+        notification("error", `Users can upload up to ${maxImages} images`, { autoClose: 4000 })
         return
       }
       let filesArray = Array.from(files)
@@ -188,13 +202,13 @@ export default function Content() {
         </UITypography>
         <UIForm form={form} onSubmit={onSubmit} className="flex flex-col gap-6 mt-5 sm:mt-10">
           <div>
-            <label>Add images ({selectedImages.length}/5)</label>
+            <label>Add images ({selectedImages.length}/{maxImages})</label>
             <div className="pb-4 h-[230px] sm:h-[262px] w-full flex flex-row gap-6 overflow-x-auto">
               {imagePreviews.map((image, i) => (
                 <ImageCard key={i} image={image} remove={() => removeImage(i)} />
               ))}
-              {/* Owners can upload up to 5 images */}
-              {selectedImages.length! < 5 && (
+              {/* Owners can upload up to the max number of images */}
+              {selectedImages.length! < maxImages && (
                 <UITooltip content="Click to add images">
                   <label
                     htmlFor="dropzone-file"

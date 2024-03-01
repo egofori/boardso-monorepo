@@ -7,8 +7,10 @@ export async function generateMetadata({ searchParams }: any) {
     case "0":
       return { title: "Profile" }
     case "1":
-      return { title: "Contacts" }
+      return { title: "Subscriptions" }
     case "2":
+      return { title: "Contacts" }
+    case "3":
       return { title: "Bookmarks" }
     default:
       break
