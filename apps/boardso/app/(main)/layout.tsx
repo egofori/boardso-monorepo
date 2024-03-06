@@ -22,9 +22,11 @@ export const metadata = defaultMetadata
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <Script id="ms-clarity" strategy="afterInteractive">
-        {clarityCode}
-      </Script>
+      {process.env.NODE_ENV === "production" && (
+        <Script id="ms-clarity" strategy="afterInteractive">
+          {clarityCode}
+        </Script>
+      )}
       <Script id="wa-bubble" strategy="afterInteractive">
         {`var url = 'https://edna.io/wp-content/plugins/whatsapp-widget-generator/js/generator.js?34872';
         var s = document.createElement('script');

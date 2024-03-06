@@ -22,7 +22,7 @@ export function BillboardsList({
   setParams: Function
   owner?: User | null
 }) {
-  const { owner: username } = useParams()
+  const { owner: username } = useParams<{ owner: string }>()
   const searchParams = useSearchParams()
 
   const getSelectedSort = useMemo(() => {
