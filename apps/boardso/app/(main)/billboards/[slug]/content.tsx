@@ -40,7 +40,7 @@ import { MdOutlineMoreVert } from "react-icons/md"
 export default function Content() {
   const router = useRouter()
 
-  const { slug } = useParams()
+  const { slug } = useParams<{ slug: string }>()
   const {
     data: billboard,
     isLoading,

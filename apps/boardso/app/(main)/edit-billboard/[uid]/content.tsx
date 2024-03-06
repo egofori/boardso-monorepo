@@ -44,7 +44,7 @@ export default function Content() {
   // user must be logged in to access this page
   useProtectedRoute()
 
-  const { uid } = useParams()
+  const { uid } = useParams<{ uid: string }>()
 
   const {
     data: billboard,

@@ -23,13 +23,11 @@ import { twMerge } from "tailwind-merge"
 import { object, number, string, literal } from "zod"
 import { IoCloseSharp } from "react-icons/io5"
 import { useSearchLocations } from "@/services/hooks"
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { billboardTypes, currencies, unitsOfMeasurement } from "@/utils/constants"
 import Loader from "@/components/Loader"
 
 export function BillboardsSearch({ params, setParams }: { params: any; setParams: Function }) {
-  const { owner: username } = useParams()
-
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const router = useRouter()

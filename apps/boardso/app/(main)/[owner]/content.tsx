@@ -14,7 +14,7 @@ import { stringToHref } from "@/utils/index"
 import { AiFillEdit } from "react-icons/ai"
 
 export default function Content() {
-  const { owner: username } = useParams()
+  const { owner: username } = useParams<{ owner: string }>()
 
   const offset = 0
   const limit = 10
