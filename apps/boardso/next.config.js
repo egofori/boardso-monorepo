@@ -2,7 +2,16 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ["ui"],
-  images: { domains: ["images.unsplash.com", "storage.googleapis.com"] },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        port: "",
+        pathname: "/boardso-media/**",
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig

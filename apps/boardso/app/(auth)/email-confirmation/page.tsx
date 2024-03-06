@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Content from "./content";
 import type { Metadata } from 'next'
  
@@ -6,5 +7,9 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return <Content />
+  return (
+    <Suspense>
+      <Content />
+    </Suspense>
+  )
 }

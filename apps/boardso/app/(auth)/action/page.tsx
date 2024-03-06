@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import Content from "./content"
 
 export async function generateMetadata({ searchParams }: any) {
@@ -14,5 +15,9 @@ export async function generateMetadata({ searchParams }: any) {
 }
 
 export default function Page() {
-  return <Content />
+  return (
+    <Suspense>
+      <Content />
+    </Suspense>
+  )
 }
