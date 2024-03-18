@@ -110,7 +110,11 @@ export default function Content() {
   }
 
   return (
-    <PageStatus isLoading={isLoading} data={billboard} error={(error || !billboard?.isActive) && "Billboard does not exist"}>
+    <PageStatus
+      isLoading={isLoading}
+      data={billboard}
+      error={(error || !billboard?.isActive) && "Billboard does not exist"}
+    >
       <main className="layout-wrapper flex lg:flex-row flex-col items-start justify-center gap-4 py-5">
         <UICard className="w-full p-5 sm:p-10 bg-white flex flex-col gap-4">
           <div className="flex flex-row gap-2 justify-between">
@@ -272,10 +276,12 @@ export default function Content() {
         <div className="shrink-0 lg:w-96 w-full flex flex-col gap-6">
           <UICard className="flex flex-row justify-center items-baseline whitespace-nowrap gap-1 p-4">
             <UITypography className="text-teal-500 font-bold text-3xl">
-              {`${billboard?.currency} ${billboard?.price}`}
+              {billboard?.price ? `${billboard?.currency} ${billboard?.price}` : "GHS --"}
             </UITypography>
             <UITypography variant="small" className="font-medium text-slate-800">
-              {periods.filter((period) => billboard?.rate === period.value)[0]?.label}
+              {billboard?.price
+                ? periods.filter((period) => billboard?.rate === period.value)[0]?.label
+                : ""}
             </UITypography>
           </UICard>
           <UIButton

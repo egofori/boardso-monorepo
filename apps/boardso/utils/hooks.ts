@@ -7,7 +7,7 @@ export const useDisableAddBillboard = () => {
     useGetUserStatus()
 
   if (isLoading || error) {
-    return true
+    return false
   } else if (data) {
     return data.billboardCount >= data.maxFreeListings && !data.isSubscriptionActive
   }

@@ -183,10 +183,10 @@ export default function BillboardCard({
               </UITypography>
               <div className="flex flex-row justify-center items-baseline whitespace-nowrap gap-1">
                 <UITypography color="teal" className="font-bold text-xl">
-                  {`${data?.currency} ${data?.price}`}
+                  {data?.price ? `${data?.currency} ${data?.price}` : "GHS --"}
                 </UITypography>
                 <UITypography variant="small" className="text-slate-500">
-                  {periods.filter((period) => data?.rate === period.value)[0]?.label}
+                  {data?.price ? periods.filter((period) => data?.rate === period.value)[0]?.label : ""}
                 </UITypography>
               </div>
             </div>

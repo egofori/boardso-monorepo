@@ -23,8 +23,11 @@ export const useSearchLocations = (search: string | null) =>
     },
   })
 
-export const useGetBillboard = (params: { slug?: string; uid?: string }) =>
-  useAPIGet({ url: `/billboards/billboard`, config: { params } })
+export const useGetBillboard = (params: { slug?: string; uid?: string }) => {
+  const { slug, uid } = params
+
+  return useAPIGet(slug || uid ? { url: `/billboards/billboard`, config: { params } } : null)
+}
 
 export const useGetBookmarks = (params?: any) =>
   useAPIGet({
