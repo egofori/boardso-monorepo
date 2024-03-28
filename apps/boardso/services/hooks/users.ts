@@ -8,7 +8,11 @@ import { getStorageItem } from "@/lib/storage"
 
 export const useGetUser = (username: string) => useAPIGet({ url: `/users/${username}` })
 
-export const useGetUserProfile = () => useAPIGet({ url: "/users" })
+export const useGetUserProfile = () => {
+  const isLoggedIn = useValue(getStorageItem("isLoggedIn"))
+
+  return useAPIGet(isLoggedIn ? "/users" : null)
+}
 
 export const useUpdateUser = () =>  useAPIPatch("/users")
 
