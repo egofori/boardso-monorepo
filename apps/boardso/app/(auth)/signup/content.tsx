@@ -265,8 +265,8 @@ export default function Content() {
               </UIButton>
             </div>
             <UITypography className="[&>a]:text-primary-500 hover:[&>a]:text-primary-400 text-xs">
-              By continuing you agree to our <Link href="#">Terms of service</Link> and{" "}
-              <Link href="#">Privacy Policy</Link>
+              By continuing you agree to our <Link href="/terms-of-service">Terms of service</Link> and{" "}
+              <Link href="privacy-policy">Privacy Policy</Link>
             </UITypography>
             <UITypography className="text-sm mt-3 text-center font-medium">
               Already have an account?{" "}

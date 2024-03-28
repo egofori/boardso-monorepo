@@ -64,7 +64,7 @@ function ProfileMenu() {
               <UITypography className="font-medium text-ellipsis">
                 {user?.firstName} {user?.lastName}
               </UITypography>
-              <Link href="/profile">
+              <Link href="/profile?t=0">
                 <UIButton
                   variant="text"
                   size="sm"
