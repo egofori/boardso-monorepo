@@ -118,10 +118,10 @@ export default function Content() {
       <main className="layout-wrapper flex lg:flex-row flex-col items-start justify-center gap-4 py-5">
         <UICard className="w-full p-5 sm:p-10 bg-white flex flex-col gap-4">
           <div className="flex flex-row gap-2 justify-between">
-            <div className="flex flex-col w-max">
+            <div className="flex flex-col w-max gap-1">
               <UITypography
                 variant="h4"
-                className="text-xl sm:text-2xl overflow-hidden overflow-ellipsis whitespace-nowrap"
+                className="text-xl sm:text-2xl leading-tight"
               >
                 {billboard?.title}
               </UITypography>
