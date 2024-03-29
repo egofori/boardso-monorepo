@@ -167,7 +167,7 @@ export default function Header() {
     <Navbar className="sticky inset-0 z-10 h-max rounded-none max-w-full px-0">
       <div className="layout-wrapper flex justify-between items-center gap-4">
         <div className="flex gap-1 items-start">
-          <Link href="/" className="font-bold text-4xl text-tertiary-800">
+          <Link href="/" className="font-bold text-4xl text-tertiary-800 shrink-0">
             <Logo />
           </Link>
           <CountryDropdown />
