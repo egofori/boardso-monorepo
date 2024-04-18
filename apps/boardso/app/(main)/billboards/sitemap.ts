@@ -27,6 +27,7 @@ export async function generateSitemaps() {
 
 export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
   const baseURL = process.env["NEXT_PUBLIC_API_BASE_URL"]
+  const frontendBaseURL = process.env["NEXT_PUBLIC_FRONTEND_BASE_URL"]
   const params = {
     offset: id * maxURLs,
     limit: maxURLs,
@@ -39,7 +40,7 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
   const billboards: Billboard[] = billboardsResponse?.results || []
 
   return billboards.map((billboard) => ({
-    url: `${baseURL}/billboards/${billboard.slug}`,
+    url: `${frontendBaseURL}/billboards/${billboard.slug}`,
     lastModified: billboard.updateAt,
   }))
 }
