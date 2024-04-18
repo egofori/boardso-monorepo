@@ -1,18 +1,24 @@
 import { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseURL = process.env["NEXT_PUBLIC_API_BASE_URL"]
+
   return [
     {
-      url: "https://boardso.com",
+      url: baseURL,
+      lastModified: new Date().toISOString(),
     },
     {
-      url: "https://boardso.com/login",
+      url: `${baseURL}/login`,
+      lastModified: new Date().toISOString(),
     },
     {
-      url: "https://boardso.com/signup",
+      url: `${baseURL}/signup`,
+      lastModified: new Date().toISOString(),
     },
     {
-      url: "https://boardso.com/billboards",
+      url: `${baseURL}/billboards`,
+      lastModified: new Date().toISOString(),
     },
   ]
 }
