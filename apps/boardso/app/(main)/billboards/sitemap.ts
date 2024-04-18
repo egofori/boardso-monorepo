@@ -28,8 +28,8 @@ export async function generateSitemaps() {
 export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
   const baseURL = process.env["NEXT_PUBLIC_API_BASE_URL"]
   const params = {
-    limit: id * maxURLs,
-    offset: maxURLs,
+    offset: id * maxURLs,
+    limit: maxURLs,
   } as any
 
   const billboardsResponse = await fetch(
